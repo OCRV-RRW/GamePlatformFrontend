@@ -11,9 +11,22 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path={HOME_PATH} element={<CheckAuth><Home/></CheckAuth>}/>
-          <Route path={LOGIN_PATH} element={<CheckAuth><Login/></CheckAuth>} />
-          <Route path={REGISTER_PATH} element={<CheckAuth><Register/></CheckAuth>} />
+          <Route path={HOME_PATH} element={
+            <CheckAuth redirect_path_unathorized={LOGIN_PATH}>
+              <Home/>
+            </CheckAuth>}/>
+          <Route path={LOGIN_PATH} element={
+            <CheckAuth redirect_path_unathorized={LOGIN_PATH}>
+              <Login/>
+            </CheckAuth>} />
+          <Route path={REGISTER_PATH} element={
+            <CheckAuth redirect_path_unathorized={REGISTER_PATH}>
+              <Register/>
+            </CheckAuth>} />
+          <Route path="*" element={
+            <CheckAuth redirect_path_unathorized={LOGIN_PATH}>
+              <Home/>
+            </CheckAuth>}/>
         </Routes>
       </BrowserRouter>
     </div>
