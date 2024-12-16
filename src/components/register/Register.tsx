@@ -1,16 +1,14 @@
 import { useState } from "react"
-import { useNavigate } from "react-router"
-import { fetch_register } from "./registerAPI"
-import { RegisterForm } from "../../app/forms_types"
-import { LOGIN_PATH } from "../../app/BrowserPathes"
+import { fetch_register } from "../../api/registerAPI"
+import { RegisterForm } from "../../app/api_forms_types"
+import ReturnToLoginButton from "../login/ReturnToLoginButton"
 
 export default function Register() {
-    const navigate = useNavigate()
     const [email, setEmail] = useState<string>("")
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const [passwordConfirm, setPasswordConfirm] = useState<string>("")
-    const [sendRegistrationFormState, setSendRegistrationFormState] = useState<boolean>(false)
+    const [registrationState, setRegistrationState] = useState<string>("")
 
     let register_form: RegisterForm = {
         name: username,
@@ -22,8 +20,11 @@ export default function Register() {
     async function send_registration_data(register_form: RegisterForm) {
         await fetch_register(register_form)
             .then(
-                () => setSendRegistrationFormState(true), 
-                (reason) => console.log(reason)
+                () => setRegistrationState("Перейди на почту"), 
+                (reason) => {
+                    console.log(reason)
+                    setRegistrationState("Проверь правильность введенных данных")
+                }
             )
     }
 
@@ -74,13 +75,9 @@ export default function Register() {
                     onClick={register}>
                         Зарегистрироваться
                 </button>
-                <button className="register_button" 
-                    name="back_to_login"
-                    onClick={() => {navigate(LOGIN_PATH)}}>
-                        Вернуться к логину
-                </button>
+                <ReturnToLoginButton />
             </div>
-            <h1>{sendRegistrationFormState && "Перейди на почту"}</h1>
+            <h1>{registrationState}</h1>
         </>
     )
 } 

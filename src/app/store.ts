@@ -1,12 +1,15 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import userReducer from '../features/user/UserSlice';
+import userReducer from '../reducers/UserSlice';
 import counterReducer from '../features/counter/counterSlice'
+import pageReducer from '../reducers/PageSlice';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
+    page: pageReducer,
     counter: counterReducer
-  },
+  }
 });
 
 export type AppDispatch = typeof store.dispatch;

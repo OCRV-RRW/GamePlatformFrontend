@@ -1,14 +1,14 @@
 import { useState } from "react"
-import { LoginForm } from "../../app/forms_types";
+import { LoginForm } from "../../app/api_forms_types";
 import { useAppDispatch } from "../../app/hooks";
-import { send_log_in_form } from "../user/UserSlice";
+import { send_log_in_form } from "../../reducers/UserSlice";
+import { FORGOT_PASSWORD_PATH, HOME_PATH, REGISTER_PATH } from "../../constants/BrowserPathes";
 import { useNavigate } from "react-router";
-import { FORGOT_PASSWORD_PATH, HOME_PATH, REGISTER_PATH } from "../../app/BrowserPathes";
 
 
-export default function Login() {
-    const navigate = useNavigate()
+export default function Login() : JSX.Element {
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     
@@ -17,8 +17,9 @@ export default function Login() {
         password: password
     }
 
-     function on_login() {
+    function on_login() {
         dispatch(send_log_in_form(login_form))
+            .then(() => navigate(HOME_PATH))
     }
 
     return (<>
@@ -42,7 +43,7 @@ export default function Login() {
             </div>
         </form>
         <div className="buttons">
-            <button  disabled={email.length == 0 || password.length == 0} className="login_button" 
+            <button  disabled={email.length === 0 || password.length === 0} className="login_button" 
                 name="log_in_button"
                 onClick={on_login}>
                     Войти

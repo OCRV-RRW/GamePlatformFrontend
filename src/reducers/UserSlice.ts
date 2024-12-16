@@ -1,15 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { UserType } from "../../app/user_type";
-import { store } from "../../app/store";
-import { LoginForm } from "../../app/forms_types";
-import { fetch_log_in } from "../login/loginAPI";
-import { drop_access_token, get_access_token, save_access_token } from "../../local-storage/access_token";
-import { drop_userdata, get_userdata, save_userdata } from "../../local-storage/user_data";
-
-export interface UserState {
-    user_data: UserType | null
-    access_token: string
-}
+import { store } from "../app/store";
+import { LoginForm } from "../app/api_forms_types";
+import { fetch_log_in } from "../api/loginAPI";
+import { fetch_log_out } from "../api/logoutAPI";
+import { drop_access_token, get_access_token, save_access_token } from "../local-storage/access_token";
+import { drop_userdata, get_userdata, save_userdata } from "../local-storage/user_data";
+import { UserState } from "../app/states-interfaces";
 
 const initialState : UserState = {
     user_data: get_userdata(),
@@ -28,16 +24,18 @@ export const send_log_in_form = createAsyncThunk<UserState, LoginForm>(
     }
 )
 
+export const send_log_out = createAsyncThunk(
+    'user/log_out',
+    async () : Promise<void> => {
+        await fetch_log_out();
+    }
+)
+
+
 const userSlice = createSlice({
     name: 'user',
     initialState, 
     reducers: {
-        log_out(state) {
-            drop_access_token()
-            drop_userdata()
-            state.access_token = ""
-            state.user_data = null
-        }
     },
     extraReducers: (builder) => {
         builder
@@ -48,12 +46,16 @@ const userSlice = createSlice({
             state.access_token = action.payload.access_token;
             state.user_data = action.payload.user_data;
           })
+          .addCase(send_log_out.fulfilled, (state) => {
+            drop_access_token()
+            drop_userdata()
+            state.access_token = ""
+            state.user_data = null
+          })
       }
 })
 
 export const selectAccessToken = () => store.getState().user.access_token
 export const selectUserData = () => store.getState().user.user_data
-
-export const {log_out} = userSlice.actions
 
 export default userSlice.reducer
