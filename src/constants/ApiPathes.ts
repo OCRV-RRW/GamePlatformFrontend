@@ -8,6 +8,7 @@ export const API_LOGIN_PATH: string = AUTH_API_PATH + '/login'
 export const API_LOGOUT_PATH: string = AUTH_API_PATH + '/logout'
 export const API_FORGOT_PASSWORD_PATH: string = AUTH_API_PATH + '/forgot-password'
 export const API_RESET_PASWORD_PATH: string = AUTH_API_PATH + '/reset-password'
+export const API_REFRESH_PATH: string = AUTH_API_PATH + '/refresh'
 
 //USER
 export const API_USER_PATH: string = API_PATH + '/users'

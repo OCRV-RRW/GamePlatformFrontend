@@ -30,13 +30,11 @@ export function fetch_log_in(login_form: LoginForm) {
                 body: JSON.stringify(login_form)
             })
             .then((response) => {
-                if (response.status === 400) {
-                    
-                }
                 return response.json()
             })
             .then((response_data) => {
-                access_token = response_data.access_token
+                console.log(response_data)
+                access_token = response_data.data.access_token
                 return get_user_data_by_token(access_token)
             })
             .then((user_data) => parsed_error_message === "" 
@@ -46,7 +44,7 @@ export function fetch_log_in(login_form: LoginForm) {
     );
 }
 
-function get_user_data_by_token(access_token: string) : Promise<{ user_data: UserType }> {
+export function get_user_data_by_token(access_token: string) : Promise<{ user_data: UserType }> {
     const requestOptions = {
         method: "GET",
         headers: {

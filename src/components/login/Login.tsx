@@ -5,7 +5,6 @@ import { send_log_in_form } from "../../reducers/UserSlice";
 import { FORGOT_PASSWORD_PATH, HOME_PATH, REGISTER_PATH } from "../../constants/BrowserPathes";
 import { useNavigate } from "react-router";
 
-
 export default function Login() : JSX.Element {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
@@ -22,6 +21,14 @@ export default function Login() : JSX.Element {
             .then(() => navigate(HOME_PATH))
     }
 
+    const onChangeEmail = (event : React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(event.target.value)
+    }
+
+    const onPasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(event.target.value)
+    }
+
     return (<>
         <form id="login">
             <h1>ЛОГИН</h1>
@@ -30,7 +37,7 @@ export default function Login() : JSX.Element {
                 <input 
                     name="emailInput"
                     value={email}
-                    onChange={(event) => setEmail(event.target.value)}>
+                    onChange={onChangeEmail}>
                 </input>
             </div>
             <div className="password">
@@ -38,7 +45,7 @@ export default function Login() : JSX.Element {
                 <input 
                     name="passwordInput"
                     value={password}
-                    onChange={(event) => setPassword(event.target.value)}>
+                    onChange={onPasswordChange}>
                 </input>
             </div>
         </form>

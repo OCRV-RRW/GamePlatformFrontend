@@ -16,7 +16,7 @@ export default function CheckNotAuth({ children } : CheckNotAuthProps) {
         if (access_token !== "") {
             navigate(HOME_PATH)
         }
-    }, [])
+    }, [access_token])
 
     return children
 }

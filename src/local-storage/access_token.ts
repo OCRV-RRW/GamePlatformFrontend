@@ -28,3 +28,8 @@ export const drop_access_token = () : void => {
         localStorage.removeItem(ACCESS_TOKEN_NAME)
     }
 }
+
+export const rewrite_access_token = (token: string) : void => {
+    drop_access_token()
+    save_access_token(token)
+}

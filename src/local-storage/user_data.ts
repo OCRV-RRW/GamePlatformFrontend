@@ -2,12 +2,13 @@ import { UserType } from "../app/user_type"
 
 const USER_DATA_NAME = "user_data"
 
-export const save_userdata = (data: UserType) : void => {
+export const save_userdata = (data: UserType | null) : void => {
     if (localStorage.getItem(USER_DATA_NAME)) {
         console.warn("userdata already exists in local storage")
         drop_userdata()
     }
-    localStorage.setItem(USER_DATA_NAME, JSON.stringify(data))
+    if (data)
+        localStorage.setItem(USER_DATA_NAME, JSON.stringify(data))
 }
 
 export const get_userdata = () : UserType => {
@@ -34,4 +35,10 @@ export const drop_userdata = () : void => {
     else {
         localStorage.removeItem(USER_DATA_NAME)
     }
+}
+
+
+export const rewrite_user_data = (data: UserType | null) : void => {
+    drop_userdata()
+    save_userdata(data)
 }

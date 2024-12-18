@@ -3,9 +3,12 @@ import { store } from "../app/store";
 import { LoginForm } from "../app/api_forms_types";
 import { fetch_log_in } from "../api/loginAPI";
 import { fetch_log_out } from "../api/logoutAPI";
-import { drop_access_token, get_access_token, save_access_token } from "../local-storage/access_token";
-import { drop_userdata, get_userdata, save_userdata } from "../local-storage/user_data";
+import { drop_access_token, get_access_token, rewrite_access_token, save_access_token } from "../local-storage/access_token";
+import { drop_userdata, get_userdata, rewrite_user_data, save_userdata } from "../local-storage/user_data";
 import { UserState } from "../app/states-interfaces";
+import { fetch_user_me } from "../api/getUserMeAPI";
+import { stat } from "fs";
+import { UserType } from "../app/user_type";
 
 const initialState : UserState = {
     user_data: get_userdata(),
@@ -26,8 +29,17 @@ export const send_log_in_form = createAsyncThunk<UserState, LoginForm>(
 
 export const send_log_out = createAsyncThunk(
     'user/log_out',
-    async () : Promise<void> => {
-        await fetch_log_out();
+    async () : Promise<{access_token: string}> => {
+        const {access_token} = await fetch_log_out();
+        return {access_token}
+    }
+)
+
+export const send_user_get_me = createAsyncThunk(
+    'user/get_me',
+    async () : Promise<{access_token: string, user_data: UserType | null}> => {
+        const {access_token, user_data} = await fetch_user_me();
+        return {access_token, user_data}
     }
 )
 
@@ -51,6 +63,12 @@ const userSlice = createSlice({
             drop_userdata()
             state.access_token = ""
             state.user_data = null
+          })
+          .addCase(send_user_get_me.fulfilled, (state, action) => {
+            rewrite_access_token(action.payload.access_token)
+            rewrite_user_data(action.payload.user_data)
+            state.access_token = action.payload.access_token
+            state.user_data = action.payload.user_data
           })
       }
 })
