@@ -34,7 +34,7 @@ export function fetch_log_in(login_form: LoginForm) {
             })
             .then((response_data) => {
                 console.log(response_data)
-                access_token = response_data.data.access_token
+                access_token = response_data?.data?.access_token
                 return get_user_data_by_token(access_token)
             })
             .then((user_data) => parsed_error_message === "" 
