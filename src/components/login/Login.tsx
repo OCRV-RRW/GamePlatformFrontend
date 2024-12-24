@@ -2,7 +2,7 @@ import { useState } from "react"
 import { LoginForm } from "../../app/api_forms_types";
 import { useAppDispatch } from "../../app/hooks";
 import { send_log_in_form } from "../../reducers/UserSlice";
-import { FORGOT_PASSWORD_PATH, HOME_PATH, REGISTER_PATH } from "../../constants/BrowserPathes";
+import { FORGOT_PASSWORD_PATH, REGISTER_PATH } from "../../constants/BrowserPathes";
 import { useNavigate } from "react-router";
 
 export default function Login() : JSX.Element {
@@ -18,7 +18,6 @@ export default function Login() : JSX.Element {
 
     function on_login() {
         dispatch(send_log_in_form(login_form))
-            .then(() => navigate(HOME_PATH))
     }
 
     const onChangeEmail = (event : React.ChangeEvent<HTMLInputElement>) => {

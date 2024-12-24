@@ -13,11 +13,9 @@ export default function CheckAuth({ children }: CheckAuthProps) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        console.log("dsd")
-        if (access_token === "") {
+        if (access_token === "")
             navigate(LOGIN_PATH)
-        }
-    }, [access_token])
+    }, [access_token, navigate])
 
     return (
         <>

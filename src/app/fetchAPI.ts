@@ -7,7 +7,7 @@ export type fetchAPIData = {
     response: Response
 }
 
-export default function fetchAPI(fetch_func: (access_token: string) => Promise<Response>) : Promise<fetchAPIData> {
+export default function fetchAPI(fetch_func: (access_token: string, query_search?: string) => Promise<Response>, query_search?:string) : Promise<fetchAPIData> {
     let response_data : fetchAPIData = {
         access_token: "",
         updated: false,
@@ -15,14 +15,14 @@ export default function fetchAPI(fetch_func: (access_token: string) => Promise<R
     }
 
     return new Promise<fetchAPIData>((resolve) => {
-        fetch_func(get_access_token())
+        fetch_func(get_access_token(), query_search)
             .then((response) => {
                 console.log(response)
                 return update_token_middleware(response)})
             .then((updated_token_data) => {
                 response_data.access_token = updated_token_data.access_token
                 response_data.updated = updated_token_data.updated
-                return fetch_func(response_data.access_token)})
+                return fetch_func(response_data.access_token, query_search)})
             .then((response) => {
                 console.log(response)
                 response_data.response = response

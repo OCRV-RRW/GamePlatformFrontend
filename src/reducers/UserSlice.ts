@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { store } from "../app/store";
 import { LoginForm } from "../app/api_forms_types";
 import { fetch_log_in } from "../api/loginAPI";
@@ -7,8 +7,7 @@ import { drop_access_token, get_access_token, rewrite_access_token, save_access_
 import { drop_userdata, get_userdata, rewrite_user_data, save_userdata } from "../local-storage/user_data";
 import { UserState } from "../app/states-interfaces";
 import { fetch_user_me } from "../api/getUserMeAPI";
-import { stat } from "fs";
-import { UserType } from "../app/user_type";
+import { User } from "../app/user_type";
 
 const initialState : UserState = {
     user_data: get_userdata(),
@@ -37,7 +36,7 @@ export const send_log_out = createAsyncThunk(
 
 export const send_user_get_me = createAsyncThunk(
     'user/get_me',
-    async () : Promise<{access_token: string, user_data: UserType | null}> => {
+    async () : Promise<{access_token: string, user_data: User | null}> => {
         const {access_token, user_data} = await fetch_user_me();
         return {access_token, user_data}
     }
@@ -48,6 +47,10 @@ const userSlice = createSlice({
     name: 'user',
     initialState, 
     reducers: {
+        updateToken(state, action: PayloadAction<{access_token: string}>) {
+            rewrite_access_token(action.payload.access_token)
+            state.access_token = action.payload.access_token
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -72,7 +75,7 @@ const userSlice = createSlice({
           })
       }
 })
-
+export const { updateToken } = userSlice.actions
 export const selectAccessToken = () => store.getState().user.access_token
 export const selectUserData = () => store.getState().user.user_data
 

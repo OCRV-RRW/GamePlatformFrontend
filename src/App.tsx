@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router';
-import { FORGOT_PASSWORD_PATH, HOME_PATH, LOGIN_PATH, REGISTER_PATH } from './constants/BrowserPathes';
+import { FORGOT_PASSWORD_PATH, GAME_PATH, HOME_PATH, LOGIN_PATH, REGISTER_PATH } from './constants/BrowserPathes';
 import CheckAuth from './components/check-auth/CheckAuth';
 import Path from './components/page/Page';
 import CheckNotAuth from './components/check-auth/CheckNotAuth';
@@ -26,6 +26,11 @@ function App() {
             <CheckNotAuth>
               <Path path={FORGOT_PASSWORD_PATH} />
             </CheckNotAuth>} />
+          <Route path={GAME_PATH} element={
+            <CheckAuth>
+              <Path path={GAME_PATH}/>
+            </CheckAuth>
+          } />
           <Route path="*" element={
             <><h1>404 Нет такой страницы</h1></>
           }/>

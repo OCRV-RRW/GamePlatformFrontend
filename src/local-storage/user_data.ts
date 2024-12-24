@@ -1,8 +1,8 @@
-import { UserType } from "../app/user_type"
+import { User } from "../app/user_type"
 
 const USER_DATA_NAME = "user_data"
 
-export const save_userdata = (data: UserType | null) : void => {
+export const save_userdata = (data: User | null) : void => {
     if (localStorage.getItem(USER_DATA_NAME)) {
         console.warn("userdata already exists in local storage")
         drop_userdata()
@@ -11,8 +11,8 @@ export const save_userdata = (data: UserType | null) : void => {
         localStorage.setItem(USER_DATA_NAME, JSON.stringify(data))
 }
 
-export const get_userdata = () : UserType => {
-    let userdata_json : UserType | null = null
+export const get_userdata = () : User => {
+    let userdata_json : User | null = null
     if (!localStorage.getItem(USER_DATA_NAME)) {
         console.warn("local storage not contain userdata")
     }
@@ -38,7 +38,7 @@ export const drop_userdata = () : void => {
 }
 
 
-export const rewrite_user_data = (data: UserType | null) : void => {
+export const rewrite_user_data = (data: User | null) : void => {
     drop_userdata()
     save_userdata(data)
 }

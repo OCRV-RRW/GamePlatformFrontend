@@ -1,10 +1,10 @@
-import { UserType } from "./user_type"
+import { User } from "./user_type"
 
 export interface PageState {
     current_page: string
 }
 
 export interface UserState {
-    user_data: UserType | null
+    user_data: User | null
     access_token: string
 }

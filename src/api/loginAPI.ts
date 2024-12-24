@@ -1,10 +1,6 @@
 import { API_USER_ME_PATH, API_LOGIN_PATH } from "../constants/ApiPathes";
 import { LoginForm } from "../app/api_forms_types";
-import { UserType } from "../app/user_type";
-
-const parseErrors = (error_data: object) => {
-
-}
+import { User } from "../app/user_type";
 
 export function fetch_log_in(login_form: LoginForm) {
     const requestOptions = {
@@ -18,7 +14,7 @@ export function fetch_log_in(login_form: LoginForm) {
     let access_token: string = ""
     let parsed_error_message: string = ""
     
-    return new Promise<{ access_token: string, user_data: UserType }>(
+    return new Promise<{ access_token: string, user_data: User }>(
         (resolve, reject: (reason: string) => void) => {
             fetch(API_LOGIN_PATH, {
                 method: "POST",
@@ -44,7 +40,7 @@ export function fetch_log_in(login_form: LoginForm) {
     );
 }
 
-export function get_user_data_by_token(access_token: string) : Promise<{ user_data: UserType }> {
+export function get_user_data_by_token(access_token: string) : Promise<{ user_data: User }> {
     const requestOptions = {
         method: "GET",
         headers: {
@@ -53,7 +49,7 @@ export function get_user_data_by_token(access_token: string) : Promise<{ user_da
         }
     }
 
-    return new Promise<{ user_data: UserType}>(
+    return new Promise<{ user_data: User}>(
         (resolve) => {
             fetch(API_USER_ME_PATH, requestOptions)
             .then((response) => response.json())

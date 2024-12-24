@@ -1,0 +1,1 @@
+export const QUERY_STRING_GAME: string = "?name="

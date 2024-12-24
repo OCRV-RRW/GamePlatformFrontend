@@ -1,10 +1,11 @@
 import { useContext, useRef } from "react";
 import { PathContext } from "./Page";
-import { FORGOT_PASSWORD_PATH, HOME_PATH, LOGIN_PATH, REGISTER_PATH } from "../../constants/BrowserPathes";
+import { FORGOT_PASSWORD_PATH, GAME_PATH, HOME_PATH, LOGIN_PATH, REGISTER_PATH } from "../../constants/BrowserPathes";
 import Register from "../register/Register";
 import Login from "../login/Login";
 import ForgotPassword from "../forgot-password/ForgotPassword";
 import Home from "../home/Home";
+import Game from "../game/Game";
 
 export default function SelectPath() {
     const path = useContext(PathContext)
@@ -14,7 +15,8 @@ export default function SelectPath() {
             {path: REGISTER_PATH, page: <Register />},
             {path: LOGIN_PATH, page: <Login />},
             {path: FORGOT_PASSWORD_PATH, page: <ForgotPassword />},
-            {path: HOME_PATH, page: <Home />}
+            {path: HOME_PATH, page: <Home />},
+            {path: GAME_PATH, page: <Game />}
         ]
     )
     

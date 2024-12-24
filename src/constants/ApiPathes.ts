@@ -15,3 +15,15 @@ export const API_USER_PATH: string = API_PATH + '/users'
 export const API_USER_ME_PATH: string = API_USER_PATH + '/me'
 export const API_DELETE_USER_PATH: string = API_USER_PATH
 export const API_GET_USER_PATH: string = API_USER_PATH
+
+//GAME
+export const API_GAMES_PATH: string = API_PATH + '/games'
+export const API_CREATE_GAMES_PATH: string = API_GAMES_PATH
+export const API_GET_GAME_PATH: string = API_GAMES_PATH
+export const API_DELETE_GAME_PATH: string = API_GAMES_PATH + '/'
+
+//SKILL 
+export const API_SKILLS_PATH: string = API_PATH + "/skills"
+export const API_CREATE_SKILL_PATH: string = API_SKILLS_PATH
+export const API_GET_SKILL: string = API_SKILLS_PATH
+export const API_DELETE_SKILL: string = API_SKILLS_PATH + '/'
