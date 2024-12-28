@@ -1,4 +1,4 @@
-import fetchAPI from "../app/fetchAPI";
+import fetchAuthAPI from "../app/fetchAPI";
 import { API_GET_GAME_PATH } from "../constants/ApiPathes";
 
 const fetch_get_games_response = (access_token: string) : Promise<Response> => fetch(API_GET_GAME_PATH,
@@ -16,7 +16,7 @@ const fetch_get_games_response = (access_token: string) : Promise<Response> => f
 export function fetch_get_games() : Promise<{access_token: string, response: Response}> {
     return new Promise<{access_token: string, response: Response}>(
         (resolve) => {
-            fetchAPI(fetch_get_games_response)
+            fetchAuthAPI(fetch_get_games_response)
                 .then((fetch_api_data) => {
                     return resolve({access_token: fetch_api_data.access_token, response: fetch_api_data.response})})
         }

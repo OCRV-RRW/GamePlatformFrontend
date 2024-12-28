@@ -7,7 +7,7 @@ export type fetchAPIData = {
     response: Response
 }
 
-export default function fetchAPI(fetch_func: (access_token: string, query_search?: string) => Promise<Response>, query_search?:string) : Promise<fetchAPIData> {
+export default function fetchAuthAPI(fetch_func: (access_token: string, query_search?: string) => Promise<Response>, query_search?:string) : Promise<fetchAPIData> {
     let response_data : fetchAPIData = {
         access_token: "",
         updated: false,
