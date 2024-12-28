@@ -1,0 +1,1 @@
+export const HOST = "http://localhost:3000/" //replace to: https://ocrv-game.ru/medgame-platform/
