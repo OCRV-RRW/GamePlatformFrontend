@@ -5,7 +5,7 @@ import ReturnToLoginButton from "../login/ReturnToLoginButton"
 import { FieldErrors, useForm } from "react-hook-form"
 import { EMAIL_REG_EXP, PASSWORD_REG_EXP } from "../../constants/reg-exp"
 import RegisterFormResolver from "../../validate/form_resolvers/register_resolver"
-import styles from '../../../src/css_modules/style.module.css'
+import register_styles from '../../../src/css_modules/style.module.css'
 
 export default function Register() {
     const [registrationState, setRegistrationState] = useState<string>("")
@@ -35,28 +35,28 @@ export default function Register() {
             <form onSubmit={handleSubmit((data) => onRegister(data))}>
                 <h1>Регистрация</h1>
                 <div>
-                    <label htmlFor="name" className={styles.required}>Имя пользователя:</label>
+                    <label htmlFor="name" className={register_styles.required}>Имя пользователя:</label>
                     <input id='name'
-                        className={errors.name && styles.invalid}
+                        className={errors.name && register_styles.invalid}
                         {...register('name')} placeholder="имя пользователя..." />
                     {errors.name && <label style={{'color': "red"}}>{errors.name?.message}</label>}
                 </div>
                 <div>
-                    <label htmlFor="email" className={styles.required}>Электронная почта:</label>
-                    <input id='email' className={errors.email && styles.invalid}
+                    <label htmlFor="email" className={register_styles.required}>Электронная почта:</label>
+                    <input id='email' className={errors.email && register_styles.invalid}
                         {...register('email', {pattern: EMAIL_REG_EXP})} placeholder="электронная почта..." />
                     {errors.email && <label style={{'color': "red"}}>{errors.email?.message}</label>}
                 </div>
                 <div>
-                    <label htmlFor="password" className={styles.required}>Пароль:</label>
-                    <input id='password' className={errors.password && styles.invalid}
+                    <label htmlFor="password" className={register_styles.required}>Пароль:</label>
+                    <input id='password' className={errors.password && register_styles.invalid}
                         {...register('password', {pattern: PASSWORD_REG_EXP, onChange: () => trigger("password_confirm")})} placeholder="пароль..." />
                     {errors.password && <label style={{'color': "red"}}>{errors.password?.message}</label>}
                 </div>
                 <div>
-                    <label htmlFor="password_confirm" className={styles.required}>Повтори пароль:</label>
+                    <label htmlFor="password_confirm" className={register_styles.required}>Повтори пароль:</label>
                     <input id='password_confirm' 
-                        className={errors.password_confirm && styles.invalid}
+                        className={errors.password_confirm && register_styles.invalid}
                         {...register('password_confirm', {validate: 
                             (value, formValues) => value === formValues.password})} placeholder="повтори пароль..." />
                     {errors.password_confirm && <label style={{'color': "red"}}>{errors.password_confirm?.message}</label>}

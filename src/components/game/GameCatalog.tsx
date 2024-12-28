@@ -4,7 +4,7 @@ import { useAppDispatch } from "../../app/hooks"
 import { fetch_get_games } from "../../api/getGamesAPI"
 import { updateToken } from "../../reducers/UserSlice"
 import GameCard from "./GameCard"
-import styles from '../../../src/css_modules/style.module.css'
+import game_catalog_styles from '../../../src/css_modules/style.module.css'
 
 export default function GameCatalog() {
     const dispatch = useAppDispatch()
@@ -19,9 +19,9 @@ export default function GameCatalog() {
 
     return (
         <>
-            <div className={styles.gamesCatalog}>
+            <div className={game_catalog_styles.gamesCatalog}>
                 <h1>Каталог игр</h1>
-                <div className={styles.gameCatalogGrid}>
+                <div className={game_catalog_styles.gameCatalogGrid}>
                     {games.map((gd) => <GameCard key={gd.name} game_data={gd}></GameCard>)}
                 </div>
             </div>

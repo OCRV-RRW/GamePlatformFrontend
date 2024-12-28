@@ -26,12 +26,25 @@ button:disabled {
 }
 
 .gameCard {
-    /* width: 200px;
-    height: 150px; */
     margin: 10px;
     background-color: burlywood;
     border: 5px solid black;
     border-radius: 20px;
+    will-change: transform;
+}
+
+.gameCard:hover {
+    transform: translateY(-10px);
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition-duration: 100ms;
+}
+
+.gameCard:active {
+    scale: 1.1 1.1;
+    transition-property: scale;
+    transition-timing-function: ease-out;
+    transition-duration: 100ms;
 }
 
 div.gamesCatalog {
@@ -40,6 +53,10 @@ div.gamesCatalog {
 }
 
 div.gameHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     height: 5%;
     border: 5px solid rgb(53, 69, 82);
     border-radius: 25px;
@@ -50,6 +67,11 @@ div.gameView {
     display: flex;
     flex-direction: column;
     height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: black;
 }
 
 .noSelect {
@@ -65,4 +87,27 @@ div.gameView {
 div.gameCatalogGrid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
+}
+
+button:hover {
+    scale: 1.05 1.05;
+    transition-property: scale;
+    transition-timing-function: ease-out;
+    transition-duration: 100ms;
+}
+
+button:active:enabled {
+    scale: 1.1 1.1;
+    transition-property: scale;
+    transition-timing-function: ease-out;
+    transition-duration: 100ms;
+}
+
+div.homeHeader {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    border: 5px solid rgb(53, 69, 82);
+    border-radius: 25px;
+    margin-bottom: 10px;
 }
