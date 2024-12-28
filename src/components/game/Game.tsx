@@ -10,6 +10,14 @@ export default function Game() {
     const dispatch = useAppDispatch()
     const location = useLocation()
     const [source, setSource] = useState<string>("")
+    const [gameLoaded, setGameLoaded] = useState<boolean>(false)
+    
+    function sendMessageToIframe(message: object){
+        const frame = document.getElementById("game_iframe") as HTMLIFrameElement | null
+        if (frame && frame.contentWindow){
+            frame.contentWindow.postMessage(message, "https://ocrv-game.ru")
+        }
+    }
 
     useEffect(() => {
         if (QUERY_STRING_GAME_EXP.test(location.search)) {
@@ -25,11 +33,26 @@ export default function Game() {
         }
     }, [dispatch, location.search])
 
+    useEffect(()=>{
+        if(gameLoaded) return
+        window.addEventListener("is-loaded", _ =>{
+            console.log("game is loaded")
+            setGameLoaded(true)
+        })
+    }, [gameLoaded])
+
+    useEffect(()=>{
+        if (gameLoaded){
+            sendMessageToIframe({type: "start-game"})
+        }
+    }, [gameLoaded, access_token])
+
+
     return (
         <>
             {source && <div className={styles.gameView}>
                 <div className={styles.gameHeader}></div>
-                    <iframe title="game" style={{
+                    <iframe id="game_iframe" title="game" style={{
                             width: "100%", 
                             height: "100%"
                         }}

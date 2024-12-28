@@ -8,7 +8,7 @@ import CheckNotAuth from './components/check-auth/CheckNotAuth';
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+      <BrowserRouter basename='medgame-platform'>
         <Routes>
           <Route path={HOME_PATH} element={
             <CheckAuth>
