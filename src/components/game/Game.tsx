@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { fetch_get_game } from "../../api/getGameAPI"
 import { useAppDispatch } from "../../app/hooks"
 import { updateToken } from "../../reducers/UserSlice"
-import { QUERY_STRING_GAME_EXP } from "../../constants/reg-exp"
+import { QUERY_STRING_GAME_REG_EXP } from "../../constants/reg-exp"
 import GameHeader from "./GameHeader"
 import Loader from "../loader/Loader"
 
@@ -24,7 +24,7 @@ export default function Game() {
     }
 
     useEffect(() => {
-        if (QUERY_STRING_GAME_EXP.test(location.search)) {
+        if (QUERY_STRING_GAME_REG_EXP.test(location.search)) {
             setIsLoading(true)
             fetch_get_game(location.search)
             .then((data) => {

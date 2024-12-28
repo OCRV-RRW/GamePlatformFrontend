@@ -1,0 +1,43 @@
+import { FieldErrors, useForm } from 'react-hook-form'
+import reset_password_styles from '../../../src/css_modules/style.module.css'
+import { ResetPasswordForm } from '../../app/api_forms_types'
+import { PASSWORD_REG_EXP } from '../../constants/reg-exp'
+import { useParams } from 'react-router'
+import ResetPasswordFormResolver from '../../validate/form_resolvers/reset_password_resolver'
+
+export default function ResetPassword() {
+    const { id } = useParams();
+    const {register, handleSubmit, formState: { errors }, trigger } = useForm<ResetPasswordForm>( { resolver: ResetPasswordFormResolver, mode: 'onChange' } )
+    
+    const onResetPassword = (data: ResetPasswordForm) => {
+        //fetch_reset_password(data, id ?? "")
+    }
+
+    const checkErrors = (errors: FieldErrors<ResetPasswordForm>) : boolean => {
+        return ((errors.password !== undefined) || 
+            (errors.confirm_password !== undefined))
+    }
+
+    return (
+        <>
+            <form onSubmit={handleSubmit((data) => onResetPassword(data))}>
+                <h1>Изменение пароля</h1>
+                <div>
+                    <label htmlFor="password" className={reset_password_styles.required}>Введи новый пароль:</label>
+                    <input id='password' className={errors.password && reset_password_styles.invalid}
+                        {...register('password', {pattern: PASSWORD_REG_EXP, onChange: () => trigger("confirm_password")})} placeholder="пароль..." />
+                    {errors.password && <label style={{'color': "red"}}>{errors.password?.message}</label>}
+                </div>
+                <div>
+                    <label htmlFor="confirm_password" className={reset_password_styles.required}>Повтори пароль:</label>
+                    <input id='confirm_password' 
+                        className={errors.confirm_password && reset_password_styles.invalid}
+                        {...register('confirm_password', {validate: 
+                            (value, formValues) => value === formValues.password})} placeholder="повтори пароль..." />
+                    {errors.confirm_password && <label style={{'color': "red"}}>{errors.confirm_password?.message}</label>}
+                </div>
+                <button disabled={checkErrors(errors)} className="reset-password-button">Изменить пароль</button>
+            </form>
+        </>
+    )
+}

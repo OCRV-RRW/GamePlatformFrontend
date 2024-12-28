@@ -2,14 +2,14 @@
 export const API_PATH: string = "https://ocrv-game.ru/game-platform/api/v1"
 
 //AUTH
-export const AUTH_API_PATH: string = API_PATH + '/auth'
-export const API_REGISTER_PATH: string = AUTH_API_PATH + '/register'
-export const API_LOGIN_PATH: string = AUTH_API_PATH + '/login'
-export const API_LOGOUT_PATH: string = AUTH_API_PATH + '/logout'
-export const API_FORGOT_PASSWORD_PATH: string = AUTH_API_PATH + '/forgot-password'
-export const API_RESET_PASWORD_PATH: string = AUTH_API_PATH + '/reset-password'
-export const API_REFRESH_PATH: string = AUTH_API_PATH + '/refresh'
-export const API_VERIFY_REGISTER_EMAIL: string = API_REFRESH_PATH + '/verify/'
+export const API_AUTH_PATH: string = API_PATH + '/auth'
+export const API_REGISTER_PATH: string = API_AUTH_PATH + '/register'
+export const API_LOGIN_PATH: string = API_AUTH_PATH + '/login'
+export const API_LOGOUT_PATH: string = API_AUTH_PATH + '/logout'
+export const API_FORGOT_PASSWORD_PATH: string = API_AUTH_PATH + '/forgot-password'
+export const API_RESET_PASWORD_PATH: string = API_AUTH_PATH + '/reset-password'
+export const API_REFRESH_PATH: string = API_AUTH_PATH + '/refresh'
+export const API_VERIFY_REGISTER_EMAIL: string =  API_AUTH_PATH + '/verify-email/'
 
 //USER
 export const API_USER_PATH: string = API_PATH + '/users'
