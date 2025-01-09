@@ -7,7 +7,7 @@ export const API_REGISTER_PATH: string = API_AUTH_PATH + '/register'
 export const API_LOGIN_PATH: string = API_AUTH_PATH + '/login'
 export const API_LOGOUT_PATH: string = API_AUTH_PATH + '/logout'
 export const API_FORGOT_PASSWORD_PATH: string = API_AUTH_PATH + '/forgot-password'
-export const API_RESET_PASWORD_PATH: string = API_AUTH_PATH + '/reset-password'
+export const API_RESET_PASWORD_PATH: string = API_AUTH_PATH + '/reset-password/'
 export const API_REFRESH_PATH: string = API_AUTH_PATH + '/refresh'
 export const API_VERIFY_REGISTER_EMAIL: string =  API_AUTH_PATH + '/verify-email/'
 
