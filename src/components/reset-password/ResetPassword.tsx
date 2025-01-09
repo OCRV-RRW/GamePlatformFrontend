@@ -4,20 +4,23 @@ import { ResetPasswordForm } from '../../app/api_forms_types'
 import { PASSWORD_REG_EXP } from '../../constants/reg-exp'
 import { useParams } from 'react-router'
 import ResetPasswordFormResolver from '../../validate/form_resolvers/reset_password_resolver'
+import { fetch_reset_password } from '../../api/resetPasswordAPI'
 
 export default function ResetPassword() {
     const { id } = useParams();
     const {register, handleSubmit, formState: { errors }, trigger } = useForm<ResetPasswordForm>( { resolver: ResetPasswordFormResolver, mode: 'onChange' } )
     
     const onResetPassword = (data: ResetPasswordForm) => {
-        //fetch_reset_password(data, id ?? "")
+        fetch_reset_password(data, id ?? "").then((response) => {
+            console.log(response)
+        })
     }
 
     const checkErrors = (errors: FieldErrors<ResetPasswordForm>) : boolean => {
         return ((errors.password !== undefined) || 
             (errors.confirm_password !== undefined))
     }
-
+    
     return (
         <>
             <form onSubmit={handleSubmit((data) => onResetPassword(data))}>
