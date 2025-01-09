@@ -8,12 +8,19 @@ import { fetch_reset_password } from '../../api/resetPasswordAPI'
 
 export default function ResetPassword() {
     const { id } = useParams();
-    const {register, handleSubmit, formState: { errors }, trigger } = useForm<ResetPasswordForm>( { resolver: ResetPasswordFormResolver, mode: 'onChange' } )
+    const {register, handleSubmit, formState: { errors }, trigger, reset } = useForm<ResetPasswordForm>( 
+        { 
+            resolver: ResetPasswordFormResolver, 
+            mode: 'onChange', 
+            defaultValues: { password: "", password_confirm: "" } 
+        } 
+    )
     
     const onResetPassword = (data: ResetPasswordForm) => {
         fetch_reset_password(data, id ?? "").then((response) => {
             console.log(response)
         })
+        reset()
     }
 
     const checkErrors = (errors: FieldErrors<ResetPasswordForm>) : boolean => {
@@ -29,7 +36,7 @@ export default function ResetPassword() {
                     <label htmlFor="password" className={reset_password_styles.required}>Введи новый пароль:</label>
                     <input id='password' className={errors.password && reset_password_styles.invalid}
                         {...register('password', {pattern: PASSWORD_REG_EXP, onChange: () => trigger("password_confirm")})} placeholder="пароль..." />
-                    {errors.password && <label style={{'color': "red"}}>{errors.password?.message}</label>}
+                    {errors.password && <label style={{'color': "red"}}> {errors.password?.message}</label>}
                 </div>
                 <div>
                     <label htmlFor="confirm_password" className={reset_password_styles.required}>Повтори пароль:</label>
@@ -37,7 +44,7 @@ export default function ResetPassword() {
                         className={errors.password_confirm && reset_password_styles.invalid}
                         {...register('password_confirm', {validate: 
                             (value, formValues) => value === formValues.password})} placeholder="повтори пароль..." />
-                    {errors.password_confirm && <label style={{'color': "red"}}>{errors.password_confirm?.message}</label>}
+                    {errors.password_confirm && <label style={{'color': "red"}}> {errors.password_confirm?.message}</label>}
                 </div>
                 <button disabled={checkErrors(errors)} className="reset-password-button">Изменить пароль</button>
             </form>

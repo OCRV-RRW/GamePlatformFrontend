@@ -1,59 +1,60 @@
-import { useState } from "react"
+import login_styles from '../../../src/css_modules/style.module.css'
 import { LoginForm } from "../../app/api_forms_types";
 import { useAppDispatch } from "../../app/hooks";
 import { send_log_in_form } from "../../reducers/UserSlice";
 import { FORGOT_PASSWORD_PATH, REGISTER_PATH } from "../../constants/BrowserPathes";
 import { useNavigate } from "react-router";
+import { FieldErrors, useForm } from "react-hook-form";
+import LoginFormResolver from '../../validate/form_resolvers/login_resolver';
+import { UserState } from '../../app/states-interfaces';
+import { useState } from 'react';
 
 export default function Login() : JSX.Element {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
+    const [formIsInvalid, setFormIsInvalid] = useState<boolean | undefined>(undefined)
+
+    const {register, handleSubmit, formState: { errors }, reset } = useForm<LoginForm>( 
+            {
+                resolver: LoginFormResolver, 
+                mode: 'onChange', 
+                defaultValues: { email: "", password: "" } 
+            }
+        )
     
-    let login_form : LoginForm = {
-        email: email,
-        password: password
-    }
-
-    function on_login() {
-        dispatch(send_log_in_form(login_form))
-    }
-
-    const onChangeEmail = (event : React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(event.target.value)
-    }
-
-    const onPasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(event.target.value)
+    const checkErrors = (errors: FieldErrors<LoginForm>) : boolean => {
+            return ((errors.email !== undefined) || 
+                (errors.password !== undefined))
+        }    
+    
+    function onLogin(data: LoginForm) {
+        dispatch(send_log_in_form(data)).then((data) => {
+            if ((data.payload as UserState).access_token === undefined) {
+                setFormIsInvalid(true)
+            }
+        })
+        reset()
     }
 
     return (<>
-        <form id="login">
+        <form onSubmit={handleSubmit((data) => onLogin(data))}>
             <h1>ЛОГИН</h1>
-            <div className="email">
-                <h3>Электронная почта:</h3>
-                <input 
-                    name="emailInput"
-                    value={email}
-                    onChange={onChangeEmail}>
-                </input>
+            <div>
+                <label htmlFor="email" className={login_styles.required}>Электронная почта:</label>
+                <input id="email"
+                    className={errors.email && login_styles.invalid}
+                    {...register('email')} placeholder="электронная почта..." />
+                {errors.email && <label style={{'color': "red"}}> {errors.email?.message}</label>}
             </div>
-            <div className="password">
-                <h3>Пароль:</h3>
-                <input 
-                    name="passwordInput"
-                    value={password}
-                    onChange={onPasswordChange}>
-                </input>
+            <div>
+                <label htmlFor='password' className={login_styles.required}>Пароль:</label>
+                <input id='password' className={errors.password && login_styles.invalid}
+                    {...register('password')} placeholder='пароль...' />
+                {errors.password && <label style={{'color': "red"}}> {errors.password?.message}</label>}
             </div>
+            <button  disabled={checkErrors(errors)} className="login_button">Войти</button>
         </form>
         <div className="buttons">
-            <button  disabled={email.length === 0 || password.length === 0} className="login_button" 
-                name="log_in_button"
-                onClick={on_login}>
-                    Войти
-            </button>
             <button className="login_button" 
                 name="register_button"
                 onClick={() => navigate(REGISTER_PATH)}>
@@ -65,6 +66,7 @@ export default function Login() : JSX.Element {
                     Забыл пароль
             </button>
         </div>
+        {formIsInvalid && <h1 style={{'color': 'red'}}>Неправильный логин или пароль</h1>}
         <h1>Спасибо что пользуетесь играми ОЦРВ!!</h1>
     </>)
 }

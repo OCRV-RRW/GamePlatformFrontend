@@ -17,7 +17,12 @@ export default function Register() {
             (errors.password_confirm !== undefined))
     }
 
-    const {register, handleSubmit, formState: { errors }, trigger } = useForm<RegisterForm>( { resolver: RegisterFormResolver, mode: 'onChange' } )
+    const {register, handleSubmit, formState: { errors }, trigger, reset } = useForm<RegisterForm>( 
+        { 
+            resolver: RegisterFormResolver, 
+            mode: 'onChange',
+            defaultValues: { name: "", email: "", password: "", password_confirm: "" }
+        } )
 
     const onRegister = (data: RegisterForm) => {
         fetch_register(data)
@@ -28,6 +33,7 @@ export default function Register() {
                     setRegistrationState("Проверь правильность почты")
                 }
             )
+        reset()
     }
 
     return(
@@ -39,19 +45,19 @@ export default function Register() {
                     <input id='name'
                         className={errors.name && register_styles.invalid}
                         {...register('name')} placeholder="имя пользователя..." />
-                    {errors.name && <label style={{'color': "red"}}>{errors.name?.message}</label>}
+                    {errors.name && <label style={{'color': "red"}}> {errors.name?.message}</label>}
                 </div>
                 <div>
                     <label htmlFor="email" className={register_styles.required}>Электронная почта:</label>
                     <input id='email' className={errors.email && register_styles.invalid}
                         {...register('email', {pattern: EMAIL_REG_EXP})} placeholder="электронная почта..." />
-                    {errors.email && <label style={{'color': "red"}}>{errors.email?.message}</label>}
+                    {errors.email && <label style={{'color': "red"}}> {errors.email?.message}</label>}
                 </div>
                 <div>
                     <label htmlFor="password" className={register_styles.required}>Пароль:</label>
                     <input id='password' className={errors.password && register_styles.invalid}
                         {...register('password', {pattern: PASSWORD_REG_EXP, onChange: () => trigger("password_confirm")})} placeholder="пароль..." />
-                    {errors.password && <label style={{'color': "red"}}>{errors.password?.message}</label>}
+                    {errors.password && <label style={{'color': "red"}}> {errors.password?.message}</label>}
                 </div>
                 <div>
                     <label htmlFor="password_confirm" className={register_styles.required}>Повтори пароль:</label>
@@ -59,7 +65,7 @@ export default function Register() {
                         className={errors.password_confirm && register_styles.invalid}
                         {...register('password_confirm', {validate: 
                             (value, formValues) => value === formValues.password})} placeholder="повтори пароль..." />
-                    {errors.password_confirm && <label style={{'color': "red"}}>{errors.password_confirm?.message}</label>}
+                    {errors.password_confirm && <label style={{'color': "red"}}> {errors.password_confirm?.message}</label>}
                 </div>
                 <button disabled={checkErrors(errors)} className="register_button">Зарегистрироваться</button>
             </form>
