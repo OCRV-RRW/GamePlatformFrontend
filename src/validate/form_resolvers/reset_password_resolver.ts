@@ -1,35 +1,24 @@
 import { FieldErrors, ResolverResult } from "react-hook-form"
 import { ResetPasswordForm } from "../../app/api_forms_types"
 import PasswordValidate from "../password_validate"
+import { INVALID_PATTERN_PASSWORD_ERROR, NOT_SAME_PASSWORDS_ERROR, REQUIRED_FIELD_ERROR } from "../../constants/FormValidErrors"
 
 
 export default async function ResetPasswordFormResolver(values: ResetPasswordForm): Promise<ResolverResult<ResetPasswordForm>> {
     let errors : FieldErrors<ResetPasswordForm> = {}
 
     if (values.password === "") {
-        errors.password = {
-            type: 'required',
-            message: 'это поле должно быть заполнено'
-        }
+        errors.password = REQUIRED_FIELD_ERROR
     }
     else if (!PasswordValidate(values.password)) {
-        errors.password = {
-            type: 'pattern',
-            message: 'пароль не соответствует правилам'
-        }
+        errors.password = INVALID_PATTERN_PASSWORD_ERROR
     }
     
-    if (values.confirm_password === "") {
-        errors.confirm_password = {
-            type: 'required',
-            message: 'это поле должно быть заполнено'
-        }
+    if (values.password_confirm === "") {
+        errors.password_confirm = REQUIRED_FIELD_ERROR
     }
-    else if (values.confirm_password !== values.password) {
-        errors.confirm_password = {
-            type: 'validate',
-            message: 'пароли должны совпадать'
-        }
+    else if (values.password_confirm !== values.password) {
+        errors.password_confirm = NOT_SAME_PASSWORDS_ERROR
     }
 
     return {

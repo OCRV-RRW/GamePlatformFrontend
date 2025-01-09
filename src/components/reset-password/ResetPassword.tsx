@@ -18,7 +18,7 @@ export default function ResetPassword() {
 
     const checkErrors = (errors: FieldErrors<ResetPasswordForm>) : boolean => {
         return ((errors.password !== undefined) || 
-            (errors.confirm_password !== undefined))
+            (errors.password_confirm !== undefined))
     }
     
     return (
@@ -28,16 +28,16 @@ export default function ResetPassword() {
                 <div>
                     <label htmlFor="password" className={reset_password_styles.required}>Введи новый пароль:</label>
                     <input id='password' className={errors.password && reset_password_styles.invalid}
-                        {...register('password', {pattern: PASSWORD_REG_EXP, onChange: () => trigger("confirm_password")})} placeholder="пароль..." />
+                        {...register('password', {pattern: PASSWORD_REG_EXP, onChange: () => trigger("password_confirm")})} placeholder="пароль..." />
                     {errors.password && <label style={{'color': "red"}}>{errors.password?.message}</label>}
                 </div>
                 <div>
                     <label htmlFor="confirm_password" className={reset_password_styles.required}>Повтори пароль:</label>
                     <input id='confirm_password' 
-                        className={errors.confirm_password && reset_password_styles.invalid}
-                        {...register('confirm_password', {validate: 
+                        className={errors.password_confirm && reset_password_styles.invalid}
+                        {...register('password_confirm', {validate: 
                             (value, formValues) => value === formValues.password})} placeholder="повтори пароль..." />
-                    {errors.confirm_password && <label style={{'color': "red"}}>{errors.confirm_password?.message}</label>}
+                    {errors.password_confirm && <label style={{'color': "red"}}>{errors.password_confirm?.message}</label>}
                 </div>
                 <button disabled={checkErrors(errors)} className="reset-password-button">Изменить пароль</button>
             </form>

@@ -16,5 +16,5 @@ export type ForgotPasswordForm = {
 
 export type ResetPasswordForm = {
     password: string
-    confirm_password: string
+    password_confirm: string
 }
