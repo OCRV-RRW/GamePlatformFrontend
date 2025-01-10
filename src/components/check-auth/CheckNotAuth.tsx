@@ -18,5 +18,9 @@ export default function CheckNotAuth({ children } : CheckNotAuthProps) {
         }
     }, [access_token])
 
-    return children
+    return (
+        <>
+            {access_token === "" && children}
+        </>
+    )
 }

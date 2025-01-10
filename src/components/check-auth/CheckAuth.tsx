@@ -19,7 +19,7 @@ export default function CheckAuth({ children }: CheckAuthProps) {
 
     return (
         <>
-            {children}
+            {access_token !== "" && children}
         </>
     )
 }
