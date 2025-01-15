@@ -5,20 +5,17 @@ import { useParams } from "react-router"
 export default function VerifyEmail() {
     const { id } = useParams();
     const [verifyMessage, setVerifyMessage] = useState<string>("")
-    const [isSuccess, setIsSuccess] = useState<boolean>(false)
 
     useEffect(() => {
         fetch_verify_email(id ?? "")
             .then(() => {
                     setVerifyMessage("Почта подтверждена")
-                    setIsSuccess(true)
                 },
                 () => {
                     setVerifyMessage("Ошибка подтверждения почты. Попробуйте снова")
-                    setIsSuccess(false)
                 }
             )
-    }, [])
+    }, [id])
 
     return (
         <>

@@ -3,14 +3,6 @@ import { LoginForm } from "../app/api_forms_types";
 import { User } from "../app/user_type";
 
 export function fetch_log_in(login_form: LoginForm) {
-    const requestOptions = {
-        method: "POST",
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8'
-        },
-        body: JSON.stringify(login_form)
-    }
-
     let access_token: string = ""
     let parsed_error_message: string = ""
     
