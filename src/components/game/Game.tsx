@@ -7,6 +7,7 @@ import { updateToken } from "../../reducers/UserSlice"
 import { QUERY_STRING_GAME_REG_EXP } from "../../constants/reg-exp"
 import GameHeader from "./GameHeader"
 import Loader from "../loader/Loader"
+import { GAME_DOMAIN } from "../../constants/Settings"
 
 export default function Game() {
     const dispatch = useAppDispatch()
@@ -19,7 +20,7 @@ export default function Game() {
     function sendMessageToIframe(message: object){
         const frame = document.getElementById("game_iframe") as HTMLIFrameElement | null
         if (frame && frame.contentWindow){
-            frame.contentWindow.postMessage(message, "https://ocrv-game.ru")
+            frame.contentWindow.postMessage(message, GAME_DOMAIN)
         }
     }
 
