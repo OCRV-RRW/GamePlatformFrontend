@@ -1,6 +1,6 @@
 import { FieldErrors, useForm } from 'react-hook-form'
 import reset_password_styles from '../../../src/css_modules/style.module.css'
-import { ResetPasswordForm } from '../../app/api_forms_types'
+import { ResetPasswordForm } from '../../app/api_forms_interfaces'
 import { PASSWORD_REG_EXP } from '../../constants/reg-exp'
 import { useParams } from 'react-router'
 import ResetPasswordFormResolver from '../../validate/form_resolvers/reset_password_resolver'

@@ -1,15 +1,9 @@
 import fetchAuthAPI from "../app/fetchAPI"
+import { set_request_options } from "../app/set_request_options"
 import { API_LOGOUT_PATH } from "../constants/ApiPathes"
 
 const fetch_log_out_response = (access_token: string) : Promise<Response> => fetch(API_LOGOUT_PATH,
-    {
-        method: "GET",
-        credentials: "include",
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-            'Access-Control-Allow-Origin' : 'https://ocrv-game.ru',
-        }
-    }
+    set_request_options({method: "GET"})
 )
 
 export function fetch_log_out() : Promise<{access_token: string}> {

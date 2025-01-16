@@ -1,5 +1,5 @@
 import { FieldErrors, ResolverResult } from "react-hook-form"
-import { RegisterForm } from "../../app/api_forms_types"
+import { RegisterForm } from "../../app/api_forms_interfaces"
 import EmailValidate from "../email_validate"
 import PasswordValidate from "../password_validate"
 import { INVALID_PATTERN_EMAIL_ERROR, INVALID_PATTERN_PASSWORD_ERROR, NOT_SAME_PASSWORDS_ERROR, REQUIRED_FIELD_ERROR } from "../../constants/FormValidErrors"

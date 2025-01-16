@@ -1,6 +1,7 @@
 import { API_USER_ME_PATH, API_LOGIN_PATH } from "../constants/ApiPathes";
-import { LoginForm } from "../app/api_forms_types";
+import { LoginForm } from "../app/api_forms_interfaces";
 import { User } from "../app/user_type";
+import { set_request_options } from "../app/set_request_options";
 
 export function fetch_log_in(login_form: LoginForm) {
     let access_token: string = ""
@@ -8,15 +9,7 @@ export function fetch_log_in(login_form: LoginForm) {
     
     return new Promise<{ access_token: string, user_data: User }>(
         (resolve, reject: (reason: string) => void) => {
-            fetch(API_LOGIN_PATH, {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                    'Access-Control-Allow-Origin' : 'https://ocrv-game.ru'
-                },
-                body: JSON.stringify(login_form)
-            })
+            fetch(API_LOGIN_PATH, set_request_options({method: "POST", body_form: login_form}))
             .then((response) => {
                 return response.json()
             })

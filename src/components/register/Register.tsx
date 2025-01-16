@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { fetch_register } from "../../api/registerAPI"
-import { RegisterForm } from "../../app/api_forms_types"
+import { RegisterForm } from "../../app/api_forms_interfaces"
 import ReturnToLoginButton from "../login/ReturnToLoginButton"
 import { FieldErrors, useForm } from "react-hook-form"
 import { EMAIL_REG_EXP, PASSWORD_REG_EXP } from "../../constants/reg-exp"

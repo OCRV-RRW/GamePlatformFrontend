@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { store } from "../app/store";
-import { LoginForm } from "../app/api_forms_types";
+import { LoginForm } from "../app/api_forms_interfaces";
 import { fetch_log_in } from "../api/loginAPI";
 import { fetch_log_out } from "../api/logoutAPI";
 import { drop_access_token, get_access_token, rewrite_access_token, save_access_token } from "../local-storage/access_token";

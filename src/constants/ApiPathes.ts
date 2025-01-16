@@ -1,5 +1,7 @@
+import { BACKEND_DOMAIN } from "./Settings"
+
 //ROOT
-export const API_PATH: string = "https://platform.ocrv-game.ru/api/v1"
+export const API_PATH: string = BACKEND_DOMAIN + "/api/v1"
 
 //AUTH
 export const API_AUTH_PATH: string = API_PATH + '/auth'

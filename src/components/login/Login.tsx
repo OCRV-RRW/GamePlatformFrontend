@@ -1,5 +1,5 @@
 import login_styles from '../../../src/css_modules/style.module.css'
-import { LoginForm } from "../../app/api_forms_types";
+import { LoginForm } from "../../app/api_forms_interfaces";
 import { useAppDispatch } from "../../app/hooks";
 import { send_log_in_form } from "../../reducers/UserSlice";
 import { FORGOT_PASSWORD_PATH, REGISTER_PATH } from "../../constants/BrowserPathes";

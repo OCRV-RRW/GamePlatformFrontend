@@ -1,16 +1,9 @@
 import fetchAuthAPI from "../app/fetchAPI";
+import { set_request_options } from "../app/set_request_options";
 import { API_GET_GAME_PATH } from "../constants/ApiPathes";
 
 const fetch_get_games_response = (access_token: string) : Promise<Response> => fetch(API_GET_GAME_PATH,
-    {
-        method: "GET",
-        credentials: "include",
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-            'Access-Control-Allow-Origin' : 'https://ocrv-game.ru',
-            'Authorization': 'Bearer ' + access_token
-        }
-    }
+    set_request_options({method: "GET", access_token: access_token})
 )
 
 export function fetch_get_games() : Promise<{access_token: string, response: Response}> {
