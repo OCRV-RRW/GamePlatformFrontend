@@ -1,5 +1,5 @@
 //ROOT
-export const API_PATH: string = "https://ocrv-game.ru/game-platform/api/v1"
+export const API_PATH: string = "https://platform.ocrv-game.ru/api/v1"
 
 //AUTH
 export const API_AUTH_PATH: string = API_PATH + '/auth'
