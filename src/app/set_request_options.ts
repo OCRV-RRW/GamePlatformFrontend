@@ -10,7 +10,7 @@ interface RequestOptionsParams {
 type RequestOptionsMethod = "GET" | "POST" | "DELETE" | "PATCH"
 
 export const set_request_options = (params: RequestOptionsParams) => {
-    return ({
+    const options = params.body_form ? {
         method: params.method,
         credentials: ("include" as RequestCredentials),
         headers: {
@@ -18,6 +18,15 @@ export const set_request_options = (params: RequestOptionsParams) => {
             'Access-Control-Allow-Origin' : BACKEND_DOMAIN,
             'Authorization': params.access_token ? 'Bearer ' + params.access_token : ""
         },
-        body: params.body_form ? JSON.stringify(params.body_form) : ""
-    })
+        body: JSON.stringify(params.body_form)
+    } : {
+        method: params.method,
+        credentials: ("include" as RequestCredentials),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+            'Access-Control-Allow-Origin' : BACKEND_DOMAIN,
+            'Authorization': params.access_token ? 'Bearer ' + params.access_token : ""
+        }
+    }
+    return options
 }
