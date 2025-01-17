@@ -17,7 +17,7 @@ export default function Game() {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [gameLoaded, setGameLoaded] = useState<boolean>(false)
     
-    function sendMessageToIframe(message: object){
+    function sendMessageToIframe(message: object | string){
         const frame = document.getElementById("game_iframe") as HTMLIFrameElement | null
         if (frame && frame.contentWindow){
             frame.contentWindow.postMessage(message, '*')
@@ -42,6 +42,7 @@ export default function Game() {
     }, [dispatch, location.search])
 
     useEffect(()=>{
+        sendMessageToIframe("test message -----------")
         if(gameLoaded) return
         console.log("start listening game events")
         window.addEventListener("is-loaded", _ =>{
