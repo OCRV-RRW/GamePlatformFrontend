@@ -20,7 +20,7 @@ export default function Game() {
     function sendMessageToIframe(message: object){
         const frame = document.getElementById("game_iframe") as HTMLIFrameElement | null
         if (frame && frame.contentWindow){
-            frame.contentWindow.postMessage(message, GAME_DOMAIN)
+            frame.contentWindow.postMessage(message, '*')
         }
     }
 
