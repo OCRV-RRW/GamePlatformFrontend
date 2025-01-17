@@ -43,6 +43,7 @@ export default function Game() {
 
     useEffect(()=>{
         if(gameLoaded) return
+        console.log("start listening game events")
         window.addEventListener("is-loaded", _ =>{
             console.log("game is loaded")
             setGameLoaded(true)
