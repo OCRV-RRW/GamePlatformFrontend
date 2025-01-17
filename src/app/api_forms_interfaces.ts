@@ -20,3 +20,8 @@ export interface ResetPasswordForm extends ApiForm {
     password: string
     password_confirm: string
 }
+
+export interface AddScoreToSkillForm extends ApiForm {
+    score: number,
+    skill_name: string
+}

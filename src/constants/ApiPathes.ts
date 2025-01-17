@@ -30,3 +30,8 @@ export const API_SKILLS_PATH: string = API_PATH + "/skills"
 export const API_CREATE_SKILL_PATH: string = API_SKILLS_PATH
 export const API_GET_SKILL: string = API_SKILLS_PATH
 export const API_DELETE_SKILL: string = API_SKILLS_PATH + '/'
+
+//USER ME SKILLS
+export const API_USER_ME_SKILLS_PATH: string = API_USER_ME_PATH + "/skills"
+export const API_GET_USER_ME_SKILLS_PATH: string = API_USER_ME_SKILLS_PATH
+export const API_ADD_SCORE_USER_ME_SKILLS_PATH: string = API_USER_ME_SKILLS_PATH
