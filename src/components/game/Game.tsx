@@ -64,6 +64,7 @@ export default function Game() {
                             width: "100%", 
                             height: "100%"
                         }}
+                        data-allowed-origins='["https://s3.ocrv-game.ru"]'
                         src={source} />
             </div>}
             {!source && !isLoading && <div>
