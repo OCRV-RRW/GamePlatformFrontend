@@ -20,7 +20,7 @@ export default function Game() {
     function sendMessageToIframe(message: object | string){
         const frame = document.getElementById("game_iframe") as HTMLIFrameElement | null
         if (frame && frame.contentWindow){
-            frame.contentWindow.postMessage(message, '*')
+            frame.contentWindow.postMessage(message, GAME_DOMAIN) 
         }
     }
 
@@ -42,13 +42,7 @@ export default function Game() {
     }, [dispatch, location.search])
 
     useEffect(()=>{
-            
         if(gameLoaded) return
-        console.log("start listening game events")
-        // window.addEventListener("is-loaded", _ =>{
-        //     console.log("game is loaded")
-        //     setGameLoaded(true)
-        // })
         window.onmessage = function(e: MessageEvent){
             console.log("RECEIVE DEFOLD MESSAGE: " + e.data)
             if(e.data === "is-loaded"){
@@ -67,10 +61,6 @@ export default function Game() {
 
     return (
         <>
-            <button onClick={_=>sendMessageToIframe("test message")}>
-                Test Message
-            </button>
-
             {source && <div className={game_styles.gameView}>
                 <GameHeader game_name={name} />
                     <iframe id="game_iframe" title="game" style={{
