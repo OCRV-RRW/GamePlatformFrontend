@@ -1,4 +1,4 @@
-import { useLocation } from "react-router"
+import { useFetcher, useLocation } from "react-router"
 import game_styles from '../../../src/css_modules/style.module.css'
 import { useEffect, useState } from "react"
 import { fetch_get_game } from "../../api/getGameAPI"
@@ -42,13 +42,20 @@ export default function Game() {
     }, [dispatch, location.search])
 
     useEffect(()=>{
-        sendMessageToIframe("test message -----------")
+            
         if(gameLoaded) return
         console.log("start listening game events")
-        window.addEventListener("is-loaded", _ =>{
-            console.log("game is loaded")
-            setGameLoaded(true)
-        })
+        // window.addEventListener("is-loaded", _ =>{
+        //     console.log("game is loaded")
+        //     setGameLoaded(true)
+        // })
+        window.onmessage = function(e: MessageEvent){
+            console.log("RECEIVE DEFOLD MESSAGE: " + e.data)
+            if(e.data === "is-loaded"){
+                console.log("game is loaded")
+                setGameLoaded(true)
+            }
+        }
     }, [gameLoaded])
 
     useEffect(()=>{
@@ -60,6 +67,10 @@ export default function Game() {
 
     return (
         <>
+            <button onClick={_=>sendMessageToIframe("test message")}>
+                Test Message
+            </button>
+
             {source && <div className={game_styles.gameView}>
                 <GameHeader game_name={name} />
                     <iframe id="game_iframe" title="game" style={{
