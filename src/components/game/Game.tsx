@@ -1,4 +1,4 @@
-import { useFetcher, useLocation } from "react-router"
+import { useLocation } from "react-router"
 import game_styles from '../../../src/css_modules/style.module.css'
 import { useEffect, useState } from "react"
 import { fetch_get_game } from "../../api/getGameAPI"
@@ -13,6 +13,7 @@ export default function Game() {
     const dispatch = useAppDispatch()
     const location = useLocation()
     const [source, setSource] = useState<string>("")
+    const [friendlyName, setFriendlyName] = useState<string>("")
     const [name, setName] = useState<string>("")
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [gameLoaded, setGameLoaded] = useState<boolean>(false)
@@ -34,8 +35,10 @@ export default function Game() {
             })
             .then((json) => {
                 console.log(json)
-                setSource(json?.data?.games[0]?.source)
-                setName(json?.data?.games[0]?.friendly_name)
+                var game = json?.data?.games[0];
+                setSource(game?.source)
+                setName(game?.friendly_name)
+                setFriendlyName(game?.friendly_name)
                 setIsLoading(false)
             })
         }
@@ -54,7 +57,7 @@ export default function Game() {
 
     useEffect(()=>{
         if (gameLoaded){
-            sendMessageToIframe({type: "start-game"})
+            sendMessageToIframe({type: "start-game", name: name})
         }
     }, [gameLoaded])
 
@@ -62,7 +65,7 @@ export default function Game() {
     return (
         <>
             {source && <div className={game_styles.gameView}>
-                <GameHeader game_name={name} />
+                <GameHeader game_name={friendlyName} />
                     <iframe id="game_iframe" title="game" style={{
                             width: "100%", 
                             height: "100%"
