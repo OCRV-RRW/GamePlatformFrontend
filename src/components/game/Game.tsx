@@ -37,7 +37,7 @@ export default function Game() {
                 console.log(json)
                 var game = json?.data?.games[0];
                 setSource(game?.source)
-                setName(game?.friendly_name)
+                setName(game?.name)
                 setFriendlyName(game?.friendly_name)
                 setIsLoading(false)
             })
