@@ -55,22 +55,33 @@ export default function Game() {
         }
     }, [gameLoaded])
 
+
+    useEffect(()=>{
+        if (source === "") return
+        console.log(source)
+        var div = document.createElement('div')
+        document.body.appendChild(div)
+        div.innerHTML = `<iframe id="game_iframe" width="100%" height="100%" src="" name="iframe"></iframe> <form method="GET" width="100%" height="100%" target="iframe" action="${source}"></form>`
+        div.getElementsByTagName('form')[0].submit()
+    }, [source])
+
     useEffect(()=>{
         if (gameLoaded){
             sendMessageToIframe({type: "start-game", name: name})
         }
-    }, [gameLoaded])
+    }, [gameLoaded, name])
 
 
     return (
         <>
             {source && <div className={game_styles.gameView}>
                 <GameHeader game_name={friendlyName} />
+                    {/* <div id="game"></div>
                     <iframe id="game_iframe" title="game" style={{
                             width: "100%", 
                             height: "100%"
                         }}
-                        src={source} />
+                        src={source} /> */}
             </div>}
             {!source && !isLoading && <div>
                     <h1>404. У нас нет этой игры</h1>
