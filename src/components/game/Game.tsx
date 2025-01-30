@@ -26,7 +26,6 @@ export default function Game() {
     }
 
     useEffect(() => {
-        document.domain = "ocrv-gamer"
         if (QUERY_STRING_GAME_REG_EXP.test(location.search)) {
             setIsLoading(true)
             fetch_get_game(location.search)
