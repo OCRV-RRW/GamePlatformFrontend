@@ -111,3 +111,23 @@ div.homeHeader {
     border-radius: 25px;
     margin-bottom: 10px;
 }
+
+div.scrollableContainer {
+    display: flex;      
+    flex-direction: column;
+    align-items: center;
+    overflow: auto;
+    border: 4px solid #ccc; /* Граница контейнера */
+    border-radius: 10px;
+    padding: 10px; /* Внутренние отступы */
+}
+
+a.gameListLink {
+    display: block;
+    width: 500px;
+    height: 50px;
+    border: 5px solid rgb(0, 162, 255);
+    border-radius: 10px;
+    margin: 10px;
+    line-height: 50px;
+}

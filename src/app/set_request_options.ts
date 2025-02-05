@@ -7,7 +7,11 @@ interface RequestOptionsParams {
     body_form?: ApiForm
 }
 
-type RequestOptionsMethod = "GET" | "POST" | "DELETE" | "PATCH"
+type RequestOptionsMethod = 
+    "GET" 
+    | "POST" 
+    | "DELETE" 
+    | "PATCH"
 
 export const set_request_options = (params: RequestOptionsParams) => {
     const options = params.body_form ? {
@@ -30,3 +34,4 @@ export const set_request_options = (params: RequestOptionsParams) => {
     }
     return options
 }
+

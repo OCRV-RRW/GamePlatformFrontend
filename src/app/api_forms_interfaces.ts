@@ -1,3 +1,5 @@
+import { Skill } from "./skill_type"
+
 export interface ApiForm {}
 
 export interface LoginForm extends ApiForm {
@@ -24,4 +26,12 @@ export interface ResetPasswordForm extends ApiForm {
 export interface AddScoreToSkillForm extends ApiForm {
     score: number,
     skill_name: string
+}
+
+export interface UpdateGameForm extends ApiForm {
+    config: string,
+    description: string,
+    friendly_name: string,
+    skills: Array<Skill>,
+    source: string
 }

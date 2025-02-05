@@ -1,6 +1,16 @@
 import { useContext, useRef } from "react";
 import { PathContext } from "./Page";
-import { FORGOT_PASSWORD_PATH, GAME_PATH, HOME_PATH, LOGIN_PATH, REGISTER_PATH, REGISTER_VERIFY_EMAIL_PATH, RESET_PASSWORD_PATH } from "../../constants/BrowserPathes";
+import { 
+    FORGOT_PASSWORD_PATH, 
+    GAME_PATH, 
+    GAMES_LIST_PATH, 
+    HOME_PATH, 
+    LOGIN_PATH, 
+    REGISTER_PATH, 
+    REGISTER_VERIFY_EMAIL_PATH, 
+    RESET_PASSWORD_PATH, 
+    UPDATE_GAME_PATH 
+} from "../../constants/BrowserPathes";
 import Register from "../register/Register";
 import Login from "../login/Login";
 import ForgotPassword from "../forgot-password/ForgotPassword";
@@ -9,6 +19,8 @@ import Game from "../game/Game";
 import VerifyEmail from "../register/VerifyEmail";
 import ResetPassword from "../reset-password/ResetPassword";
 import NotFoundPage from "../not-found-page/NotFoundPage";
+import GamesList from "../admin/update-game/GamesList";
+import UpdateGamePage from "../admin/update-game/UpdateGamePage";
 
 export default function SelectPath() {
     const path = useContext(PathContext)
@@ -21,7 +33,9 @@ export default function SelectPath() {
             {path: HOME_PATH, page: <Home />},
             {path: GAME_PATH, page: <Game />},
             {path: REGISTER_VERIFY_EMAIL_PATH, page: <VerifyEmail />},
-            {path: RESET_PASSWORD_PATH, page: <ResetPassword />}
+            {path: RESET_PASSWORD_PATH, page: <ResetPassword />},
+            {path: GAMES_LIST_PATH, page: <GamesList />},
+            {path: UPDATE_GAME_PATH, page: <UpdateGamePage />}
         ]
     )
     

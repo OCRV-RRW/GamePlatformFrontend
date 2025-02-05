@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import { FORGOT_PASSWORD_PATH, GAME_PATH, HOME_PATH, LOGIN_PATH, REGISTER_PATH, REGISTER_VERIFY_EMAIL_PATH, RESET_PASSWORD_PATH } from "../../constants/BrowserPathes";
+import { FORGOT_PASSWORD_PATH, GAME_PATH, GAMES_LIST_PATH, HOME_PATH, LOGIN_PATH, REGISTER_PATH, REGISTER_VERIFY_EMAIL_PATH, RESET_PASSWORD_PATH, UPDATE_GAME_PATH } from "../../constants/BrowserPathes";
 import CheckAuth from "../check-auth/CheckAuth";
 import Path from "../page/Page";
 import CheckNotAuth from "../check-auth/CheckNotAuth";
@@ -37,8 +37,7 @@ export default function AppRouter() {
                         <Route path=':id' element={
                             <CheckNotAuth>
                                 <Path path={RESET_PASSWORD_PATH} />
-                            </CheckNotAuth>
-                        }
+                            </CheckNotAuth>}
                         />
                     </Route>
                     <Route path={FORGOT_PASSWORD_PATH} element={
@@ -51,6 +50,18 @@ export default function AppRouter() {
                             <Path path={GAME_PATH}/>
                         </CheckAuth>} 
                     />
+                    <Route path={GAMES_LIST_PATH} element={
+                        <CheckAuth>
+                            <Path path={GAMES_LIST_PATH} />
+                        </CheckAuth>} 
+                    />
+                    <Route path={UPDATE_GAME_PATH}>
+                        <Route path=":name" element={
+                            <CheckAuth>
+                                <Path path={UPDATE_GAME_PATH} />
+                            </CheckAuth>} 
+                        />
+                    </Route>
                     <Route path="*" element={
                         <NotFoundPage />}
                     />

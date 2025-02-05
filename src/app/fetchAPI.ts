@@ -1,5 +1,6 @@
 import { get_access_token } from "../local-storage/access_token"
 import update_token_middleware from "../middlewares/update_token_middleware"
+import { ApiForm } from "./api_forms_interfaces"
 
 export type fetchAPIData = {
     access_token: string, 
@@ -7,7 +8,14 @@ export type fetchAPIData = {
     response: Response
 }
 
-export default function fetchAuthAPI(fetch_func: (access_token: string, query_search?: string) => Promise<Response>, query_search?:string) : Promise<fetchAPIData> {
+interface FetchAPIParams {
+    fetch_func: (access_token: string, query_search?: string, body?: ApiForm) => Promise<Response>,
+    query_search?: string,
+    body?: ApiForm
+}
+
+export default function fetchAuthAPI(params: FetchAPIParams) 
+    : Promise<fetchAPIData> {
     let response_data : fetchAPIData = {
         access_token: "",
         updated: false,
@@ -15,14 +23,14 @@ export default function fetchAuthAPI(fetch_func: (access_token: string, query_se
     }
 
     return new Promise<fetchAPIData>((resolve) => {
-        fetch_func(get_access_token(), query_search)
+        params.fetch_func(get_access_token(), params.query_search, params.body)
             .then((response) => {
                 console.log(response)
                 return update_token_middleware(response)})
             .then((updated_token_data) => {
                 response_data.access_token = updated_token_data.access_token
                 response_data.updated = updated_token_data.updated
-                return fetch_func(response_data.access_token, query_search)})
+                return params.fetch_func(response_data.access_token, params.query_search, params.body)})
             .then((response) => {
                 console.log(response)
                 response_data.response = response

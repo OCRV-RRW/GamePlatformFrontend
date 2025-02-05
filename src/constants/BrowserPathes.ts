@@ -11,3 +11,9 @@ export const RESET_PASSWORD_PATH = FORGOT_PASSWORD_PATH + '/reset/'
 
 //GAME
 export const GAME_PATH: string = '/game'
+
+
+//ADMIN
+export const ADMIN_PATH: string = "/admin-panel"
+export const GAMES_LIST_PATH: string = ADMIN_PATH + "/games-list"
+export const UPDATE_GAME_PATH: string = GAMES_LIST_PATH + "/update-game"

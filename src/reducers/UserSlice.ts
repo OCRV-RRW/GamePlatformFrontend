@@ -7,20 +7,24 @@ import { drop_access_token, get_access_token, rewrite_access_token, save_access_
 import { drop_userdata, get_userdata, rewrite_user_data, save_userdata } from "../local-storage/user_data";
 import { UserState } from "../app/states-interfaces";
 import { fetch_user_me } from "../api/getUserMeAPI";
+import { User } from "../app/user_type";
 
 const initialState : UserState = {
     user_data: get_userdata(),
     access_token: get_access_token()
 }
 
+const setState = (user_data: User, access_token: string, expired_in?: Date) : UserState => {
+   let newState: UserState = {...store.getState().user, user_data: user_data, access_token: access_token}
+   if (expired_in) { newState = {...newState, expired_in} }
+   return newState 
+}
+
 export const send_log_in_form = createAsyncThunk<UserState, LoginForm>(
     'user/log_in',
     async (login_form: LoginForm) : Promise<UserState> => {
-        const {access_token, user_data} = await fetch_log_in(login_form);
-        let newState : UserState = {
-            user_data: user_data,
-            access_token: access_token
-        }
+        const {access_token, user_data, expired_in} = await fetch_log_in(login_form);
+        let newState = setState(user_data, access_token, expired_in)
         return newState
     }
 )
@@ -37,10 +41,7 @@ export const send_user_get_me = createAsyncThunk(
     'user/get_me',
     async () : Promise<UserState> => {
         const {access_token, user_data} = await fetch_user_me();
-        let new_state : UserState = {
-            user_data: user_data,
-            access_token: access_token
-        }
+        let new_state = setState(user_data!, access_token)
         return new_state
     }
 )
@@ -74,7 +75,7 @@ const userSlice = createSlice({
             rewrite_user_data(action.payload.user_data)
             state.user_data = action.payload.user_data
           })
-      }
+      } 
 })
 export const { updateToken } = userSlice.actions
 export const selectAccessToken = () => store.getState().user.access_token

@@ -9,7 +9,7 @@ const fetch_get_skills_response = (access_token: string) : Promise<Response> => 
 export function fetch_get_skills() : Promise<{access_token: string, response: Response}> {
     return new Promise<{access_token: string, response: Response}>(
         (resolve) => {
-            fetchAuthAPI(fetch_get_skills_response)
+            fetchAuthAPI({fetch_func: fetch_get_skills_response})
                 .then((fetch_api_data) => {
                     return resolve({access_token: fetch_api_data.access_token, response: fetch_api_data.response})})
         }

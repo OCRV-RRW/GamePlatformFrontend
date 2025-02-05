@@ -4,6 +4,9 @@
   "private": true,
   "homepage": "https://ocrv-game.ru/medgame-platform",
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^6.4.3",
     "@reduxjs/toolkit": "^1.9.7",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -12,6 +15,7 @@
     "@types/node": "^17.0.45",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "json-edit-react": "^1.22.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.54.1",

@@ -75,9 +75,7 @@ export default function Game() {
             {!source && !isLoading && <div>
                     <h1>404. У нас нет этой игры</h1>
                 </div>}
-            {!source && isLoading && <div>
-                <Loader />
-            </div>}
+            {!source && isLoading && <Loader />}
         </>
     )
 }
