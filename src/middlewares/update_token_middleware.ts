@@ -1,3 +1,4 @@
+import { set_request_options } from "../app/set_request_options"
 import { API_REFRESH_PATH } from "../constants/ApiPathes"
 import { get_access_token } from "../local-storage/access_token"
 
@@ -5,13 +6,7 @@ export default function update_token_middleware(response: Response) : Promise<{a
     return new Promise<{access_token: string, updated: boolean}>(
         (resolve) => {
             if (response.status === 401 || response.status === 403) {
-                fetch(API_REFRESH_PATH, {method: "POST",
-                    credentials: "include",
-                    headers: {
-                        'Content-type': 'application/json; charset=UTF-8',
-                        'Access-Control-Allow-Origin' : 'https://ocrv-game.ru'
-                    },
-                    })
+                fetch(API_REFRESH_PATH, set_request_options({method: "POST"}))
                     .then((response) => 
                         refresh_token_middleware(response.status, response.json()))
                     .then((data) => resolve({access_token: data.data.access_token, updated: true}), 
@@ -23,7 +18,7 @@ export default function update_token_middleware(response: Response) : Promise<{a
     })
 }
 
-function refresh_token_middleware(status: number, json: Promise<any>) : Promise<any> {
+export function refresh_token_middleware(status: number, json: Promise<any>) : Promise<any> {
     return new Promise<any>(
         (resolve, reject) => {
             if (status !== 403) {

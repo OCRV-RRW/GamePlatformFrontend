@@ -131,10 +131,12 @@ export default function UpdateGamePage() {
                 <TextField style={{visibility: 'hidden'}} id="config" {...register('config')} placeholder="конфиг..." label="Конфиг" />
                 <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                     <label style={{fontSize: 20, padding: 20}}>Редактрировать конфиг</label>
-                    <JsonEditor
+                    {getValues('config') &&
+                        <JsonEditor
                         data={getValues('config') ? JSON.parse(getValues('config')) : {}}
                         onUpdate={({ newData }) => {setValue('config', JSON.stringify(newData))}} 
                     />
+                    }
                 </div>
             </div>
             <Button style={{margin: 10}} type='submit' variant='outlined'>Обновить</Button>

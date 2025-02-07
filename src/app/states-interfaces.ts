@@ -7,5 +7,5 @@ export interface PageState {
 export interface UserState {
     user_data: User | null
     access_token: string
-    expired_in?: Date
+    expired_in?: string
 }

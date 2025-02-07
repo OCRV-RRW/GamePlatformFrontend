@@ -8,6 +8,7 @@ import { QUERY_STRING_GAME_REG_EXP } from "../../constants/reg-exp"
 import GameHeader from "./GameHeader"
 import Loader from "../loader/Loader"
 import { GAME_DOMAIN } from "../../constants/Settings"
+import RefreshTokenTimer from "../refresh_token_timer/RefreshTokenTimer"
 
 export default function Game() {
     const dispatch = useAppDispatch()

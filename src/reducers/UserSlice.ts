@@ -8,13 +8,16 @@ import { drop_userdata, get_userdata, rewrite_user_data, save_userdata } from ".
 import { UserState } from "../app/states-interfaces";
 import { fetch_user_me } from "../api/getUserMeAPI";
 import { User } from "../app/user_type";
+import fetch_refresh from "../api/refreshTokenAPI";
+import { drop_expired_in, get_expired_in, rewrite_expired_in, save_expired_in } from "../local-storage/expired_in";
 
 const initialState : UserState = {
     user_data: get_userdata(),
-    access_token: get_access_token()
+    access_token: get_access_token(),
+    expired_in: get_expired_in()
 }
 
-const setState = (user_data: User, access_token: string, expired_in?: Date) : UserState => {
+const setState = (user_data: User, access_token: string, expired_in?: string) : UserState => {
    let newState: UserState = {...store.getState().user, user_data: user_data, access_token: access_token}
    if (expired_in) { newState = {...newState, expired_in} }
    return newState 
@@ -46,6 +49,14 @@ export const send_user_get_me = createAsyncThunk(
     }
 )
 
+export const send_refresh_token = createAsyncThunk(
+    'user/refresh',
+    async (signal?: AbortSignal) : Promise<{access_token: string, expired_in: string}> => {
+        const {access_token, expired_in} = await fetch_refresh(signal);
+        return {access_token, expired_in}
+    }
+)
+
 
 const userSlice = createSlice({
     name: 'user',
@@ -62,23 +73,34 @@ const userSlice = createSlice({
             if (!action.payload.access_token || !action.payload.user_data) return
             save_access_token(action.payload.access_token)
             save_userdata(action.payload.user_data)
+            save_expired_in(action.payload.expired_in!)
             state.access_token = action.payload.access_token;
             state.user_data = action.payload.user_data;
+            state.expired_in = action.payload.expired_in;
           })
           .addCase(send_log_out.fulfilled, (state) => {
             drop_access_token()
             drop_userdata()
+            drop_expired_in()
             state.access_token = ""
             state.user_data = null
+            state.expired_in = ""
           })
           .addCase(send_user_get_me.fulfilled, (state, action) => {
             rewrite_user_data(action.payload.user_data)
             state.user_data = action.payload.user_data
+          })
+          .addCase(send_refresh_token.fulfilled, (state, action) => {
+            rewrite_access_token(action.payload.access_token)
+            rewrite_expired_in(action.payload.expired_in)
+            state.access_token = action.payload.access_token
+            state.expired_in = action.payload.expired_in
           })
       } 
 })
 export const { updateToken } = userSlice.actions
 export const selectAccessToken = () => store.getState().user.access_token
 export const selectUserData = () => store.getState().user.user_data
+export const selectExpiredIn = () => store.getState().user.expired_in
 
 export default userSlice.reducer

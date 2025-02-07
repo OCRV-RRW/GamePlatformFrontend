@@ -6,9 +6,9 @@ import { set_request_options } from "../app/set_request_options";
 export function fetch_log_in(login_form: LoginForm) {
     let access_token: string = ""
     let parsed_error_message: string = ""
-    let expired_in: Date = new Date()
+    let expired_in: string = ""
     
-    return new Promise<{ access_token: string, user_data: User, expired_in: Date }>(
+    return new Promise<{ access_token: string, user_data: User, expired_in: string }>(
         (resolve, reject: (reason: string) => void) => {
             fetch(API_LOGIN_PATH, set_request_options({method: "POST", body_form: login_form}))
             .then((response) => {
@@ -28,17 +28,9 @@ export function fetch_log_in(login_form: LoginForm) {
 }
 
 export function get_user_data_by_token(access_token: string) : Promise<{ user_data: User }> {
-    const requestOptions = {
-        method: "GET",
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer ' + access_token
-        }
-    }
-
     return new Promise<{ user_data: User}>(
         (resolve) => {
-            fetch(API_USER_ME_PATH, requestOptions)
+            fetch(API_USER_ME_PATH, set_request_options({method: "GET", access_token: access_token}))
             .then((response) => response.json())
             .then((response_data) => resolve( { user_data: response_data?.data?.user } ))
         }
