@@ -15,7 +15,6 @@ export default function Home() {
         <>
             <HomeHeader />
             <GameCatalog />
-            <RefreshTokenTimer />
             <button onClick={onClickUpdateGame}>Обновить игру</button>
         </>
     )
