@@ -37,6 +37,7 @@ export default function UpdateGamePage() {
     const { name } = useParams()
     const [gameData, setGameData] = useState<Game>()
     const [skills, setSkills] = useState<Skill[]>()
+    const [isSetValues, setIsSetValues] = useState<boolean>(false)
 
     const { register, handleSubmit, formState: {errors}, reset, control, getValues, setValue } = useForm<UpdateGameFormFields>(
         {
@@ -77,6 +78,7 @@ export default function UpdateGamePage() {
         setValue('friendly_name', gameData?.friendly_name!)
         setValue('source', gameData?.source!) 
         setValue('skill_names', gameData?.skills.map((skill => skill.friendly_name))!)
+        setIsSetValues(true)
     }, [gameData])
 
     const onUpdateGame = (form_data: UpdateGameFormFields) => {
@@ -143,7 +145,7 @@ export default function UpdateGamePage() {
                 <TextField style={{visibility: 'hidden'}} id="config" {...register('config')} placeholder="конфиг..." label="Конфиг" />
                 <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                     <label style={{fontSize: 20, padding: 20}}>Редактрировать конфиг</label>
-                    {getValues('config') &&
+                    {isSetValues &&
                         <JsonEditor
                         data={getValues('config') ? JSON.parse(getValues('config')) : {}}
                         onUpdate={({ newData }) => {setValue('config', JSON.stringify(newData))}} 
