@@ -68,7 +68,7 @@ export default function UpdateGamePage() {
         setValue('description', gameData?.description!)
         setValue('friendly_name', gameData?.friendly_name!)
         setValue('source', gameData?.source!) 
-        setValue('skill_names', gameData?.skills.map((skill => skill.name))!)
+        setValue('skill_names', gameData?.skills.map((skill => skill.friendly_name))!)
     }, [gameData])
 
     const onUpdateGame = (form_data: UpdateGameFormFields) => {
@@ -77,8 +77,8 @@ export default function UpdateGamePage() {
             description: form_data.description,
             friendly_name: form_data.friendly_name,
             skills: skills ? skills?.filter((skill) => 
-                form_data.skill_names.includes(skill.name)
-            ) : [],
+                form_data.skill_names.includes(skill.friendly_name)
+            ).map((skill) => skill.name) : [],
             source: form_data.source
         }
         console.log(updateGameFormData)
@@ -118,7 +118,7 @@ export default function UpdateGamePage() {
                                         </Box>
                                     )}>
                                     {skills?.map((skill, index) => (
-                                            <MenuItem key={index} value={skill.name}>{skill.name}</MenuItem>
+                                            <MenuItem key={index} value={skill.friendly_name}>{skill.friendly_name}</MenuItem>
                                         ))}
                                 </Select>    
                             )

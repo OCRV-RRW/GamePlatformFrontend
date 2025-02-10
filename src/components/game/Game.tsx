@@ -65,7 +65,6 @@ export default function Game() {
 
     return (
         <>
-            <RefreshTokenTimer />
             {source && <div className={game_styles.gameView}>
                 <GameHeader game_name={friendlyName} />
                     <iframe id="game_iframe" title="game" style={{

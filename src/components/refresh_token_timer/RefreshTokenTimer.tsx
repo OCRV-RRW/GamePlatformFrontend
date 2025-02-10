@@ -1,8 +1,12 @@
 import { useEffect, useRef } from "react"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { selectExpiredIn, send_refresh_token } from "../../reducers/UserSlice"
+import { JsxChild, JsxElement, NodeArray } from "typescript"
 
-export default function RefreshTokenTimer() {
+interface RefreshTokenTimerProps {
+    children: React.ReactNode
+}
+export default function RefreshTokenTimer({ children }: RefreshTokenTimerProps) {
     const dispatch = useAppDispatch()
     const expired_in = useAppSelector(selectExpiredIn)
     const intervalId = useRef<number>()
@@ -13,7 +17,7 @@ export default function RefreshTokenTimer() {
     }
 
     useEffect(() => {
-        console.log(expired_in === "")
+        console.log(expired_in)
         if (expired_in === "") {
             refresh_token()
         }
@@ -23,6 +27,7 @@ export default function RefreshTokenTimer() {
         if (expired_in === "" || expired_in === undefined) return
         if (Number(new Date(expired_in).getTime() - new Date().getTime()) <= 0) {
             if (!isFirstRender.current) return
+            console.log("jkjkjk")
             refresh_token()
             return
         }
@@ -37,5 +42,7 @@ export default function RefreshTokenTimer() {
         }
     }, [expired_in, refresh_token])
 
-    return (<></>)
+    return (<>
+        {children}
+    </>)
 }
