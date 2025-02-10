@@ -72,12 +72,12 @@ export default function UpdateGamePage() {
     }, [fetchData])
 
     useEffect(() => {
-        console.log(gameData)
-        setValue('config', gameData?.config!)
-        setValue('description', gameData?.description!)
-        setValue('friendly_name', gameData?.friendly_name!)
-        setValue('source', gameData?.source!) 
-        setValue('skill_names', gameData?.skills.map((skill => skill.friendly_name))!)
+        if (!gameData) return
+        setValue('config', gameData.config)
+        setValue('description', gameData.description)
+        setValue('friendly_name', gameData.friendly_name)
+        setValue('source', gameData.source) 
+        setValue('skill_names', gameData.skills.map((skill => skill.friendly_name))!)
         setIsSetValues(true)
     }, [gameData])
 
