@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useParams } from "react-router"
 import { Game } from "../../../app/game_type"
 import { fetch_get_game } from "../../../api/getGameAPI"
@@ -21,6 +21,8 @@ import { fetch_update_game } from "../../../api/admin/updateGameAPI"
 import { JsonEditor } from 'json-edit-react'
 import '../../../index.css'
 import Loader from "../../loader/Loader"
+import GameStarter from "../../game/Game"
+import RefreshTokenTimer from "../../refresh_token_timer/RefreshTokenTimer"
 
 type UpdateGameFormFields = {
     config: string,
@@ -43,7 +45,8 @@ export default function UpdateGamePage() {
         }
     )
 
-    useEffect(() => {
+
+    const fetchData = useCallback(() => {
         fetch_get_game(QUERY_STRING_GAME + name)
         .then((fetch_data) => {
             dispatch(updateToken({access_token: fetch_data.access_token}))
@@ -64,6 +67,11 @@ export default function UpdateGamePage() {
     }, [])
 
     useEffect(() => {
+        fetchData()
+    }, [fetchData])
+
+    useEffect(() => {
+        console.log(gameData)
         setValue('config', gameData?.config!)
         setValue('description', gameData?.description!)
         setValue('friendly_name', gameData?.friendly_name!)
@@ -82,13 +90,17 @@ export default function UpdateGamePage() {
             source: form_data.source
         }
         console.log(updateGameFormData)
-        fetch_update_game(updateGameFormData, name ?? "")
+        fetch_update_game(updateGameFormData, name ?? "").then(() => {
+            window.location.reload()
+        }) 
     }
 
     return(<>
         <Header />
         {!gameData && <Loader />}
-        {gameData && <form onSubmit={handleSubmit((data) => onUpdateGame(data))}>
+        {gameData && 
+        <>
+         <form onSubmit={handleSubmit((data) => onUpdateGame(data))}>
             <div style={{margin: 10}}>
                 <TextField id="description" {...register('description')} placeholder="описание..." label="Описание игры" />
             </div>
@@ -140,6 +152,15 @@ export default function UpdateGamePage() {
                 </div>
             </div>
             <Button style={{margin: 10}} type='submit' variant='outlined'>Обновить</Button>
-        </form>}
+         </form>
+         <RefreshTokenTimer>
+            <div style={{
+                height: 800
+            }}>
+                <GameStarter source={gameData!.source} name={gameData!.name} />
+            </div>  
+         </RefreshTokenTimer>
+        </>
+        }
     </>)
 }

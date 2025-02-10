@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { selectExpiredIn, send_refresh_token } from "../../reducers/UserSlice"
 import { JsxChild, JsxElement, NodeArray } from "typescript"
+import { Queue } from "../../app/fetchQueue"
 
 interface RefreshTokenTimerProps {
     children: React.ReactNode
@@ -13,7 +14,7 @@ export default function RefreshTokenTimer({ children }: RefreshTokenTimerProps) 
     const isFirstRender = useRef<boolean>(true)
 
     const refresh_token = () => {
-        dispatch(send_refresh_token())
+        Queue.addFetch('refresh_token', () => dispatch(send_refresh_token()))
     }
 
     useEffect(() => {

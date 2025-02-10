@@ -6,7 +6,7 @@ interface LocksDictionary {
     [key: string] : boolean
 }
 
-export default class FetchQueue {
+class FetchQueue {
     fetches: FetchesDictionary = {}
     locks: LocksDictionary = {}
     
@@ -33,3 +33,5 @@ export default class FetchQueue {
         this.fetches[name][0]().then(() => {this.locks[name] = false}, () => {this.locks[name] = false})
     }
 }
+
+export const Queue = new FetchQueue()
