@@ -7,5 +7,6 @@ export type Game = {
     name: string,
     friendly_name: string,
     skills: Array<Skill>,
-    source: string
+    debug_source: string,
+    release_source: string
 }

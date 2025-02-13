@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react"
 import { Game } from "../../app/game_type"
 import { GAME_DOMAIN } from "../../constants/Settings"
+import React from "react"
 
 interface GameProps {
     source: string,
     name: string
 }
 
-export default function GameStarter({source, name}: GameProps) {
+function GameStarter({source, name}: GameProps) {
      const [gameLoaded, setGameLoaded] = useState<boolean>(false)
         
     function sendMessageToIframe(message: object | string){
@@ -42,3 +43,5 @@ export default function GameStarter({source, name}: GameProps) {
         src={source} />
     </>
 }
+
+export default React.memo(GameStarter)

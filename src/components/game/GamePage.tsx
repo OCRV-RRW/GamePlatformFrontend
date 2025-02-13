@@ -7,10 +7,7 @@ import { updateToken } from "../../reducers/UserSlice"
 import { QUERY_STRING_GAME_REG_EXP } from "../../constants/reg-exp"
 import GameHeader from "./GameHeader"
 import Loader from "../loader/Loader"
-import { GAME_DOMAIN } from "../../constants/Settings"
 import GameStarter from "./Game"
-
-
 
 export default function GamePage() {
     const dispatch = useAppDispatch()
@@ -31,7 +28,7 @@ export default function GamePage() {
             .then((json) => {
                 console.log(json)
                 var game = json?.data?.games[0];
-                setSource(game?.source)
+                setSource(game?.release_source)
                 setName(game?.name)
                 setFriendlyName(game?.friendly_name)
                 setIsLoading(false)

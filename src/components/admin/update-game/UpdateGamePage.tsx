@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
-import { useParams } from "react-router"
+import { useLocation, useParams } from "react-router"
 import { Game } from "../../../app/game_type"
 import { fetch_get_game } from "../../../api/getGameAPI"
 import { QUERY_STRING_GAME } from "../../../constants/QueriesString"
@@ -29,7 +29,8 @@ type UpdateGameFormFields = {
     description: string,
     friendly_name: string,
     skill_names: Array<string>,
-    source: string
+    debug_source: string,
+    release_source: string
 }
 
 export default function UpdateGamePage() {
@@ -42,12 +43,13 @@ export default function UpdateGamePage() {
     const { register, handleSubmit, formState: {errors}, reset, control, getValues, setValue } = useForm<UpdateGameFormFields>(
         {
             mode: 'onChange',
-            defaultValues: {config: "", description: "", friendly_name: "", skill_names: [], source: ""}
+            defaultValues: {config: "", description: "", friendly_name: "", skill_names: [], release_source: "", debug_source: ""}
         }
     )
 
 
     const fetchData = useCallback(() => {
+        if (!name) return
         fetch_get_game(QUERY_STRING_GAME + name)
         .then((fetch_data) => {
             dispatch(updateToken({access_token: fetch_data.access_token}))
@@ -76,7 +78,8 @@ export default function UpdateGamePage() {
         setValue('config', gameData.config)
         setValue('description', gameData.description)
         setValue('friendly_name', gameData.friendly_name)
-        setValue('source', gameData.source) 
+        setValue('debug_source', gameData.debug_source)
+        setValue('release_source', gameData.release_source) 
         setValue('skill_names', gameData.skills.map((skill => skill.friendly_name))!)
         setIsSetValues(true)
     }, [gameData])
@@ -89,7 +92,8 @@ export default function UpdateGamePage() {
             skills: skills ? skills?.filter((skill) => 
                 form_data.skill_names.includes(skill.friendly_name)
             ).map((skill) => skill.name) : [],
-            source: form_data.source
+            debug_source: form_data.debug_source,
+            release_source: form_data.release_source
         }
         console.log(updateGameFormData)
         fetch_update_game(updateGameFormData, name ?? "").then(() => {
@@ -110,7 +114,10 @@ export default function UpdateGamePage() {
                 <TextField id="friendly_name" {...register('friendly_name')} placeholder="название..."  label="Название игры" />
             </div>
             <div style={{margin: 10}}>
-                <TextField id="source" {...register('source')} placeholder="источник..." label="Источник игры (URL)" />
+                <TextField id="source" {...register('debug_source')} placeholder="источник..." label="Источник игры (Debug URL)" />
+            </div>
+            <div style={{margin: 10}}>
+                <TextField id="source" {...register('release_source')} placeholder="источник..." label="Источник игры (Release URL)" />
             </div>
                 <Box>
                     <FormControl sx={{width: 500}}>
@@ -159,7 +166,7 @@ export default function UpdateGamePage() {
             <div style={{
                 height: 800
             }}>
-                <GameStarter source={gameData!.source} name={gameData!.name} />
+                <GameStarter source={gameData!.debug_source} name={gameData!.name} />
             </div>  
          </RefreshTokenTimer>
         </>

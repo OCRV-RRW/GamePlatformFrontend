@@ -1,6 +1,9 @@
 import { useState } from "react";
 import ReturnToLoginButton from "../login/ReturnToLoginButton";
 import { fetch_forgot_password } from "../../api/forgotPasswordAPI";
+import { grey, red } from "@mui/material/colors";
+import { Button, InputLabel, TextField } from "@mui/material";
+import styles from '../../../src/css_modules/style.module.css'
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState<string>("")
@@ -14,22 +17,26 @@ export default function ForgotPassword() {
 
     return (
         <>
-            <h1>
-                Забыл пароль
-            </h1>
+            <h1 style={{color: grey[900]}}>Забыл пароль</h1>
             <div className="email">
-                <h3>Электронная почта:</h3>
-                <input 
-                    name="emailInput"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}>
-                </input>
+                <InputLabel className={styles.required} style={{padding: 10}}>Электронная почта:</InputLabel>
+                <div style={{margin: 10}}>
+                    <TextField id="email" value={email} placeholder="электронная почта..." label="Электронная почта" onChange={(event) => setEmail(event.target.value)} />
+                </div>
             </div>
-            <div className="buttons">
+            <div style={{display: 'flex', flexDirection: 'column',  alignItems: 'center'}} className="buttons">
+                <Button sx={{
+                    '&.MuiButton-outlined': {
+                        color: grey[900],
+                        borderColor: grey[900]
+                    }}}
+                    onClick={onRestorePassword}
+                    style={{margin: 10}} type='submit' variant='outlined'>Восстановить пароль
+                </Button>
                 <ReturnToLoginButton />
-                <button onClick={onRestorePassword}>Восстановить пароль</button>
             </div>
-            <h1>{forgotPasswordState}</h1>
+            <h1 style={{color: red[200]}}>{forgotPasswordState}</h1>
+            <h1 style={{color: red[400]}}>ОЦРВ</h1>
         </>
     )
 }

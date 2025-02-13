@@ -5,6 +5,7 @@ import { useAppDispatch } from "../../../app/hooks"
 import { updateToken } from "../../../reducers/UserSlice"
 import { Game } from "../../../app/game_type"
 import styles from '../../../css_modules/style.module.css'
+import { grey } from "@mui/material/colors"
 
 type GameListGamesName = {
     name: string,
@@ -14,6 +15,7 @@ type GameListGamesName = {
 export default function GamesList() {
     const dispatch = useAppDispatch()
     const [gameNames, setGameNames] = useState<Array<GameListGamesName>>([])
+    const [loading, setLoading] = useState<boolean>(false)
 
     useEffect(() => {
         fetch_get_games()
@@ -32,6 +34,7 @@ export default function GamesList() {
     return (
         <>
             <Header />
+            <h1 style={{color: grey[500]}}>Список игр</h1>
             <div className={styles.scrollableContainer}>
                 {gameNames.map((gn) => 
                     <a 

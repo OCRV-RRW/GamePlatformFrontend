@@ -33,5 +33,6 @@ export interface UpdateGameForm extends ApiForm {
     description: string,
     friendly_name: string,
     skills: Array<string>,
-    source: string
+    release_source: string,
+    debug_source: string
 }
