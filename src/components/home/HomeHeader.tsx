@@ -2,8 +2,8 @@ import { useAppSelector } from "../../app/hooks"
 import { selectUserData } from "../../reducers/UserSlice"
 import Logout from "../logout/Logout"
 import home_header_styles from '../../../src/css_modules/style.module.css'
-import { Avatar, Box, Button } from "@mui/material"
-import { common, cyan, deepOrange, grey, red } from "@mui/material/colors"
+import { Avatar, Box, Button, Tooltip } from "@mui/material"
+import { deepOrange, grey, red } from "@mui/material/colors"
 import { useNavigate } from "react-router"
 import { GAMES_LIST_PATH } from "../../constants/BrowserPathes"
 
@@ -16,7 +16,6 @@ export default function HomeHeader() {
     }
     return (
         <>
-        {/* className={home_header_styles.homeHeader} */}
             <Box sx={{
                 display: 'flex',
                 alignItems: 'center',
@@ -37,7 +36,9 @@ export default function HomeHeader() {
                     display: 'flex',
                     alignItems: 'center'
                 }}>
-                <Avatar sx={{ bgcolor: deepOrange[500], margin: 1 }}>{user_data?.name?.at(0)?.toUpperCase()}</Avatar>
+                <Tooltip title={user_data?.name}>
+                    <Avatar sx={{ bgcolor: deepOrange[500], margin: 1 }}>{user_data?.name?.at(0)?.toUpperCase()}</Avatar>
+                </Tooltip>
                 <Logout /> 
                 </Box>
             </Box>

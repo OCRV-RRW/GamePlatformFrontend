@@ -6,6 +6,7 @@ import { updateToken } from "../../../reducers/UserSlice"
 import { Game } from "../../../app/game_type"
 import styles from '../../../css_modules/style.module.css'
 import { grey } from "@mui/material/colors"
+import Loader from "../../loader/Loader"
 
 type GameListGamesName = {
     name: string,
@@ -18,6 +19,7 @@ export default function GamesList() {
     const [loading, setLoading] = useState<boolean>(false)
 
     useEffect(() => {
+        setLoading(true)
         fetch_get_games()
             .then((fetch_data) => {
                 dispatch(updateToken({access_token: fetch_data.access_token}))
@@ -28,6 +30,7 @@ export default function GamesList() {
                 setGameNames(games.map<GameListGamesName>((game) => {
                     return {name: game.name, friendly_name: game.friendly_name}
                 }))
+                setLoading(false)
             })
     }, [])
 
@@ -35,7 +38,8 @@ export default function GamesList() {
         <>
             <Header />
             <h1 style={{color: grey[500]}}>Список игр</h1>
-            <div className={styles.scrollableContainer}>
+            {loading && <Loader />}
+            {!loading && <div className={styles.scrollableContainer}>
                 {gameNames.map((gn) => 
                     <a 
                         key={gn.name} 
@@ -43,7 +47,7 @@ export default function GamesList() {
                         href={window.location + "/update-game/" + gn.name}>
                             {gn.friendly_name}
                     </a>)}
-            </div>
+            </div>}
         </>
     )
 }
