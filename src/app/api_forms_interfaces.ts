@@ -36,3 +36,13 @@ export interface UpdateGameForm extends ApiForm {
     release_source: string,
     debug_source: string
 }
+
+export interface CreateGameForm extends ApiForm {
+    config: string,
+    debug_source: string
+    description: string,
+    friendly_name: string,
+    name: string,
+    release_source: string,
+    skills: Array<Skill>
+}

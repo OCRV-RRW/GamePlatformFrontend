@@ -1,6 +1,7 @@
 import { useContext, useRef } from "react";
 import { PathContext } from "./Page";
 import { 
+    ADMIN_PANEL_PATH,
     FORGOT_PASSWORD_PATH, 
     GAME_PATH, 
     GAMES_LIST_PATH, 
@@ -22,6 +23,7 @@ import NotFoundPage from "../not-found-page/NotFoundPage";
 import GamesList from "../admin/update-game/GamesList";
 import UpdateGamePage from "../admin/update-game/UpdateGamePage";
 import RefreshTokenTimer from "../refresh_token_timer/RefreshTokenTimer";
+import AdminPanelHome from "../admin/admin-panel-home/AdminPanelHome";
 
 export default function SelectPath() {
     const path = useContext(PathContext)
@@ -38,7 +40,8 @@ export default function SelectPath() {
             {path: REGISTER_VERIFY_EMAIL_PATH, page: <VerifyEmail />},
             {path: RESET_PASSWORD_PATH, page: <ResetPassword />},
             {path: GAMES_LIST_PATH, page: <GamesList />},
-            {path: UPDATE_GAME_PATH, page: <UpdateGamePage />}
+            {path: UPDATE_GAME_PATH, page: <UpdateGamePage />},
+            {path: ADMIN_PANEL_PATH, page: <AdminPanelHome />}
         ]
     )
     

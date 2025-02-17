@@ -8,13 +8,17 @@ import { FieldErrors, useForm } from "react-hook-form";
 import LoginFormResolver from '../../validate/form_resolvers/login_resolver';
 import { UserState } from '../../app/states-interfaces';
 import { useState } from 'react';
-import { Button, InputLabel, TextField } from '@mui/material';
+import { Button, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
 import { grey, red } from '@mui/material/colors';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function Login() : JSX.Element {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const [formIsInvalid, setFormIsInvalid] = useState<boolean | undefined>(undefined)
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const {register, handleSubmit, formState: { errors }, reset } = useForm<LoginForm>( 
             {
@@ -52,7 +56,21 @@ export default function Login() : JSX.Element {
                 <div>
                     <InputLabel htmlFor='password' className={login_styles.required} style={{padding: 10}}>Пароль:</InputLabel>
                     <div style={{margin: 10}}>
-                        <TextField id="password" {...register('password')} placeholder="пароль..." label="Пароль" />
+                    <OutlinedInput
+                        {...register('password')}
+                        id="password"
+                        type={showPassword ? 'text' : 'password'}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    onClick={handleClickShowPassword}
+                                >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                        placeholder='пароль...'
+                    />
                     </div>
                     {errors.password && <label style={{color: red[400]}}> {errors.password?.message}</label>}
                 </div>

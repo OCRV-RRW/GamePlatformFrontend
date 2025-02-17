@@ -1,5 +1,4 @@
 import { Box } from '@mui/material'
-import styles from '../../../css_modules/style.module.css'
 import GoToHomeButton from '../../GoToHomeButton'
 import { grey } from '@mui/material/colors'
 

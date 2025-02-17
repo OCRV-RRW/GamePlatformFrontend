@@ -20,11 +20,6 @@ button {
     height: 30px;
 }
 
-/* button:disabled {
-    border: 2px solid red;
-    border-radius: 20px;
-} */
-
 .gameCard {
     will-change: transform;
 }
@@ -114,29 +109,19 @@ div.scrollableContainer {
     align-items: center;
     overflow: auto;
     border-radius: 10px;
-    padding: 10px; /* Внутренние отступы */
+    padding: 10px;
 }
 
-a.gameListLink {
-    display: block;
-    width: 500px;
+.gameListLink {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
     height: 50px;
-    border: 1px solid rgb(0, 162, 255);
-    border-radius: 10px;
-    margin: 10px;
-    line-height: 50px;
+    background-color: rgba(0, 0, 0, 0.795);
+    padding-left: 5px;
+    line-height: 5px;
 }
 
-a.gameListLink:hover {
-    scale: 1.05 1.05;
-    transition-property: scale;
-    transition-timing-function: ease-out;
-    transition-duration: 100ms;
-}
-
-a.gameListLink:active {
-    scale: 1.1 1.1;
-    transition-property: scale;
-    transition-timing-function: ease-out;
-    transition-duration: 100ms;
+.gameListLink:hover {
+    scale: 1.005;
 }

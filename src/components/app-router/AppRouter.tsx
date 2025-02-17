@@ -1,10 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import { FORGOT_PASSWORD_PATH, GAME_PATH, GAMES_LIST_PATH, HOME_PATH, LOGIN_PATH, REGISTER_PATH, REGISTER_VERIFY_EMAIL_PATH, RESET_PASSWORD_PATH, UPDATE_GAME_PATH } from "../../constants/BrowserPathes";
+import { ADMIN_PANEL_PATH, FORGOT_PASSWORD_PATH, GAME_PATH, GAMES_LIST_PATH, HOME_PATH, LOGIN_PATH, REGISTER_PATH, REGISTER_VERIFY_EMAIL_PATH, RESET_PASSWORD_PATH, UPDATE_GAME_PATH } from "../../constants/BrowserPathes";
 import CheckAuth from "../check-auth/CheckAuth";
 import Path from "../page/Page";
 import CheckNotAuth from "../check-auth/CheckNotAuth";
 import { ROUTER_BASENAME } from "../../constants/Settings";
 import NotFoundPage from "../not-found-page/NotFoundPage";
+import CheckIsAdmin from "../check-auth/CheckIsAdmin";
 
 export default function AppRouter() {
     return (
@@ -52,16 +53,27 @@ export default function AppRouter() {
                     />
                     <Route path={GAMES_LIST_PATH} element={
                         <CheckAuth>
-                            <Path path={GAMES_LIST_PATH} />
+                            <CheckIsAdmin>
+                                <Path path={GAMES_LIST_PATH} />
+                            </CheckIsAdmin>
                         </CheckAuth>} 
                     />
                     <Route path={UPDATE_GAME_PATH}>
                         <Route path=":name" element={
                             <CheckAuth>
-                                <Path path={UPDATE_GAME_PATH} />
+                                <CheckIsAdmin>
+                                    <Path path={UPDATE_GAME_PATH} />
+                                </CheckIsAdmin>
                             </CheckAuth>} 
                         />
                     </Route>
+                    <Route path={ADMIN_PANEL_PATH} element={
+                        <CheckAuth>
+                            <CheckIsAdmin>
+                                <Path path={ADMIN_PANEL_PATH} />
+                            </CheckIsAdmin>
+                        </CheckAuth>}
+                    />
                     <Route path="*" element={
                         <NotFoundPage />}
                     />

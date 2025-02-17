@@ -21,19 +21,26 @@ export default function fetchAuthAPI(params: FetchAPIParams)
         updated: false,
         response: new Response()
     }
-
+    let afterFirstQueryResponse = new Response()
     return new Promise<fetchAPIData>((resolve) => {
         params.fetch_func(get_access_token(), params.query_search, params.body)
             .then((response) => {
-                console.log(response)
+                afterFirstQueryResponse = response
                 return update_token_middleware(response)})
             .then((updated_token_data) => {
                 response_data.access_token = updated_token_data.access_token
                 response_data.updated = updated_token_data.updated
-                return params.fetch_func(response_data.access_token, params.query_search, params.body)})
-            .then((response) => {
-                console.log(response)
-                response_data.response = response
-                return resolve(response_data)})
+                if (!response_data.updated) {
+                    response_data.response = afterFirstQueryResponse
+                    return resolve(response_data)
+                }
+                else {
+                    return params.fetch_func(response_data.access_token, params.query_search, params.body)
+                        .then((response) => {
+                            response_data.response = response
+                            return resolve(response_data)
+                        })
+                }
+            })
     })
 } 

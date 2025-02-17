@@ -14,6 +14,8 @@ export const GAME_PATH: string = '/game'
 
 
 //ADMIN
-export const ADMIN_PATH: string = "/admin-panel"
-export const GAMES_LIST_PATH: string = ADMIN_PATH + "/games-list"
-export const UPDATE_GAME_PATH: string = GAMES_LIST_PATH + "/update-game"
+export const ADMIN_PANEL_PATH: string = "/admin-panel"
+export const GAMES_LIST_PATH: string = ADMIN_PANEL_PATH + "/games-list"
+export const UPDATE_GAME_PATH: string = ADMIN_PANEL_PATH + "/update-game"
+export const SKILLS_LIST_PATH: string = ADMIN_PANEL_PATH + "/skills-list"
+export const UPDATE_SKILL_PATH: string = ADMIN_PANEL_PATH + "/update-skill"

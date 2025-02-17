@@ -3,4 +3,5 @@ export type User = {
     name: string | undefined
     email: string | undefined
     created_at: Date | null
+    is_admin: boolean
 }

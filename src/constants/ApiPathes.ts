@@ -21,15 +21,11 @@ export const API_GET_USER_PATH: string = API_USER_PATH
 
 //GAME
 export const API_GAMES_PATH: string = API_PATH + '/games'
-export const API_CREATE_GAMES_PATH: string = API_GAMES_PATH
 export const API_GET_GAME_PATH: string = API_GAMES_PATH
-export const API_DELETE_GAME_PATH: string = API_GAMES_PATH + '/'
 
 //SKILL 
 export const API_SKILLS_PATH: string = API_PATH + "/skills"
-export const API_CREATE_SKILL_PATH: string = API_SKILLS_PATH
 export const API_GET_SKILL: string = API_SKILLS_PATH
-export const API_DELETE_SKILL: string = API_SKILLS_PATH + '/'
 
 //USER ME SKILLS
 export const API_USER_ME_SKILLS_PATH: string = API_USER_ME_PATH + "/skills"
@@ -38,3 +34,9 @@ export const API_ADD_SCORE_USER_ME_SKILLS_PATH: string = API_USER_ME_SKILLS_PATH
 
 //ADMIN/GAMES
 export const API_UPDATE_GAME_PATH: string = API_GAMES_PATH + '/'
+export const API_CREATE_GAME_PATH: string = API_GAMES_PATH + '/'
+export const API_DELETE_GAME_PATH: string = API_GAMES_PATH + '/'
+
+//ADMIN/SKILLS
+export const API_CREATE_SKILL_PATH: string = API_SKILLS_PATH + '/'
+export const API_DELETE_SKILL: string = API_SKILLS_PATH + '/'
