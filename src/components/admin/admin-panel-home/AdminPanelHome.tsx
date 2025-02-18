@@ -6,8 +6,9 @@ import GamesList from "../update-game/GamesList";
 import { grey, red } from "@mui/material/colors";
 import SentimentDissatisfiedTwoToneIcon from '@mui/icons-material/SentimentDissatisfiedTwoTone';
 import SkillsList from "../update-skill/SkillsList";
+import UsersList from "../UsersList";
 
-export type AdminPages = 'none' | 'games' | 'skills'
+export type AdminPages = 'none' | 'games' | 'skills' | 'users'
 
 export const ChangePageFuncContext = createContext<{page: AdminPages, change_page: (page: AdminPages) => void}>({page: 'none', change_page: () => {}})
 
@@ -22,6 +23,7 @@ export default function AdminPanelHome() {
                     <Header />
                     {currentPage === 'games' && <GamesList />}
                     {currentPage === 'skills' && <SkillsList />}
+                    {currentPage === 'users' && <UsersList />}
                     {currentPage === 'none' && <Box><h1 style={{color: grey[500]}}>Ничего не выбрано</h1><SentimentDissatisfiedTwoToneIcon sx={{width: 100, height: 100, color: red[900]}}/></Box>}
                 </Box>
             </Box>

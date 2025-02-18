@@ -46,7 +46,7 @@ export function AddSkillEntityDialog({createGameEntityFetch: createGameEntityFet
                             label="ID"
                             type='text'
                             fullWidth
-                            variant='standard'/>
+                            variant='outlined' />
                         <TextField 
                             autoFocus
                             required
@@ -56,7 +56,7 @@ export function AddSkillEntityDialog({createGameEntityFetch: createGameEntityFet
                             label="название скилла"
                             type='text'
                             fullWidth
-                            variant='standard' />
+                            variant='outlined' />
                         <TextField 
                             autoFocus
                             required
@@ -66,7 +66,7 @@ export function AddSkillEntityDialog({createGameEntityFetch: createGameEntityFet
                             label="описание"
                             type='text'
                             fullWidth
-                            variant='standard' />
+                            variant='outlined' />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => setOpen(false)}>Отменить</Button>

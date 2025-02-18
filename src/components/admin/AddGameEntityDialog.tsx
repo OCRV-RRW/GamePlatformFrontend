@@ -26,14 +26,16 @@ export function AddGameEntityDialog({createGameEntityFetch: createGameEntityFetc
                                 const created_entity_name = form_json.name
                                 const created_entity_friendly_name = form_json.friendly_name
                                 const created_entity_description = form_json.description
+                                const created_entity_debug_source = form_json.debug_source
+                                const created_entity_release_source = form_json.release_source
 
                                 createGameEntityFetch({
                                     'config': '',
-                                    'debug_source': '',
+                                    'debug_source': created_entity_debug_source,
                                     'description': created_entity_description,
                                     'friendly_name': created_entity_friendly_name,
                                     'name': created_entity_name,
-                                    'release_source': '',
+                                    'release_source': created_entity_release_source,
                                     'skills': []
                                 }).then((data) => dispatch(updateToken({access_token: data.access_token}))).then(() => setOpen(false))    
                             }
@@ -50,7 +52,7 @@ export function AddGameEntityDialog({createGameEntityFetch: createGameEntityFetc
                             label="ID"
                             type='text'
                             fullWidth
-                            variant='standard'/>
+                            variant='outlined'/>
                         <TextField 
                             autoFocus
                             required
@@ -60,7 +62,7 @@ export function AddGameEntityDialog({createGameEntityFetch: createGameEntityFetc
                             label="название игры"
                             type='text'
                             fullWidth
-                            variant='standard' />
+                            variant='outlined' />
                         <TextField 
                             autoFocus
                             required
@@ -70,7 +72,27 @@ export function AddGameEntityDialog({createGameEntityFetch: createGameEntityFetc
                             label="описание"
                             type='text'
                             fullWidth
-                            variant='standard' />
+                            variant='outlined' />
+                        <TextField 
+                            autoFocus
+                            required
+                            margin="dense"
+                            id="release_source"
+                            name="release_source"
+                            label="url на источник релиз-версии"
+                            type='text'
+                            fullWidth
+                            variant='outlined' />
+                        <TextField 
+                            autoFocus
+                            required
+                            margin="dense"
+                            id="debug_source"
+                            name="debug_source"
+                            label="url на источник дебаг-версии"
+                            type='text'
+                            fullWidth
+                            variant='outlined' />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => setOpen(false)}>Отменить</Button>

@@ -16,8 +16,8 @@ export const API_VERIFY_REGISTER_EMAIL: string =  API_AUTH_PATH + '/verify-email
 //USER
 export const API_USER_PATH: string = API_PATH + '/users'
 export const API_USER_ME_PATH: string = API_USER_PATH + '/me'
-export const API_DELETE_USER_PATH: string = API_USER_PATH
-export const API_GET_USER_PATH: string = API_USER_PATH
+export const API_DELETE_USER_PATH: string = API_USER_PATH + '/'
+export const API_GET_USERS_PATH: string = API_USER_PATH
 
 //GAME
 export const API_GAMES_PATH: string = API_PATH + '/games'

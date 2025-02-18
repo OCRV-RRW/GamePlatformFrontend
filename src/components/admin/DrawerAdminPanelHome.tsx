@@ -3,6 +3,7 @@ import ToGameListAdminPanelButton from "./ToGameListAdminPanelButton";
 import { grey, red } from "@mui/material/colors";
 import ToSkillsListAdminPanelButton from "./ToSkillsListAdminPanelButton";
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import ToUsersListAdminPanelButton from "./ToUsersListAdminPanelButton";
 
 interface DrawerAdminPanelHomeProps {
     drawer_width: string
@@ -23,6 +24,9 @@ export function DrawerAdminPanelHome({drawer_width}: DrawerAdminPanelHomeProps) 
                     </ListItem>
                     <ListItem sx={{justifyContent: 'center'}}>
                         <ToSkillsListAdminPanelButton />
+                    </ListItem>
+                    <ListItem sx={{justifyContent: 'center'}}>
+                        <ToUsersListAdminPanelButton />
                     </ListItem>
                 </List>
         </Drawer>
