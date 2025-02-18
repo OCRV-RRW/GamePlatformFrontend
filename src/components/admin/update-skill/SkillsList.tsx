@@ -6,16 +6,21 @@ import { Skill } from "../../../app/skill_type"
 import Loader from "../../loader/Loader"
 import styles from '../../../css_modules/style.module.css'
 import { grey } from "@mui/material/colors"
-import { UPDATE_SKILL_PATH } from "../../../constants/BrowserPathes"
 import { AdminListItem } from "../AdminListItem"
 import { AdminList } from "../AdminList"
+import { OpenCreateDialogWindowContext } from "../update-game/GamesList"
+import { AddSkillEntityDialog } from "../AddSkillEntityDialog"
+import { CreateSkillForm } from "../../../app/api_forms_interfaces"
+import { fetch_create_skill } from "../../../api/admin/сreateSkillAPI"
+import { fetch_delete_skill } from "../../../api/admin/deleteSkillAPI"
 
 export default function SkillsList() {
     const dispatch = useAppDispatch()
     const [skills, setSkills] = useState<Array<Skill>>()
     const [loading, setLoading] = useState<boolean>(false)
+    const [createDialogWindowOpen, setCreateDialogWindowOpen] = useState<boolean>(false)
 
-    useEffect(() => {
+    const fetch_skills = () => {
         setLoading(true)
         fetch_get_skills()
             .then((fetch_data) => {
@@ -27,18 +32,38 @@ export default function SkillsList() {
                 setSkills(skills)
                 setLoading(false)
             })
+    }
+
+    useEffect(() => {
+        fetch_skills()
     }, [])
 
     return (
         <>
             <h1 style={{color: grey[500]}}>Список скиллов</h1>
             {loading && <Loader />}
-            {!loading && <div className={styles.scrollableContainer}>
-                <AdminList>
-                    {skills?.map((s) => 
-                        <AdminListItem key={s.name} title={s.friendly_name} eleName={s.name} update_path={UPDATE_SKILL_PATH}/>)}
-                </AdminList>
-            </div>}
+            <OpenCreateDialogWindowContext.Provider value={(isOpen) => setCreateDialogWindowOpen(isOpen)}>
+                {!loading && 
+                <div className={styles.scrollableContainer}>
+                    <AdminList>
+                        {skills?.map((s) => 
+                            <AdminListItem 
+                                key={s.name} 
+                                title={s.friendly_name} 
+                                eleName={s.name} 
+                                delete_fetch={() => fetch_delete_skill(s.name).then((data) => {
+                                    fetch_skills()
+                                    return {access_token: data.access_token, response: data.response}
+                                })}/>)}
+                    </AdminList>
+                </div>}
+                <AddSkillEntityDialog 
+                    isOpen={createDialogWindowOpen}
+                    createGameEntityFetch={(form: CreateSkillForm) => fetch_create_skill(form).then((data) => {
+                        fetch_skills()
+                        return {access_token: data.access_token, response: data.response}
+                })}/>
+            </OpenCreateDialogWindowContext.Provider>
         </>
     )
 }

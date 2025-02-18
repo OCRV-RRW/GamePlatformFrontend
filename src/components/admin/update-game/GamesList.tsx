@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { createContext, useEffect, useState } from "react"
 import { fetch_get_games } from "../../../api/getGamesAPI"
 import { useAppDispatch } from "../../../app/hooks"
 import { updateToken } from "../../../reducers/UserSlice"
@@ -9,18 +9,23 @@ import Loader from "../../loader/Loader"
 import { AdminListItem } from "../AdminListItem"
 import { UPDATE_GAME_PATH } from "../../../constants/BrowserPathes"
 import { AdminList } from "../AdminList"
-import { fetch_create_game } from "../../../api/admin/createGameAPI"
 import { fetch_delete_game } from "../../../api/admin/deleteGameAPI"
+import { CreateGameForm } from "../../../app/api_forms_interfaces"
+import { fetch_create_game } from "../../../api/admin/createGameAPI"
+import { AddGameEntityDialog } from "../AddGameEntityDialog"
 
+export const OpenCreateDialogWindowContext = createContext<(isOpen: boolean) => void>(() => {})
 type GameListGamesName = {
     name: string,
     friendly_name: string
 }
 
+
 export default function GamesList() {
     const dispatch = useAppDispatch()
     const [gameNames, setGameNames] = useState<Array<GameListGamesName>>([])
     const [loading, setLoading] = useState<boolean>(false)
+    const [createDialogWindowOpen, setCreateDialogWindowOpen] = useState<boolean>(false)
     
     const fetch_games = () => {
         setLoading(true)
@@ -46,26 +51,29 @@ export default function GamesList() {
         <>
             <h1 style={{color: grey[500]}}>Список игр</h1>
             {loading && <Loader />}
-            {!loading && <div className={styles.scrollableContainer}>
-                <AdminList createEntityFetch={() => fetch_create_game({
-        config: "",
-        debug_source: "",
-        description: "-",
-        friendly_name: "-",
-        name: "created_game",
-        release_source: "",
-        skills: []
-    }).then((data) => {
-                    fetch_games()
-                    return {access_token: data.access_token, response: data.response}
-                })}>
-                    {gameNames?.map((g) => 
-                        <AdminListItem key={g.name} title={g.friendly_name} eleName={g.name} update_path={UPDATE_GAME_PATH} delete_fetch={() => fetch_delete_game(g.name).then((data) => {
-                            fetch_games()
-                            return {access_token: data.access_token, response: data.response}
-                        })} />)}
-                </AdminList>
-            </div>}
+            <OpenCreateDialogWindowContext.Provider value={(isOpen) => setCreateDialogWindowOpen(isOpen)}>
+            {!loading && 
+                <div className={styles.scrollableContainer}>
+                    <AdminList>
+                        {gameNames?.map((g) => 
+                            <AdminListItem 
+                                key={g.name} 
+                                title={g.friendly_name} 
+                                eleName={g.name} 
+                                update_path={UPDATE_GAME_PATH} 
+                                delete_fetch={() => fetch_delete_game(g.name).then((data) => {
+                                    fetch_games()
+                                    return {access_token: data.access_token, response: data.response}
+                            })} />)}
+                    </AdminList>
+                </div>}
+                <AddGameEntityDialog 
+                    isOpen={createDialogWindowOpen}
+                    createGameEntityFetch={(form: CreateGameForm) => fetch_create_game(form).then((data) => {
+                        fetch_games()
+                        return {access_token: data.access_token, response: data.response}
+                })}/>
+            </OpenCreateDialogWindowContext.Provider>
         </>
     )
 }

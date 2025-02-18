@@ -1,4 +1,4 @@
-import { Button } from "@mui/material"
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material"
 import { useNavigate } from "react-router"
 import { useAppDispatch } from "../../app/hooks"
 import { green, red } from "@mui/material/colors"
@@ -6,6 +6,9 @@ import { updateToken } from "../../reducers/UserSlice"
 import UpdateIcon from '@mui/icons-material/Create';
 import CreateIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
+import { useState } from "react"
+import { CreateGameForm } from "../../app/api_forms_interfaces"
+import { OpenCreateDialogWindowContext } from "./update-game/GamesList"
 
 export interface ButtonAdminListItemProps {
     eleName?: string,
@@ -19,24 +22,19 @@ export function UpdateButtonAdminListItem({path, eleName}: ButtonAdminListItemPr
     </Button>
 }
 
-export interface CreateButtonAdminListItemProps extends ButtonAdminListItemProps {
-    createEntityFetch: () => Promise<{access_token: string, response: Response}>
-}
-
 export interface DeleteButtonAdminListItemProps extends ButtonAdminListItemProps {
     deleteEntityFetch: () => Promise<{access_token: string, response: Response}>
 }
-export function CreateButtonAdminListItem({createEntityFetch}: CreateButtonAdminListItemProps) {
-    const dispatch = useAppDispatch()
-
-    const onCreate = () => {
-        createEntityFetch().then((data) => {
-            dispatch(updateToken({access_token: data.access_token}))})
-    }
-
-    return <Button sx={{color: green[800], margin: 1}} onClick={onCreate}>
-        <CreateIcon />
-    </Button>
+export function CreateButtonAdminListItem() {
+    return <>
+        <OpenCreateDialogWindowContext.Consumer>
+            {setOpen => (
+                <Button sx={{color: green[800], margin: 1}} onClick={() => setOpen(true)}>
+                    <CreateIcon />
+                </Button>
+            )}
+        </OpenCreateDialogWindowContext.Consumer>
+    </> 
 }
 
 export function DeleteButtonAdminListItem({deleteEntityFetch}: DeleteButtonAdminListItemProps) {
@@ -48,7 +46,9 @@ export function DeleteButtonAdminListItem({deleteEntityFetch}: DeleteButtonAdmin
         })
     }
 
-    return <Button sx={{color: red[900]}} onClick={onDelete}>
-        <DeleteIcon />
-    </Button>
+    return <>
+        <Button sx={{color: red[900]}} onClick={onDelete}>
+            <DeleteIcon />
+        </Button>
+    </>
 }

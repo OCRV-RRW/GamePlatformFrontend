@@ -46,3 +46,9 @@ export interface CreateGameForm extends ApiForm {
     release_source: string,
     skills: Array<Skill>
 }
+
+export interface CreateSkillForm extends ApiForm {
+    description: string,
+    friendly_name: string,
+    name: string
+}
