@@ -13,8 +13,10 @@ export default function CheckAuth({ children }: CheckAuthProps) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (access_token === "")
+        if (access_token === "") {
             navigate(LOGIN_PATH)
+        }
+        
     }, [access_token, navigate])
 
     return (

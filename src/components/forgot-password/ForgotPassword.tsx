@@ -4,6 +4,7 @@ import { fetch_forgot_password } from "../../api/forgotPasswordAPI";
 import { grey, red } from "@mui/material/colors";
 import { Button, InputLabel, TextField } from "@mui/material";
 import styles from '../../../src/css_modules/style.module.css'
+import { NOT_FOUND } from "../../constants/ResponseCodes";
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState<string>("")
@@ -12,7 +13,12 @@ export default function ForgotPassword() {
     const onRestorePassword = () => {
         fetch_forgot_password({email: email})
             .then(() => setForgotPasswordState("Перейди на почту"), 
-                (reason) => {console.log(reason); setForgotPasswordState("Проверь правильность почты")})
+                (reason) => 
+                    {
+                        if (reason === NOT_FOUND) {
+                            setForgotPasswordState("Проверь правильность почты")
+                        }
+                    })
     }
 
     return (

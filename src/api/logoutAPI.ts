@@ -8,11 +8,11 @@ const fetch_log_out_response = (access_token: string) : Promise<Response> => fet
 
 export function fetch_log_out() : Promise<{access_token: string}> {
     return new Promise<{access_token: string}>(
-        (resolve) => {
+        (resolve, reject) => {
             fetchAuthAPI({fetch_func: fetch_log_out_response})
                 .then((fetch_api_data) => {
-                    console.log(fetch_api_data)
-                    return resolve({access_token: fetch_api_data.access_token})})
+                    resolve({access_token: fetch_api_data.access_token})},
+                (reason) => reject(reason))
         }
     )
 }

@@ -23,6 +23,8 @@ import '../../../index.css'
 import Loader from "../../loader/Loader"
 import GameStarter from "../../game/Game"
 import RefreshTokenTimer from "../../refresh_token_timer/RefreshTokenTimer"
+import { FORBIDDEN, NOT_FOUND } from "../../../constants/ResponseCodes"
+import { set_status } from "../../../reducers/PageSlice"
 
 type UpdateGameFormFields = {
     config: string,
@@ -53,19 +55,31 @@ export default function UpdateGamePage() {
         fetch_get_game(QUERY_STRING_GAME + name)
         .then((fetch_data) => {
             dispatch(updateToken({access_token: fetch_data.access_token}))
-            return fetch_data.response.json()
-        })
-        .then((json) => {
-            setGameData(json.data.games[0] as Game)
+            return fetch_data.response.json().then((json) => {
+                setGameData(json.data.games[0] as Game)
+            })
+        }, (reason) => {
+            if (reason === FORBIDDEN) {
+                dispatch(updateToken({access_token: ""}))
+                return
+            }
+            if (reason === NOT_FOUND) return
+            dispatch(set_status(reason))
         })
 
         fetch_get_skills()
             .then((fetch_data) => {
                 dispatch(updateToken({access_token: fetch_data.access_token}))
-                return fetch_data.response.json()
-            })
-            .then((json) => {
-                setSkills(json.data.skills as Array<Skill>)
+                return fetch_data.response.json().then((json) => {
+                    setSkills(json.data.skills as Array<Skill>)
+                })
+            }, (reason) => {
+                if (reason === FORBIDDEN) {
+                    dispatch(updateToken({access_token: ""}))
+                    return
+                }
+                if (reason === NOT_FOUND) return
+                dispatch(set_status(reason))
             })
     }, [])
 
@@ -98,6 +112,12 @@ export default function UpdateGamePage() {
         console.log(updateGameFormData)
         fetch_update_game(updateGameFormData, name ?? "").then(() => {
             window.location.reload()
+        }, (reason) => {
+            if (reason === FORBIDDEN) {
+                dispatch(updateToken({access_token: ""}))
+                return
+            }
+            dispatch(set_status(reason))
         }) 
     }
 

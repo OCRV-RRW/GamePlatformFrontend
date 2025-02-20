@@ -9,6 +9,8 @@ import styles from '../../../src/css_modules/style.module.css'
 import { AdminList } from "./AdminList";
 import { AdminListItem } from "./AdminListItem";
 import { fetch_delete_user } from "../../api/admin/deleteUserAPI";
+import { set_status } from "../../reducers/PageSlice";
+import { FORBIDDEN } from "../../constants/ResponseCodes";
 
 export default function UsersList() {
     const dispatch = useAppDispatch()
@@ -20,13 +22,20 @@ export default function UsersList() {
         fetch_get_users()
             .then((fetch_data) => {
                 dispatch(updateToken({access_token: fetch_data.access_token}))
-                return fetch_data.response.json()
-            })
-            .then((json) => {
-                let users_data : Array<User> = json.data.users as Array<User>
-                setUsers(users_data)
+                return fetch_data.response.json().then((json) => {
+                    let users_data : Array<User> = json.data.users as Array<User>
+                    setUsers(users_data)
+                    setLoading(false)
+                })
+            }, 
+            (reason) => {
                 setLoading(false)
-        })
+                if (reason === FORBIDDEN) {
+                    dispatch(updateToken({access_token: ""}))
+                    return
+                }
+                dispatch(set_status(reason))
+            })
     }
 
     useEffect(() => {
@@ -42,14 +51,21 @@ export default function UsersList() {
                     <AdminList listWithCreate={false}>
                         {users?.map((user) => 
                           <AdminListItem
-                             key={(user as any).user.id}
-                             title={(user as any).user.name!}
-                             eleName={(user as any).user.id!}
-                             delete_fetch={() => fetch_delete_user((user as any).user.id).then((data) => {
-                                fetch_users()
-                                return {access_token: data.access_token, response: data.response}
-                             })}
-                         />
+                             key={user.id}
+                             title={user.name!}
+                             eleName={user.id!}
+                             delete_fetch={() => 
+                                fetch_delete_user(user.id!).then((data) => {
+                                    fetch_users()
+                                    dispatch(updateToken({access_token: data.access_token}))
+                                }, (reason) => {
+                                    if (reason === FORBIDDEN) {
+                                        dispatch(updateToken({access_token: ""}))
+                                        return
+                                    }
+                                    dispatch(set_status(reason))
+                                })}
+                            />
                         )}
                     </AdminList>
                 </div>}

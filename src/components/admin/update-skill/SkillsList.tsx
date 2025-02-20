@@ -13,6 +13,8 @@ import { AddSkillEntityDialog } from "../AddSkillEntityDialog"
 import { CreateSkillForm } from "../../../app/api_forms_interfaces"
 import { fetch_create_skill } from "../../../api/admin/сreateSkillAPI"
 import { fetch_delete_skill } from "../../../api/admin/deleteSkillAPI"
+import { set_status } from "../../../reducers/PageSlice"
+import { FORBIDDEN, NOT_FOUND } from "../../../constants/ResponseCodes"
 
 export default function SkillsList() {
     const dispatch = useAppDispatch()
@@ -25,12 +27,20 @@ export default function SkillsList() {
         fetch_get_skills()
             .then((fetch_data) => {
                 dispatch(updateToken({access_token: fetch_data.access_token}))
-                return fetch_data.response.json()
-            })
-            .then((json) => {
-                let skills : Array<Skill> = json.data.skills as Array<Skill>
-                setSkills(skills)
+                return fetch_data.response.json().then((json) => {
+                    let skills : Array<Skill> = json.data.skills as Array<Skill>
+                    setSkills(skills)
+                    setLoading(false)
+                })
+            }, 
+            (reason) => {
                 setLoading(false)
+                if (reason === FORBIDDEN) {
+                    dispatch(updateToken({access_token: ""}))
+                    return
+                }
+                if (reason === NOT_FOUND) return
+                dispatch(set_status(reason))
             })
     }
 
@@ -53,16 +63,30 @@ export default function SkillsList() {
                                 eleName={s.name} 
                                 delete_fetch={() => fetch_delete_skill(s.name).then((data) => {
                                     fetch_skills()
-                                    return {access_token: data.access_token, response: data.response}
-                                })}/>)}
+                                    dispatch(updateToken({access_token: data.access_token}))
+                                }, (reason) => 
+                                    { 
+                                        if (reason === FORBIDDEN) {
+                                            dispatch(updateToken({access_token: ""}))
+                                            return
+                                        }
+                                        dispatch(set_status(reason)) 
+                                    })}
+                                />)}
                     </AdminList>
                 </div>}
                 <AddSkillEntityDialog 
                     isOpen={createDialogWindowOpen}
                     createGameEntityFetch={(form: CreateSkillForm) => fetch_create_skill(form).then((data) => {
                         fetch_skills()
-                        return {access_token: data.access_token, response: data.response}
-                })}/>
+                        dispatch(updateToken({access_token: data.access_token}))
+                    }, (reason) => {
+                        if (reason === FORBIDDEN) {
+                            dispatch(updateToken({access_token: ""}))
+                            return
+                        }
+                        dispatch(set_status(reason))
+                    })}/>
             </OpenCreateDialogWindowContext.Provider>
         </>
     )

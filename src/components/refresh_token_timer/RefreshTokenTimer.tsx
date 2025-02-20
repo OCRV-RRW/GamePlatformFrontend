@@ -1,8 +1,10 @@
 import { useEffect, useRef } from "react"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { selectExpiredIn, send_refresh_token } from "../../reducers/UserSlice"
-import { JsxChild, JsxElement, NodeArray } from "typescript"
+import { selectExpiredIn, send_refresh_token, updateToken } from "../../reducers/UserSlice"
 import { Queue } from "../../app/fetchQueue"
+import { unwrapResult } from "@reduxjs/toolkit"
+import { FORBIDDEN } from "../../constants/ResponseCodes"
+import { set_status } from "../../reducers/PageSlice"
 
 interface RefreshTokenTimerProps {
     children: React.ReactNode
@@ -14,11 +16,18 @@ export default function RefreshTokenTimer({ children }: RefreshTokenTimerProps) 
     const isFirstRender = useRef<boolean>(true)
 
     const refresh_token = () => {
-        Queue.addFetch('refresh_token', () => dispatch(send_refresh_token()))
+        Queue.addFetch('refresh_token', () => dispatch(send_refresh_token()).then(unwrapResult).catch(
+            (error) => {
+                if (error.message === FORBIDDEN.toString()) {
+                    dispatch(updateToken({access_token: ""}))
+                    return
+                }
+                dispatch(set_status(error.message))
+            }
+        ))
     }
 
     useEffect(() => {
-        console.log(expired_in)
         if (expired_in === "") {
             refresh_token()
         }
@@ -28,7 +37,6 @@ export default function RefreshTokenTimer({ children }: RefreshTokenTimerProps) 
         if (expired_in === "" || expired_in === undefined) return
         if (Number(new Date(expired_in).getTime() - new Date().getTime()) <= 0) {
             if (!isFirstRender.current) return
-            console.log("jkjkjk")
             refresh_token()
             return
         }

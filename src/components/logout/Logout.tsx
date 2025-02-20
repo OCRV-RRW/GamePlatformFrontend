@@ -1,18 +1,18 @@
-import { LOGIN_PATH } from "../../constants/BrowserPathes"
 import { useAppDispatch } from "../../app/hooks"
-import { useNavigate } from "react-router"
 import { send_log_out } from "../../reducers/UserSlice"
-import { Button, IconButton, Tooltip } from "@mui/material"
-import { grey, red } from "@mui/material/colors"
+import { Button, Tooltip } from "@mui/material"
+import { grey } from "@mui/material/colors"
 import LogoutOutlined from "@mui/icons-material/Logout"
+import { unwrapResult } from "@reduxjs/toolkit"
+import { set_status } from "../../reducers/PageSlice"
 
 export default function Logout() {
     const dispath = useAppDispatch()
-    const navigate = useNavigate()
 
     const logout = () => {
         dispath(send_log_out())
-            .then(() => navigate(LOGIN_PATH))
+            .then(unwrapResult)
+            .catch((error) => dispath(set_status(error.message)))
     }
 
     return (

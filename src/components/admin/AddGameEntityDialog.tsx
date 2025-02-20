@@ -5,7 +5,7 @@ import { useAppDispatch } from "../../app/hooks"
 import { updateToken } from "../../reducers/UserSlice"
 
 export interface AddGameEntityDialogProps {
-    createGameEntityFetch: (form: CreateGameForm) => Promise<{access_token: string, response: Response}>
+    createGameEntityFetch: (form: CreateGameForm) => Promise<void>
     isOpen: boolean
 }
 
@@ -37,7 +37,7 @@ export function AddGameEntityDialog({createGameEntityFetch: createGameEntityFetc
                                     'name': created_entity_name,
                                     'release_source': created_entity_release_source,
                                     'skills': []
-                                }).then((data) => dispatch(updateToken({access_token: data.access_token}))).then(() => setOpen(false))    
+                                }).then(() => setOpen(false))    
                             }
                         }
                     }}>

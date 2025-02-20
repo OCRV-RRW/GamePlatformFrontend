@@ -8,6 +8,8 @@ import { QUERY_STRING_GAME_REG_EXP } from "../../constants/reg-exp"
 import GameHeader from "./GameHeader"
 import Loader from "../loader/Loader"
 import GameStarter from "./Game"
+import { FORBIDDEN, NOT_FOUND } from "../../constants/ResponseCodes"
+import { set_status } from "../../reducers/PageSlice"
 
 export default function GamePage() {
     const dispatch = useAppDispatch()
@@ -24,6 +26,13 @@ export default function GamePage() {
             .then((data) => {
                 dispatch(updateToken({access_token: data.access_token}))
                 return data.response.json()
+            }, (reason) => {
+                if (reason === FORBIDDEN) {
+                    dispatch(updateToken({access_token: ""}))
+                    return
+                }
+                if (reason === NOT_FOUND) return
+                dispatch(set_status(reason))
             })
             .then((json) => {
                 console.log(json)

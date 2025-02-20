@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { PathContext } from "./Page";
 import { 
     ADMIN_PANEL_PATH,
@@ -19,7 +19,6 @@ import Home from "../home/Home";
 import GamePage from "../game/GamePage";
 import VerifyEmail from "../register/VerifyEmail";
 import ResetPassword from "../reset-password/ResetPassword";
-import NotFoundPage from "../not-found-page/NotFoundPage";
 import GamesList from "../admin/update-game/GamesList";
 import UpdateGamePage from "../admin/update-game/UpdateGamePage";
 import RefreshTokenTimer from "../refresh_token_timer/RefreshTokenTimer";
@@ -27,7 +26,7 @@ import AdminPanelHome from "../admin/admin-panel-home/AdminPanelHome";
 
 export default function SelectPath() {
     const path = useContext(PathContext)
-
+    const [currentComponent, setCurrentComponent] = useState<JSX.Element>()
     const pages = useRef<{path: string, page: JSX.Element}[]>(
         [
             {path: REGISTER_PATH, page: <Register />},
@@ -47,12 +46,16 @@ export default function SelectPath() {
     
     const selectComponent = (path_context: string) : JSX.Element => {
         const el = pages.current.find(({path}) => path === path_context)
-        return el?.page ?? <NotFoundPage />
+        return el?.page!
     }
+
+    useEffect(() => {
+        setCurrentComponent(selectComponent(path))
+    }, [path])
 
     return(
         <>
-            {selectComponent(path)}
+            {currentComponent}
         </>
     )
 }

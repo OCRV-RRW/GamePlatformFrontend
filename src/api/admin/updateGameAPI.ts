@@ -9,9 +9,12 @@ const fetch_update_game_response = (access_token: string, query_search?: string,
 
 export function fetch_update_game(body: UpdateGameForm, query_search: string) : Promise<{access_token: string, response: Response}> {
     return new Promise<{access_token: string, response: Response}>(
-        (resolve) => {
+        (resolve, reject) => {
             fetchAuthAPI({fetch_func: fetch_update_game_response, body: body, query_search})
-                .then((fetch_api_data) => resolve({access_token: fetch_api_data.access_token, response: fetch_api_data.response}))
+            .then(
+                (fetch_api_data) => resolve({access_token: fetch_api_data.access_token, response: fetch_api_data.response}),
+                (reason) => reject(reason)
+            )
         }
     )
 }

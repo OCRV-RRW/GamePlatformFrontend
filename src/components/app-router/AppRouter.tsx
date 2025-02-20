@@ -4,8 +4,20 @@ import CheckAuth from "../check-auth/CheckAuth";
 import Path from "../page/Page";
 import CheckNotAuth from "../check-auth/CheckNotAuth";
 import { ROUTER_BASENAME } from "../../constants/Settings";
-import NotFoundPage from "../not-found-page/NotFoundPage";
 import CheckIsAdmin from "../check-auth/CheckIsAdmin";
+import { useAppDispatch } from "../../app/hooks";
+import { useEffect } from "react";
+import { set_status } from "../../reducers/PageSlice";
+
+function DefaultAppRouterPage() {
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(set_status('404'))
+    }, [])
+
+    return <></>
+}
 
 export default function AppRouter() {
     return (
@@ -74,8 +86,7 @@ export default function AppRouter() {
                             </CheckIsAdmin>
                         </CheckAuth>}
                     />
-                    <Route path="*" element={
-                        <NotFoundPage />}
+                    <Route path="*" element={<DefaultAppRouterPage />}
                     />
                 </Routes>
             </BrowserRouter>

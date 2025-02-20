@@ -1,3 +1,4 @@
+import { GOOD_STATUS_SERVER_RESPONSE_REG_EXP } from "../constants/reg-exp"
 import { get_access_token } from "../local-storage/access_token"
 import update_token_middleware from "../middlewares/update_token_middleware"
 import { ApiForm } from "./api_forms_interfaces"
@@ -21,8 +22,9 @@ export default function fetchAuthAPI(params: FetchAPIParams)
         updated: false,
         response: new Response()
     }
+
     let afterFirstQueryResponse = new Response()
-    return new Promise<fetchAPIData>((resolve) => {
+    return new Promise<fetchAPIData>((resolve, reject) => {
         params.fetch_func(get_access_token(), params.query_search, params.body)
             .then((response) => {
                 afterFirstQueryResponse = response
@@ -32,13 +34,17 @@ export default function fetchAuthAPI(params: FetchAPIParams)
                 response_data.updated = updated_token_data.updated
                 if (!response_data.updated) {
                     response_data.response = afterFirstQueryResponse
-                    return resolve(response_data)
+                    GOOD_STATUS_SERVER_RESPONSE_REG_EXP.test(response_data.response.status.toString())
+                        ? resolve(response_data) 
+                        : reject(response_data.response.status)
                 }
                 else {
                     return params.fetch_func(response_data.access_token, params.query_search, params.body)
                         .then((response) => {
                             response_data.response = response
-                            return resolve(response_data)
+                            GOOD_STATUS_SERVER_RESPONSE_REG_EXP.test(response_data.response.status.toString())
+                                ? resolve(response_data)
+                                : reject(response_data.response.status)
                         })
                 }
             })

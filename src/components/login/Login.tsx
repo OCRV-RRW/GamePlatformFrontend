@@ -6,17 +6,21 @@ import { FORGOT_PASSWORD_PATH, REGISTER_PATH } from "../../constants/BrowserPath
 import { useNavigate } from "react-router";
 import { FieldErrors, useForm } from "react-hook-form";
 import LoginFormResolver from '../../validate/form_resolvers/login_resolver';
-import { UserState } from '../../app/states-interfaces';
-import { useState } from 'react';
+import { PageStatus } from '../../app/states-interfaces';
+import { useEffect, useState } from 'react';
 import { Button, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
 import { grey, red } from '@mui/material/colors';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { unwrapResult } from '@reduxjs/toolkit'
+import { set_status } from '../../reducers/PageSlice';
+import { BAD_REQUEST } from '../../constants/ResponseCodes';
 
 export default function Login() : JSX.Element {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const [formIsInvalid, setFormIsInvalid] = useState<boolean | undefined>(undefined)
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [isloginProcess, setIsLoginProcess] = useState<boolean>(false)
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -34,13 +38,28 @@ export default function Login() : JSX.Element {
         }    
     
     function onLogin(data: LoginForm) {
-        dispatch(send_log_in_form(data)).then((data) => {
-            if ((data.payload as UserState).access_token === undefined) {
+        setIsLoginProcess(true)
+        dispatch(send_log_in_form(data)).then(unwrapResult).then((data) => {
+            if (data.access_token === undefined) {
                 setFormIsInvalid(true)
             }
+            setIsLoginProcess(false)
+        }).catch((error) => {
+            setIsLoginProcess(false)
+            if (error.message === BAD_REQUEST.toString()) {
+                setFormIsInvalid(true)
+                return
+            }
+            dispatch(set_status(error.message as PageStatus))
         })
         reset()
     }
+
+    useEffect(() => {
+        if (formIsInvalid) {
+            window.setTimeout(() => {setFormIsInvalid(false)}, 2000)
+        }
+    }, [formIsInvalid])
 
     return (<>
         <div style={{display: 'flex', flexDirection: 'column',  alignItems: 'center'}}>
@@ -82,8 +101,13 @@ export default function Login() : JSX.Element {
                     '&.Mui-disabled': {
                         color: red[100],
                         borderColor: red[100]
+                    },
+                    '&.MuiButton-loading': {
+                        color: grey[500],
+                        borderColor: grey[500],
+                        fontSize: 0
                     }
-                }} style={{margin: 10}} type='submit' variant='outlined' disabled={checkErrors(errors)}>Войти</Button>
+                }} style={{margin: 10}} type='submit' variant='outlined' disabled={checkErrors(errors)} loading={isloginProcess} >Войти</Button>
             </form>
             <div style={{display: 'flex', flexDirection: 'column', width: 250}} className="buttons">
                 <Button sx={{
@@ -107,7 +131,7 @@ export default function Login() : JSX.Element {
                         Забыл пароль
                 </Button>
             </div>
-            {formIsInvalid && <h1 style={{color: red[200]}}>Неправильный логин или пароль</h1>}
+            {formIsInvalid && <h4 style={{color: red[200]}}>Неправильный логин или пароль</h4>}
             <h1 style={{color: red[400]}}>ОЦРВ</h1>
         </div>
     </>)

@@ -19,6 +19,8 @@ export default function ResetPassword() {
     const onResetPassword = (data: ResetPasswordForm) => {
         fetch_reset_password(data, id ?? "").then((response) => {
             console.log(response)
+        }, (reason) => {
+            console.log(reason)
         })
         reset()
     }

@@ -8,6 +8,7 @@ import RegisterFormResolver from "../../validate/form_resolvers/register_resolve
 import register_styles from '../../../src/css_modules/style.module.css'
 import { grey, red } from "@mui/material/colors"
 import { Button, InputLabel, TextField } from "@mui/material"
+import { BAD_REQUEST } from "../../constants/ResponseCodes"
 
 export default function Register() {
     const [registrationState, setRegistrationState] = useState<string>("")
@@ -31,8 +32,9 @@ export default function Register() {
             .then(
                 () => setRegistrationState("Перейди на почту"), 
                 (reason) => {
-                    console.log(reason)
-                    setRegistrationState("Проверь правильность почты")
+                    if (reason === BAD_REQUEST) {
+                        setRegistrationState("Проверь правильность почты")
+                    }
                 }
             )
         reset()

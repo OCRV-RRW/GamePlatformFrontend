@@ -6,8 +6,6 @@ import { updateToken } from "../../reducers/UserSlice"
 import UpdateIcon from '@mui/icons-material/Create';
 import CreateIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
-import { useState } from "react"
-import { CreateGameForm } from "../../app/api_forms_interfaces"
 import { OpenCreateDialogWindowContext } from "./update-game/GamesList"
 
 export interface ButtonAdminListItemProps {
@@ -23,7 +21,7 @@ export function UpdateButtonAdminListItem({path, eleName}: ButtonAdminListItemPr
 }
 
 export interface DeleteButtonAdminListItemProps extends ButtonAdminListItemProps {
-    deleteEntityFetch: () => Promise<{access_token: string, response: Response}>
+    deleteEntityFetch: () => Promise<void>
 }
 export function CreateButtonAdminListItem() {
     return <>
@@ -38,12 +36,8 @@ export function CreateButtonAdminListItem() {
 }
 
 export function DeleteButtonAdminListItem({deleteEntityFetch}: DeleteButtonAdminListItemProps) {
-    const dispatch = useAppDispatch()
-
-    const onDelete = () => {
-        deleteEntityFetch().then((data) => {
-            dispatch(updateToken({access_token: data.access_token}))
-        })
+    async function onDelete()  {
+        await deleteEntityFetch()
     }
 
     return <>

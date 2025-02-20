@@ -7,10 +7,7 @@ interface AdminListItemProps {
     title: string,
     eleName: string,
     update_path?: string,
-    delete_fetch?: () => Promise<{
-        access_token: string;
-        response: Response;
-    }>,
+    delete_fetch?: () => Promise<void>,
 }
 
 export function AdminListItem({title, eleName, update_path, delete_fetch}: AdminListItemProps) {

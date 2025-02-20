@@ -11,7 +11,7 @@ export default function VerifyEmail() {
             .then(() => {
                     setVerifyMessage("Почта подтверждена")
                 },
-                () => {
+                (reason) => {
                     setVerifyMessage("Ошибка подтверждения почты. Попробуйте снова")
                 }
             )

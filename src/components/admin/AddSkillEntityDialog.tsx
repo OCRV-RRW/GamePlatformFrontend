@@ -2,10 +2,9 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } 
 import { CreateSkillForm } from "../../app/api_forms_interfaces"
 import { useAppDispatch } from "../../app/hooks"
 import { OpenCreateDialogWindowContext } from "./update-game/GamesList"
-import { updateToken } from "../../reducers/UserSlice"
 
 export interface AddSkillEntityDialogProps {
-    createGameEntityFetch: (form: CreateSkillForm) => Promise<{access_token: string, response: Response}>
+    createGameEntityFetch: (form: CreateSkillForm) => Promise<void>
     isOpen: boolean
 }
 
@@ -31,7 +30,7 @@ export function AddSkillEntityDialog({createGameEntityFetch: createGameEntityFet
                                     'description': created_entity_description,
                                     'friendly_name': created_entity_friendly_name,
                                     'name': created_entity_name,
-                                }).then((data) => dispatch(updateToken({access_token: data.access_token}))).then(() => setOpen(false))    
+                                }).then(() => setOpen(false))    
                             }
                         }
                     }}>

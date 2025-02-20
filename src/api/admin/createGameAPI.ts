@@ -9,9 +9,12 @@ const fetch_create_game_response = (access_token: string, query_search?: string,
 
 export function fetch_create_game(body: CreateGameForm) : Promise<{access_token: string, response: Response}> {
     return new Promise<{access_token: string, response: Response}>(
-        (resolve) => {
+        (resolve, reject) => {
             fetchAuthAPI({fetch_func: fetch_create_game_response, body: body!})
-                .then((fetch_api_data) => resolve({access_token: fetch_api_data.access_token, response: fetch_api_data.response}))
+                .then(
+                    (fetch_api_data) => resolve({access_token: fetch_api_data.access_token, response: fetch_api_data.response}),
+                    (reason) => reject(reason)
+                )
         }
     )
 }

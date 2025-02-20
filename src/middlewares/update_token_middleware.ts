@@ -1,5 +1,6 @@
 import { set_request_options } from "../app/set_request_options"
 import { API_REFRESH_PATH } from "../constants/ApiPathes"
+import { FORBIDDEN } from "../constants/ResponseCodes"
 import { get_access_token } from "../local-storage/access_token"
 
 export default function update_token_middleware(response: Response) : Promise<{access_token: string, updated: boolean}> {
@@ -21,14 +22,11 @@ export default function update_token_middleware(response: Response) : Promise<{a
 export function refresh_token_middleware(status: number, json: Promise<any>) : Promise<any> {
     return new Promise<any>(
         (resolve, reject) => {
-            if (status !== 403) {
-                console.log(status)
-                console.log("not 403")
+            if (status !== FORBIDDEN) {
                 return resolve(json)
             } 
             else {
-                console.log("403")
-                return reject()
+                return reject(FORBIDDEN)
             }
         }
     )

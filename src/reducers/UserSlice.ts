@@ -17,8 +17,10 @@ const initialState : UserState = {
     expired_in: get_expired_in()
 }
 
-const setState = (user_data: User, access_token: string, expired_in?: string) : UserState => {
-   let newState: UserState = {...store.getState().user, user_data: user_data, access_token: access_token}
+const setState = (user_data?: User, access_token?: string, expired_in?: string) : UserState => {
+   let newState: UserState = {...store.getState().user }
+   if (user_data) { newState = {...newState, user_data: user_data }}
+   if (access_token) { newState = {...newState, access_token: access_token } }
    if (expired_in) { newState = {...newState, expired_in} }
    return newState 
 }
@@ -26,34 +28,54 @@ const setState = (user_data: User, access_token: string, expired_in?: string) : 
 export const send_log_in_form = createAsyncThunk<UserState, LoginForm>(
     'user/log_in',
     async (login_form: LoginForm) : Promise<UserState> => {
-        const {access_token, user_data, expired_in} = await fetch_log_in(login_form);
-        let newState = setState(user_data, access_token, expired_in)
-        return newState
+        try {
+            const {access_token, user_data, expired_in} = await fetch_log_in(login_form)
+            let newState = setState(user_data, access_token, expired_in)
+            return newState
+        }
+        catch (error) {
+            throw new Error(error as string)
+        }
     }
 )
 
 export const send_log_out = createAsyncThunk(
     'user/log_out',
     async () : Promise<{access_token: string}> => {
-        const {access_token} = await fetch_log_out();
-        return {access_token}
+        try {
+            const {access_token} = await fetch_log_out();
+            return {access_token}
+        }   
+        catch (error) {
+            throw new Error(error as string)
+        }
     }
 )
 
 export const send_user_get_me = createAsyncThunk(
     'user/get_me',
     async () : Promise<UserState> => {
-        const {access_token, user_data} = await fetch_user_me();
-        let new_state = setState(user_data!, access_token)
-        return new_state
+        try {
+            const {access_token, user_data} = await fetch_user_me();
+            let new_state = setState(user_data!, access_token)
+            return new_state
+        }
+        catch (error) {
+            throw new Error(error as string)
+        }
     }
 )
 
 export const send_refresh_token = createAsyncThunk(
     'user/refresh',
     async (signal?: AbortSignal) : Promise<{access_token: string, expired_in: string}> => {
-        const {access_token, expired_in} = await fetch_refresh(signal);
-        return {access_token, expired_in}
+        try {
+            const {access_token, expired_in} = await fetch_refresh(signal);
+            return {access_token, expired_in}
+        }
+        catch (error) {
+            throw new Error(error as string)
+        }
     }
 )
 
@@ -78,6 +100,14 @@ const userSlice = createSlice({
             state.user_data = action.payload.user_data;
             state.expired_in = action.payload.expired_in;
           })
+          .addCase(send_log_in_form.rejected, (state, action) => {
+            save_access_token("")
+            save_userdata(null)
+            save_expired_in("")
+            state.access_token = ""
+            state.user_data = null
+            state.expired_in = ""
+          })
           .addCase(send_log_out.fulfilled, (state) => {
             drop_access_token()
             drop_userdata()
@@ -90,14 +120,25 @@ const userSlice = createSlice({
             rewrite_user_data(action.payload.user_data)
             state.user_data = action.payload.user_data
           })
+          .addCase(send_user_get_me.rejected, (state) => {
+            rewrite_user_data(null)
+            state.user_data = null
+          })
           .addCase(send_refresh_token.fulfilled, (state, action) => {
             rewrite_access_token(action.payload.access_token)
             rewrite_expired_in(action.payload.expired_in)
             state.access_token = action.payload.access_token
             state.expired_in = action.payload.expired_in
           })
+          .addCase(send_refresh_token.rejected, (state) => {
+            rewrite_access_token("")
+            rewrite_expired_in("")
+            state.access_token = ""
+            state.expired_in = ""
+          })
       } 
 })
+
 export const { updateToken } = userSlice.actions
 export const selectAccessToken = () => store.getState().user.access_token
 export const selectUserData = () => store.getState().user.user_data
