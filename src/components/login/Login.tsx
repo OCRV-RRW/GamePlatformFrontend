@@ -65,17 +65,19 @@ export default function Login() : JSX.Element {
         <div style={{display: 'flex', flexDirection: 'column',  alignItems: 'center'}}>
             <form onSubmit={handleSubmit((data) => onLogin(data))}>
                 <h1 style={{color: grey[900]}}>ЛОГИН</h1>
+                {formIsInvalid && <h4 style={{color: red[200]}}>Неправильный логин или пароль</h4>}
                 <div>
                     <InputLabel htmlFor="email" className={login_styles.required} style={{padding: 10}}>Электронная почта:</InputLabel>
                     <div style={{margin: 10}}>
-                        <TextField id="email" {...register('email')} placeholder="электронная почта..." label="Электронная почта" />
+                        <OutlinedInput sx={{width: "100%"}}
+                            id="email" {...register('email')} placeholder="электронная почта..."
+                        />
                     </div>
-                    {errors.email && <label style={{color: red[400]}}> {errors.email?.message}</label>}
                 </div>
                 <div>
                     <InputLabel htmlFor='password' className={login_styles.required} style={{padding: 10}}>Пароль:</InputLabel>
                     <div style={{margin: 10}}>
-                    <OutlinedInput
+                    <OutlinedInput sx={{width: "100%"}}
                         {...register('password')}
                         id="password"
                         type={showPassword ? 'text' : 'password'}
@@ -91,7 +93,6 @@ export default function Login() : JSX.Element {
                         placeholder='пароль...'
                     />
                     </div>
-                    {errors.password && <label style={{color: red[400]}}> {errors.password?.message}</label>}
                 </div>
                 <Button sx={{
                     '&.MuiButton-outlined': {
@@ -131,7 +132,6 @@ export default function Login() : JSX.Element {
                         Забыл пароль
                 </Button>
             </div>
-            {formIsInvalid && <h4 style={{color: red[200]}}>Неправильный логин или пароль</h4>}
             <h1 style={{color: red[400]}}>ОЦРВ</h1>
         </div>
     </>)

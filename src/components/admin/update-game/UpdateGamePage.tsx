@@ -59,11 +59,11 @@ export default function UpdateGamePage() {
                 setGameData(json.data.games[0] as Game)
             })
         }, (reason) => {
-            if (reason === FORBIDDEN) {
+            if (reason === FORBIDDEN.toString()) {
                 dispatch(updateToken({access_token: ""}))
                 return
             }
-            if (reason === NOT_FOUND) return
+            if (reason === NOT_FOUND.toString()) return
             dispatch(set_status(reason))
         })
 
@@ -74,11 +74,11 @@ export default function UpdateGamePage() {
                     setSkills(json.data.skills as Array<Skill>)
                 })
             }, (reason) => {
-                if (reason === FORBIDDEN) {
+                if (reason === FORBIDDEN.toString()) {
                     dispatch(updateToken({access_token: ""}))
                     return
                 }
-                if (reason === NOT_FOUND) return
+                if (reason === NOT_FOUND.toString()) return
                 dispatch(set_status(reason))
             })
     }, [])
@@ -113,7 +113,7 @@ export default function UpdateGamePage() {
         fetch_update_game(updateGameFormData, name ?? "").then(() => {
             window.location.reload()
         }, (reason) => {
-            if (reason === FORBIDDEN) {
+            if (reason === FORBIDDEN.toString()) {
                 dispatch(updateToken({access_token: ""}))
                 return
             }

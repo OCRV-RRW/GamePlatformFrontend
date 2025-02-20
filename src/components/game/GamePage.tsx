@@ -27,11 +27,11 @@ export default function GamePage() {
                 dispatch(updateToken({access_token: data.access_token}))
                 return data.response.json()
             }, (reason) => {
-                if (reason === FORBIDDEN) {
+                if (reason === FORBIDDEN.toString()) {
                     dispatch(updateToken({access_token: ""}))
                     return
                 }
-                if (reason === NOT_FOUND) return
+                if (reason === NOT_FOUND.toString()) return
                 dispatch(set_status(reason))
             })
             .then((json) => {

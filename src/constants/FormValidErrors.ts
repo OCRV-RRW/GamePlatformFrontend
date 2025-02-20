@@ -7,7 +7,7 @@ export const REQUIRED_FIELD_ERROR : FieldError | undefined = {
 
 export const INVALID_PATTERN_PASSWORD_ERROR : FieldError | undefined = {
     type: 'pattern',
-    message: 'пароль не соответствует правилам'
+    message: 'пароль должен состоять не менее чем из 8 символом, содержать в себе цифры, специальные знаки, заглавные и маленькие буквы'
 }
 
 export const INVALID_PATTERN_EMAIL_ERROR : FieldError | undefined = {

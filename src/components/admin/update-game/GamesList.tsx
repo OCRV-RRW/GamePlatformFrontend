@@ -43,11 +43,11 @@ export default function GamesList() {
                 })
             }, (reason) => {
                 setLoading(false)
-                if (reason === FORBIDDEN) {
+                if (reason === FORBIDDEN.toString()) {
                     dispatch(updateToken({access_token: ""}))
                     return
                 }
-                if (reason === NOT_FOUND) return
+                if (reason === NOT_FOUND.toString()) return
                 dispatch(set_status(reason))
             })
     }
@@ -75,7 +75,7 @@ export default function GamesList() {
                                     dispatch(updateToken({access_token: data.access_token}))
                             }, (reason) => 
                                 { 
-                                    if (reason === FORBIDDEN) {
+                                    if (reason === FORBIDDEN.toString()) {
                                         dispatch(updateToken({access_token: ""}))
                                         return
                                     }
@@ -90,7 +90,7 @@ export default function GamesList() {
                         fetch_games()
                         dispatch(updateToken({access_token: data.access_token}))
                     }, (reason) => {
-                        if (reason === FORBIDDEN) {
+                        if (reason === FORBIDDEN.toString()) {
                             dispatch(updateToken({access_token: ""}))
                             return
                         }

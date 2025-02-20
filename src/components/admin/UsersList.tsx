@@ -30,7 +30,7 @@ export default function UsersList() {
             }, 
             (reason) => {
                 setLoading(false)
-                if (reason === FORBIDDEN) {
+                if (reason === FORBIDDEN.toString()) {
                     dispatch(updateToken({access_token: ""}))
                     return
                 }
@@ -59,7 +59,7 @@ export default function UsersList() {
                                     fetch_users()
                                     dispatch(updateToken({access_token: data.access_token}))
                                 }, (reason) => {
-                                    if (reason === FORBIDDEN) {
+                                    if (reason === FORBIDDEN.toString()) {
                                         dispatch(updateToken({access_token: ""}))
                                         return
                                     }

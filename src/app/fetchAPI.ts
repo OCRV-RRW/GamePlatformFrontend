@@ -44,7 +44,7 @@ export default function fetchAuthAPI(params: FetchAPIParams)
                             response_data.response = response
                             GOOD_STATUS_SERVER_RESPONSE_REG_EXP.test(response_data.response.status.toString())
                                 ? resolve(response_data)
-                                : reject(response_data.response.status)
+                                : reject(response_data.response.status.toString())
                         })
                 }
             })

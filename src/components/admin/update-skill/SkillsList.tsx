@@ -35,11 +35,11 @@ export default function SkillsList() {
             }, 
             (reason) => {
                 setLoading(false)
-                if (reason === FORBIDDEN) {
+                if (reason === FORBIDDEN.toString()) {
                     dispatch(updateToken({access_token: ""}))
                     return
                 }
-                if (reason === NOT_FOUND) return
+                if (reason === NOT_FOUND.toString()) return
                 dispatch(set_status(reason))
             })
     }
@@ -66,7 +66,7 @@ export default function SkillsList() {
                                     dispatch(updateToken({access_token: data.access_token}))
                                 }, (reason) => 
                                     { 
-                                        if (reason === FORBIDDEN) {
+                                        if (reason === FORBIDDEN.toString()) {
                                             dispatch(updateToken({access_token: ""}))
                                             return
                                         }
@@ -81,7 +81,7 @@ export default function SkillsList() {
                         fetch_skills()
                         dispatch(updateToken({access_token: data.access_token}))
                     }, (reason) => {
-                        if (reason === FORBIDDEN) {
+                        if (reason === FORBIDDEN.toString()) {
                             dispatch(updateToken({access_token: ""}))
                             return
                         }

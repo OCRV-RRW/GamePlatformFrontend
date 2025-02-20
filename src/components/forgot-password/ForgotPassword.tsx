@@ -15,7 +15,7 @@ export default function ForgotPassword() {
             .then(() => setForgotPasswordState("Перейди на почту"), 
                 (reason) => 
                     {
-                        if (reason === NOT_FOUND) {
+                        if (reason === NOT_FOUND.toString()) {
                             setForgotPasswordState("Проверь правильность почты")
                         }
                     })
@@ -25,7 +25,7 @@ export default function ForgotPassword() {
         <>
             <h1 style={{color: grey[900]}}>Забыл пароль</h1>
             <div className="email">
-                <InputLabel className={styles.required} style={{padding: 10}}>Электронная почта:</InputLabel>
+                <InputLabel htmlFor="email" className={styles.required} style={{padding: 10}}>Электронная почта:</InputLabel>
                 <div style={{margin: 10}}>
                     <TextField id="email" value={email} placeholder="электронная почта..." label="Электронная почта" onChange={(event) => setEmail(event.target.value)} />
                 </div>
