@@ -50,11 +50,6 @@ export default function Register() {
         reset()
     }
 
-    useEffect(() => {
-        if (registrationState === "") return
-        window.setTimeout(() => setRegistrationState(""), 2000)
-    }, [registrationState])
-
     return(
         <>
          <div style={{display: 'flex', flexDirection: 'column',  alignItems: 'center'}}>
@@ -65,6 +60,7 @@ export default function Register() {
                     <InputLabel style={{padding: 10}} htmlFor="name" className={register_styles.required}>Имя пользователя:</InputLabel>
                     <div style={{margin: 10}}>
                         <OutlinedInput 
+                            onFocus={() => setRegistrationState("")}
                             sx={{width: "100%"}} 
                             id="name" {...register('name')} 
                             placeholder="имя пользователя..." 
@@ -76,6 +72,7 @@ export default function Register() {
                     <InputLabel style={{padding: 10}} htmlFor="email" className={register_styles.required}>Электронная почта:</InputLabel>
                     <div style={{margin: 10}}>
                         <OutlinedInput 
+                            onFocus={() => setRegistrationState("")}
                             sx={{width: "100%"}}
                             id="email" {...register('email', {pattern: EMAIL_REG_EXP})} 
                             placeholder="электронная почта..." 
@@ -87,6 +84,7 @@ export default function Register() {
                     <InputLabel style={{padding: 10}} htmlFor="password" className={register_styles.required}>Пароль:</InputLabel>
                     <div style={{margin: 10, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                         <OutlinedInput 
+                            onFocus={() => setRegistrationState("")}
                             sx={{width: "100%"}}
                             id="password" {...register('password', {pattern: PASSWORD_REG_EXP, onChange: () => trigger("password_confirm")})} 
                             placeholder="пароль..." 
@@ -95,7 +93,7 @@ export default function Register() {
                                 <InputAdornment position="end">
                                     <IconButton
                                         onClick={handleClickShowPassword}>
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            {showPassword ? <Visibility /> : <VisibilityOff />}
                                     </IconButton>
                                 </InputAdornment>
                             }
@@ -107,7 +105,8 @@ export default function Register() {
                     <InputLabel style={{padding: 10}} htmlFor="password_confirm" className={register_styles.required}>Повтори пароль:</InputLabel>
                     <div style={{margin: 10}}>
                         <OutlinedInput 
-                             sx={{width: "100%"}}
+                            onFocus={() => setRegistrationState("")}
+                            sx={{width: "100%"}}
                             id="password_confirm" {...register('password_confirm', {validate: 
                                 (value, formValues) => value === formValues.password})}
                             placeholder="повтори пароль..." 
@@ -116,7 +115,7 @@ export default function Register() {
                                 <InputAdornment position="end">
                                     <IconButton
                                         onClick={handleClickShowPassword}>
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            {showPassword ? <Visibility /> : <VisibilityOff />}
                                     </IconButton>
                                 </InputAdornment>
                             }

@@ -55,12 +55,6 @@ export default function Login() : JSX.Element {
         reset()
     }
 
-    useEffect(() => {
-        if (formIsInvalid) {
-            window.setTimeout(() => {setFormIsInvalid(false)}, 2000)
-        }
-    }, [formIsInvalid])
-
     return (<>
         <div style={{display: 'flex', flexDirection: 'column',  alignItems: 'center'}}>
             <form onSubmit={handleSubmit((data) => onLogin(data))}>
@@ -71,6 +65,7 @@ export default function Login() : JSX.Element {
                     <div style={{margin: 10}}>
                         <OutlinedInput sx={{width: "100%"}}
                             id="email" {...register('email')} placeholder="электронная почта..."
+                            onFocus={() => setFormIsInvalid(false)}
                         />
                     </div>
                 </div>
@@ -78,6 +73,7 @@ export default function Login() : JSX.Element {
                     <InputLabel htmlFor='password' className={login_styles.required} style={{padding: 10}}>Пароль:</InputLabel>
                     <div style={{margin: 10}}>
                     <OutlinedInput sx={{width: "100%"}}
+                        onFocus={() => setFormIsInvalid(false)}
                         {...register('password')}
                         id="password"
                         type={showPassword ? 'text' : 'password'}
@@ -86,7 +82,7 @@ export default function Login() : JSX.Element {
                                 <IconButton
                                     onClick={handleClickShowPassword}
                                 >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    {showPassword ? <Visibility /> : <VisibilityOff />}
                                 </IconButton>
                             </InputAdornment>
                         }

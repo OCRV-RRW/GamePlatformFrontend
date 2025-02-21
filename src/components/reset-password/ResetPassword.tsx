@@ -2,12 +2,24 @@ import { FieldErrors, useForm } from 'react-hook-form'
 import reset_password_styles from '../../../src/css_modules/style.module.css'
 import { ResetPasswordForm } from '../../app/api_forms_interfaces'
 import { PASSWORD_REG_EXP } from '../../constants/reg-exp'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import ResetPasswordFormResolver from '../../validate/form_resolvers/reset_password_resolver'
 import { fetch_reset_password } from '../../api/resetPasswordAPI'
+import { useState } from 'react'
+import { grey, red } from '@mui/material/colors'
+import { Button, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material'
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { LOGIN_PATH } from '../../constants/BrowserPathes'
 
 export default function ResetPassword() {
+    const navigate = useNavigate()
     const { id } = useParams();
+    const [showPassword, setShowPassword] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false) 
+    const [statusReset, setStatusReset] = useState<string>("")
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show)
+
     const {register, handleSubmit, formState: { errors }, trigger, reset } = useForm<ResetPasswordForm>( 
         { 
             resolver: ResetPasswordFormResolver, 
@@ -17,10 +29,16 @@ export default function ResetPassword() {
     )
     
     const onResetPassword = (data: ResetPasswordForm) => {
+        setLoading(true)
         fetch_reset_password(data, id ?? "").then((response) => {
+            setStatusReset("Пароль сброшен")
+            window.setTimeout(() => navigate(LOGIN_PATH), 2000)
             console.log(response)
+            setLoading(false)
         }, (reason) => {
+            setStatusReset("не получилось сбросить пароль")
             console.log(reason)
+            setLoading(false)
         })
         reset()
     }
@@ -33,22 +51,65 @@ export default function ResetPassword() {
     return (
         <>
             <form onSubmit={handleSubmit((data) => onResetPassword(data))}>
-                <h1>Изменение пароля</h1>
+                <h1 style={{color: grey[900]}}>Изменение пароля</h1>
                 <div>
-                    <label htmlFor="password" className={reset_password_styles.required}>Введи новый пароль:</label>
-                    <input id='password' className={errors.password && reset_password_styles.invalid}
-                        {...register('password', {pattern: PASSWORD_REG_EXP, onChange: () => trigger("password_confirm")})} placeholder="пароль..." />
-                    {errors.password && <label style={{'color': "red"}}> {errors.password?.message}</label>}
+                    <InputLabel style={{padding: 10}} htmlFor="password" className={reset_password_styles.required}>Введи новый пароль:</InputLabel>
+                    <div style={{margin: 10}}>
+                        <OutlinedInput
+                            sx={{width: "100%"}}
+                            id='password'
+                            {...register('password', {pattern: PASSWORD_REG_EXP, onChange: () => trigger("password_confirm")})} 
+                            placeholder="пароль..."
+                            error={errors.password !== undefined} 
+                            type={showPassword ? 'text' : 'password'}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={handleClickShowPassword}>
+                                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment>
+                            } />
+                        {errors.password && <h5 style={{color: red[400], margin: 2, fontSize: 10, wordWrap: 'break-word', maxWidth: 200}}> {errors.password?.message}</h5>}
+                    </div>
                 </div>
                 <div>
-                    <label htmlFor="confirm_password" className={reset_password_styles.required}>Повтори пароль:</label>
-                    <input id='confirm_password' 
-                        className={errors.password_confirm && reset_password_styles.invalid}
-                        {...register('password_confirm', {validate: 
-                            (value, formValues) => value === formValues.password})} placeholder="повтори пароль..." />
-                    {errors.password_confirm && <label style={{'color': "red"}}> {errors.password_confirm?.message}</label>}
+                    <InputLabel style={{padding: 10}} htmlFor="confirm_password" className={reset_password_styles.required}>Повтори пароль:</InputLabel>
+                    <div style={{margin: 10}}>
+                        <OutlinedInput 
+                            sx={{width: "100%"}}
+                            id='confirm_password' 
+                            error={errors.password_confirm !== undefined}
+                            {...register('password_confirm', {validate: (value, formValues) => value === formValues.password})} 
+                            placeholder="повтори пароль..."
+                            type={showPassword ? 'text' : 'password'}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={handleClickShowPassword}>
+                                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment>
+                            } />
+                        {errors.password_confirm && <h5 style={{color: red[400], margin: 2, fontSize: 10, wordWrap: 'break-word', maxWidth: 200}}> {errors.password_confirm?.message}</h5>}
+                    </div>
                 </div>
-                <button disabled={checkErrors(errors)} className="reset-password-button">Изменить пароль</button>
+                <Button sx={{
+                    '&.MuiButton-outlined': {
+                        color: grey[900],
+                        borderColor: grey[900]
+                    },
+                    '&.Mui-disabled': {
+                        color: red[100],
+                        borderColor: red[100]
+                    },
+                    '&.MuiButton-loading': {
+                        color: grey[900],
+                        borderColor: grey[900],
+                        fontSize: 0
+                    }
+                }} style={{margin: 10}} type='submit' variant='outlined' disabled={checkErrors(errors)} loading={loading}>Изменить пароль</Button>
+                {<h5>{statusReset}</h5>}
             </form>
         </>
     )
