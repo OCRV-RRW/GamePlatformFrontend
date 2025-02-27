@@ -1,9 +1,9 @@
 import fetchAuthAPI from "../../app/fetchAPI";
 import { set_request_options } from "../../app/set_request_options";
-import { API_DELETE_SKILL } from "../../constants/ApiPathes";
+import { API_DELETE_SKILL_PATH } from "../../constants/ApiPathes";
 
 const fetch_delete_skill_response = (access_token: string, query_search?: string) : Promise<Response> => 
-    fetch(API_DELETE_SKILL + query_search, set_request_options({method: 'DELETE', access_token: access_token})
+    fetch(API_DELETE_SKILL_PATH + query_search, set_request_options({method: 'DELETE', access_token: access_token})
 )
 
 export function fetch_delete_skill(query_search: string) : Promise<{access_token: string, response: Response}> {

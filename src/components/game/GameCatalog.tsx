@@ -8,7 +8,7 @@ import game_catalog_styles from '../../../src/css_modules/style.module.css'
 import { Box } from "@mui/material"
 import Loader from "../loader/Loader"
 import { grey } from "@mui/material/colors"
-import { FORBIDDEN, NOT_FOUND } from "../../constants/ResponseCodes"
+import { FORBIDDEN, NOT_FOUND, UNATHORIZED } from "../../constants/ResponseCodes"
 import { set_status } from "../../reducers/PageSlice"
 
 export default function GameCatalog() {
@@ -25,7 +25,7 @@ export default function GameCatalog() {
                 setLoading(false)
             })
         }, (reason) => {
-            if (reason === FORBIDDEN.toString()) {
+            if (reason === FORBIDDEN.toString() || reason === UNATHORIZED.toString()) {
                 dispatch(updateToken({access_token: ""}))
                 return
             }

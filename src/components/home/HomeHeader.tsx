@@ -4,12 +4,13 @@ import { User } from "../../app/user_type"
 import { selectUserData } from "../../reducers/UserSlice"
 import AdminPanelButton from "../admin/AdminPanelButton"
 import Logout from "../logout/Logout"
-import { Avatar, Box, Divider, IconButton, Menu, MenuItem, Tooltip } from "@mui/material"
-import { deepOrange, grey, red } from "@mui/material/colors"
+import { Avatar, Box, IconButton, Menu, MenuItem, Tooltip } from "@mui/material"
+import { deepOrange, red } from "@mui/material/colors"
+import GoToOtherPageButton from "../GoToHomeButton"
+import { HOME_PATH } from "../../constants/BrowserPathes"
 
 export default function HomeHeader() {
     const user_data = useAppSelector(selectUserData)
-
     return (
         <>
             <Box sx={{
@@ -21,7 +22,7 @@ export default function HomeHeader() {
                     display: 'flex',
                     alignItems: 'center'
                 }}>
-                    <h1 style={{color: red[400], margin: 10}}>ОЦРВ</h1>
+                    <GoToOtherPageButton pathToPage={HOME_PATH} />
                     <AdminPanelButton />
                 </Box>
                 <Box sx={{display: 'flex', justifyContent: 'center'}}>
@@ -72,30 +73,14 @@ export function ProfileMenu({user_data}: ProfileMenuProps) {
                             elevation: 0,
                             sx: {
                                 textAlign: 'center',
-                                backgroundColor: grey[500],
+                                backgroundColor: 'rgba(0, 0, 0, 0.5)',
                                 overflow: 'visible',
-                                mt: 1.5,
-                                '&::before': {
-                                    content: '""',
-                                    display: 'block',
-                                    position: 'absolute',
-                                    top: 0,
-                                    right: 14,
-                                    width: 10,
-                                    height: 10,
-                                    bgcolor: 'background.paper',
-                                    transform: 'translateY(-50%) rotate(45deg)',
-                                    zIndex: 0,
-                                },
+                                mt: 1.5
                             }
                         }
                     }}
                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
-                        <h4 style={{padding: 10}}>имя: {user_data.name}</h4>
-                        <Divider />
-                        <h4 style={{padding: 10}}>почта: {user_data.email}</h4>
-                        <Divider />
                         <MenuItem sx={{justifyContent: 'center'}}>
                             <Logout />
                         </MenuItem>

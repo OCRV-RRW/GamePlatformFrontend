@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useState } from "react"
+import { ChangeEvent, useCallback, useEffect, useState } from "react"
 import { useLocation, useParams } from "react-router"
 import { Game } from "../../../app/game_type"
 import { fetch_get_game } from "../../../api/getGameAPI"
 import { QUERY_STRING_GAME } from "../../../constants/QueriesString"
 import { useAppDispatch } from "../../../app/hooks"
 import { updateToken } from "../../../reducers/UserSlice"
-import Header from "../header/Header"
+import AdminHeader from "../header/AdminHeader"
 import { useForm, Controller } from "react-hook-form"
 import Box from "@mui/material/Box"
 import FormControl from "@mui/material/FormControl"
@@ -15,8 +15,8 @@ import MenuItem from "@mui/material/MenuItem"
 import { Skill } from "../../../app/skill_type"
 import { fetch_get_skills } from "../../../api/getSkillsAPI"
 import Chip from "@mui/material/Chip"
-import { Button, OutlinedInput, TextField } from "@mui/material"
-import { UpdateGameForm } from "../../../app/api_forms_interfaces"
+import { Button, OutlinedInput, styled, TextField } from "@mui/material"
+import { UpdateGameForm, UploadPreviewForm } from "../../../app/api_forms_interfaces"
 import { fetch_update_game } from "../../../api/admin/updateGameAPI"
 import { JsonEditor } from 'json-edit-react'
 import '../../../index.css'
@@ -25,6 +25,11 @@ import GameStarter from "../../game/Game"
 import RefreshTokenTimer from "../../refresh_token_timer/RefreshTokenTimer"
 import { FORBIDDEN, NOT_FOUND } from "../../../constants/ResponseCodes"
 import { set_status } from "../../../reducers/PageSlice"
+import { BAD_STATUS_SERVER_RESPONSE_CLIENT_WARNING_REG_EXP } from "../../../constants/reg-exp"
+import { ADMIN_PANEL_PATH } from "../../../constants/BrowserPathes"
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { grey, red } from "@mui/material/colors"
+import { fetch_upload_preview } from "../../../api/admin/uploadPreviewAPI"
 
 type UpdateGameFormFields = {
     config: string,
@@ -41,6 +46,9 @@ export default function UpdateGamePage() {
     const [gameData, setGameData] = useState<Game>()
     const [skills, setSkills] = useState<Skill[]>()
     const [isSetValues, setIsSetValues] = useState<boolean>(false)
+    const [selectedImage, setSelectedImage] = useState<File | null>(null)
+    const [preview, setPreview] = useState<string>("");
+    const [loadingImage, setLoadingImage] = useState<boolean>(false)
 
     const { register, handleSubmit, formState: {errors}, reset, control, getValues, setValue } = useForm<UpdateGameFormFields>(
         {
@@ -49,6 +57,17 @@ export default function UpdateGamePage() {
         }
     )
 
+    const VisuallyHiddenInput = styled('input')({
+        clip: 'rect(0 0 0 0)',
+        clipPath: 'inset(50%)',
+        height: 1,
+        overflow: 'hidden',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        whiteSpace: 'nowrap',
+        width: 1,
+      });
 
     const fetchData = useCallback(() => {
         if (!name) return
@@ -121,17 +140,71 @@ export default function UpdateGamePage() {
         }) 
     }
 
+    const loadImageToServer = (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0] || null
+        if (!file || !name) return
+        setLoadingImage(true)
+        setSelectedImage(file)
+        setPreview(URL.createObjectURL(file))
+    }
+
+    useEffect(() => {
+        if (!selectedImage) return
+        if (!name) return
+        let preview = new FormData()
+        preview.append('preview', selectedImage)
+        let upload_preview_form : UploadPreviewForm = {preview_key: 'preview', preview_value: selectedImage}
+        
+        fetch_upload_preview(upload_preview_form, name)
+            .then(() => {
+                console.log('good')
+                setLoadingImage(false)
+            }, (reason) => {
+                console.log(reason)
+                setLoadingImage(false)
+            })
+    }, [selectedImage, preview])
+
     return(<>
-        <Header />
+        <AdminHeader pathToPage={ADMIN_PANEL_PATH} />
         {!gameData && <Loader />}
         {gameData && 
         <>
+            <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 2}}>
+                <Button
+                    component="label"
+                    role={undefined}
+                    variant="contained"
+                    tabIndex={-1}
+                    startIcon={<CloudUploadIcon />}
+                    sx={{margin: 1}}
+                    >
+                    Выберите картинку
+                    <VisuallyHiddenInput
+                        type="file"
+                        accept="image/*"
+                        onChange={loadImageToServer}
+                    />
+                </Button>
+                <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: 300, height: 300, border: "1px solid grey", flexDirection: 'column'}}>
+                    {!preview 
+                    ? <>
+                        <h1 style={{color: red[500], margin: 1}}>ОЦРВ</h1>
+                        <h5>Нет фотографии</h5>
+                    </>
+                    : <>
+                        <img style={{width: "100%", height: "100%"}}
+                            src={preview}
+                        />
+                    </>}
+                </Box>
+            </Box>
          <form onSubmit={handleSubmit((data) => onUpdateGame(data))}>
             <div style={{margin: 10}}>
                 <TextField id="description" {...register('description')} placeholder="описание..." label="Описание игры" />
             </div>
             <div style={{margin: 10}}>
-                <TextField id="friendly_name" {...register('friendly_name')} placeholder="название..."  label="Название игры" />
+                <TextField id="friendly_name" {...register('friendly_name')} placeholder="название..." label="Название игры" />
             </div>
             <div style={{margin: 10}}>
                 <TextField id="source" {...register('debug_source')} placeholder="источник..." label="Источник игры (Debug URL)" />

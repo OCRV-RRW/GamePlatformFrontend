@@ -1,8 +1,8 @@
 import fetchAuthAPI from "../app/fetchAPI";
 import { set_request_options } from "../app/set_request_options";
-import { API_GET_SKILL } from "../constants/ApiPathes";
+import { API_GET_SKILL_PATH } from "../constants/ApiPathes";
 
-const fetch_get_skills_response = (access_token: string) : Promise<Response> => fetch(API_GET_SKILL,
+const fetch_get_skills_response = (access_token: string) : Promise<Response> => fetch(API_GET_SKILL_PATH,
     set_request_options({method: "GET", access_token: access_token})
 )
 

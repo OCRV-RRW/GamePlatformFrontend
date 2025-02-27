@@ -25,7 +25,12 @@ export const get_userdata = () : User => {
         created_at: userdata_json?.created_at ?? null, 
         name: userdata_json?.name, 
         email: userdata_json?.email,
-        is_admin: userdata_json?.is_admin || false
+        is_admin: userdata_json?.is_admin || false,
+        birthday: null,
+        continuous_progress: "",
+        skills: [],
+        gender: "",
+        grade: 0
     }
 }
 

@@ -26,10 +26,10 @@ export default function Logout() {
             <Tooltip title="Выйти">
                 <Button sx={{
                         '&.MuiButton-text': {
-                            color: grey[900]
+                            color: grey[100]
                         },
                         '&.MuiButton-loading': {
-                            color: grey[900]
+                            color: grey[100]
                         }}}
                         type='submit' variant='text' onClick={logout}
                         loading={loading} >

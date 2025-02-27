@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import { ADMIN_PANEL_PATH, FORGOT_PASSWORD_PATH, GAME_PATH, GAMES_LIST_PATH, HOME_PATH, LOGIN_PATH, REGISTER_PATH, REGISTER_VERIFY_EMAIL_PATH, RESET_PASSWORD_PATH, UPDATE_GAME_PATH } from "../../constants/BrowserPathes";
+import { ADMIN_PANEL_PATH, FORGOT_PASSWORD_PATH, GAME_PATH, GAMES_LIST_PATH, HOME_PATH, LOGIN_PATH, REGISTER_PATH, REGISTER_VERIFY_EMAIL_PATH, RESET_PASSWORD_PATH, UPDATE_GAME_PATH, UPDATE_SKILL_PATH, UPDATE_USER_PATH } from "../../constants/BrowserPathes";
 import CheckAuth from "../check-auth/CheckAuth";
 import Path from "../page/Page";
 import CheckNotAuth from "../check-auth/CheckNotAuth";
@@ -79,6 +79,22 @@ export default function AppRouter() {
                             </CheckAuth>} 
                         />
                     </Route>
+                    <Route path={UPDATE_SKILL_PATH}>
+                        <Route path=":name" element={
+                            <CheckAuth>
+                                <CheckIsAdmin>
+                                    <Path path={UPDATE_SKILL_PATH} />
+                                </CheckIsAdmin>
+                            </CheckAuth>
+                        } />
+                    </Route>
+                    <Route path={UPDATE_USER_PATH} element={
+                        <CheckAuth>
+                            <CheckIsAdmin>
+                                <Path path={UPDATE_USER_PATH} />
+                            </CheckIsAdmin>
+                        </CheckAuth>
+                    } />
                     <Route path={ADMIN_PANEL_PATH} element={
                         <CheckAuth>
                             <CheckIsAdmin>

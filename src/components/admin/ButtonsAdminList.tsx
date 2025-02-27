@@ -1,8 +1,6 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material"
+import { Button } from "@mui/material"
 import { useNavigate } from "react-router"
-import { useAppDispatch } from "../../app/hooks"
 import { green, red } from "@mui/material/colors"
-import { updateToken } from "../../reducers/UserSlice"
 import UpdateIcon from '@mui/icons-material/Create';
 import CreateIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
@@ -10,12 +8,13 @@ import { OpenCreateDialogWindowContext } from "./update-game/GamesList"
 
 export interface ButtonAdminListItemProps {
     eleName?: string,
-    path?: string
+    path?: string,
+    query?: string
 }
 
-export function UpdateButtonAdminListItem({path, eleName}: ButtonAdminListItemProps) {
+export function UpdateButtonAdminListItem({path, eleName, query}: ButtonAdminListItemProps) {
     const navigate = useNavigate()
-    return <Button onClick={() => navigate(path + "/" + eleName)}>
+    return <Button onClick={() => query === undefined ? navigate(path + "/" + eleName) : navigate(path + query + eleName)}>
         <UpdateIcon />
     </Button>
 }

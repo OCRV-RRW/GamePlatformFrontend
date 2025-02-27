@@ -15,6 +15,8 @@ import { fetch_create_skill } from "../../../api/admin/сreateSkillAPI"
 import { fetch_delete_skill } from "../../../api/admin/deleteSkillAPI"
 import { set_status } from "../../../reducers/PageSlice"
 import { FORBIDDEN, NOT_FOUND } from "../../../constants/ResponseCodes"
+import { BAD_STATUS_SERVER_RESPONSE_CLIENT_WARNING_REG_EXP } from "../../../constants/reg-exp"
+import { UPDATE_SKILL_PATH } from "../../../constants/BrowserPathes"
 
 export default function SkillsList() {
     const dispatch = useAppDispatch()
@@ -61,12 +63,13 @@ export default function SkillsList() {
                                 key={s.name} 
                                 title={s.friendly_name} 
                                 eleName={s.name} 
+                                update_path={UPDATE_SKILL_PATH}
                                 delete_fetch={() => fetch_delete_skill(s.name).then((data) => {
                                     fetch_skills()
                                     dispatch(updateToken({access_token: data.access_token}))
                                 }, (reason) => 
                                     { 
-                                        if (reason === FORBIDDEN.toString()) {
+                                        if (BAD_STATUS_SERVER_RESPONSE_CLIENT_WARNING_REG_EXP.test(reason)) {
                                             dispatch(updateToken({access_token: ""}))
                                             return
                                         }

@@ -15,6 +15,7 @@ import { fetch_create_game } from "../../../api/admin/createGameAPI"
 import { AddGameEntityDialog } from "../AddGameEntityDialog"
 import { set_status } from "../../../reducers/PageSlice"
 import { FORBIDDEN, NOT_FOUND } from "../../../constants/ResponseCodes"
+import { BAD_STATUS_SERVER_RESPONSE_CLIENT_WARNING_REG_EXP } from "../../../constants/reg-exp"
 
 export const OpenCreateDialogWindowContext = createContext<(isOpen: boolean) => void>(() => {})
 type GameListGamesName = {
@@ -75,7 +76,7 @@ export default function GamesList() {
                                     dispatch(updateToken({access_token: data.access_token}))
                             }, (reason) => 
                                 { 
-                                    if (reason === FORBIDDEN.toString()) {
+                                    if (BAD_STATUS_SERVER_RESPONSE_CLIENT_WARNING_REG_EXP.test(reason)) {
                                         dispatch(updateToken({access_token: ""}))
                                         return
                                     }
@@ -90,7 +91,7 @@ export default function GamesList() {
                         fetch_games()
                         dispatch(updateToken({access_token: data.access_token}))
                     }, (reason) => {
-                        if (reason === FORBIDDEN.toString()) {
+                        if (BAD_STATUS_SERVER_RESPONSE_CLIENT_WARNING_REG_EXP.test(reason)) {
                             dispatch(updateToken({access_token: ""}))
                             return
                         }

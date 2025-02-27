@@ -52,3 +52,20 @@ export interface CreateSkillForm extends ApiForm {
     friendly_name: string,
     name: string
 }
+
+export interface UpdateUserForm extends ApiForm {
+    birthday: Date,
+    gender: string,
+    grade: number,
+    is_admin: boolean
+}
+
+export interface UpdateSkillForm extends ApiForm {
+    description: string,
+    friendly_name: string
+}
+
+export interface UploadPreviewForm extends ApiForm {
+    preview_key: string,
+    preview_value: File
+}  

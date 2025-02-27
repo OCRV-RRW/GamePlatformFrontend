@@ -11,6 +11,8 @@ import { AdminListItem } from "./AdminListItem";
 import { fetch_delete_user } from "../../api/admin/deleteUserAPI";
 import { set_status } from "../../reducers/PageSlice";
 import { FORBIDDEN } from "../../constants/ResponseCodes";
+import { UPDATE_USER_PATH } from "../../constants/BrowserPathes";
+import { BAD_STATUS_SERVER_RESPONSE_CLIENT_WARNING_REG_EXP } from "../../constants/reg-exp";
 
 export default function UsersList() {
     const dispatch = useAppDispatch()
@@ -30,7 +32,7 @@ export default function UsersList() {
             }, 
             (reason) => {
                 setLoading(false)
-                if (reason === FORBIDDEN.toString()) {
+                if (BAD_STATUS_SERVER_RESPONSE_CLIENT_WARNING_REG_EXP.test(reason)) {
                     dispatch(updateToken({access_token: ""}))
                     return
                 }
@@ -54,12 +56,14 @@ export default function UsersList() {
                              key={user.id}
                              title={user.name!}
                              eleName={user.id!}
+                             update_path={UPDATE_USER_PATH}
+                             query="?id="
                              delete_fetch={() => 
                                 fetch_delete_user(user.id!).then((data) => {
                                     fetch_users()
                                     dispatch(updateToken({access_token: data.access_token}))
                                 }, (reason) => {
-                                    if (reason === FORBIDDEN.toString()) {
+                                    if (BAD_STATUS_SERVER_RESPONSE_CLIENT_WARNING_REG_EXP.test(reason)) {
                                         dispatch(updateToken({access_token: ""}))
                                         return
                                     }

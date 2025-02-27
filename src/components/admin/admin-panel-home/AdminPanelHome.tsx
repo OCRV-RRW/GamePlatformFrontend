@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import Header from "../header/Header";
+import AdminHeader from "../header/AdminHeader";
 import { DrawerAdminPanelHome } from "../DrawerAdminPanelHome";
 import { createContext, useState } from 'react';
 import GamesList from "../update-game/GamesList";
@@ -7,6 +7,7 @@ import { grey, red } from "@mui/material/colors";
 import SentimentDissatisfiedTwoToneIcon from '@mui/icons-material/SentimentDissatisfiedTwoTone';
 import SkillsList from "../update-skill/SkillsList";
 import UsersList from "../UsersList";
+import { HOME_PATH } from "../../../constants/BrowserPathes";
 
 export type AdminPages = 'none' | 'games' | 'skills' | 'users'
 
@@ -20,7 +21,7 @@ export default function AdminPanelHome() {
             <Box sx={{display: 'flex'}}>
                 <DrawerAdminPanelHome  drawer_width={drawer_width}/>
                 <Box sx={{width: {sm: `calc(100% - ${drawer_width})`}}}>
-                    <Header />
+                    <AdminHeader pathToPage={HOME_PATH} />
                     {currentPage === 'games' && <GamesList />}
                     {currentPage === 'skills' && <SkillsList />}
                     {currentPage === 'users' && <UsersList />}
