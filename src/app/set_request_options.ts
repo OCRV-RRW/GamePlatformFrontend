@@ -13,22 +13,21 @@ type RequestOptionsMethod =
     | "DELETE" 
     | "PATCH"
 
-export const set_request_options = (params: RequestOptionsParams, isFormDataContent: boolean = false) => {
-    console.log(params.body_form)
-    const options = params.body_form ? {
+export const set_request_options = (params: RequestOptionsParams, isFormData: boolean = false) => {
+    let options = params.body_form ? {
         method: params.method,
         credentials: ("include" as RequestCredentials),
         headers: {
-            'Content-type': !isFormDataContent ? 'application/json; charset=UTF-8': 'multipart/form-data',
+            'Content-type': !isFormData ? 'application/json; charset=UTF-8' : 'multipart/form-data; boundary=----WebKitFormBoundaryurqfg78dhS3iXWkY',
             'Access-Control-Allow-Origin' : BACKEND_DOMAIN,
             'Authorization': params.access_token ? 'Bearer ' + params.access_token : ""
         },
-        body: isFormDataContent ? <FormData>params.body_form : JSON.stringify(params.body_form)
+        body: JSON.stringify(params.body_form)
     } : {
         method: params.method,
         credentials: ("include" as RequestCredentials),
         headers: {
-            'Content-type':  !isFormDataContent ? 'application/json; charset=UTF-8': 'multipart/form-data',
+            'Content-type': !isFormData ? 'application/json; charset=UTF-8' : 'multipart/form-data; boundary=----WebKitFormBoundaryurqfg78dhS3iXWkY',
             'Access-Control-Allow-Origin' : BACKEND_DOMAIN,
             'Authorization': params.access_token ? 'Bearer ' + params.access_token : ""
         }

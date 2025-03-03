@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useAppSelector } from "../../app/hooks"
 import { User } from "../../app/user_type"
 import { selectUserData } from "../../reducers/UserSlice"
@@ -8,6 +8,7 @@ import { Avatar, Box, IconButton, Menu, MenuItem, Tooltip } from "@mui/material"
 import { deepOrange, red } from "@mui/material/colors"
 import GoToOtherPageButton from "../GoToHomeButton"
 import { HOME_PATH } from "../../constants/BrowserPathes"
+import AvatarColorCalculator from "../../app/avatar_color_calculator"
 
 export default function HomeHeader() {
     const user_data = useAppSelector(selectUserData)
@@ -39,6 +40,7 @@ interface ProfileMenuProps {
 
 export function ProfileMenu({user_data}: ProfileMenuProps) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const avatarColor = new AvatarColorCalculator(user_data?.name, user_data?.email).calculateColors()
     const open = Boolean(anchorEl);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -60,7 +62,7 @@ export function ProfileMenu({user_data}: ProfileMenuProps) {
                         aria-haspopup="true"
                         onClick={handleClick}
                         aria-expanded={open ? 'true' : undefined}>
-                            <Avatar sx={{ bgcolor: deepOrange[500] }}>{user_data.name?.at(0)?.toUpperCase()}</Avatar>
+                        <Avatar sx={{ bgcolor: `rgba(${avatarColor.r}, ${avatarColor.g}, ${avatarColor.b}, 1)` }}>{user_data.name?.at(0)?.toUpperCase()}</Avatar>
                     </IconButton>
                 </Tooltip>
                 <Menu 

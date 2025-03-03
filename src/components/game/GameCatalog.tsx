@@ -4,7 +4,7 @@ import { useAppDispatch } from "../../app/hooks"
 import { fetch_get_games } from "../../api/getGamesAPI"
 import { updateToken } from "../../reducers/UserSlice"
 import GameCard from "./GameCard"
-import game_catalog_styles from '../../../src/css_modules/style.module.css'
+import game_catalog_styles from '../../../src/css_modules/gameStyle.module.css'
 import { Box } from "@mui/material"
 import Loader from "../loader/Loader"
 import { grey } from "@mui/material/colors"
@@ -36,7 +36,7 @@ export default function GameCatalog() {
 
     return (
         <>
-        <h1 style={{color: grey[500]}}>Каталог игр</h1>
+        <h1 style={{color: grey[800]}}>Каталог игр</h1>
         {!loading &&  <Box sx={{
 
 }}>

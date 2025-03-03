@@ -108,6 +108,7 @@ export default function UpdateGamePage() {
 
     useEffect(() => {
         if (!gameData) return
+        console.log(gameData)
         setValue('config', gameData.config)
         setValue('description', gameData.description)
         setValue('friendly_name', gameData.friendly_name)

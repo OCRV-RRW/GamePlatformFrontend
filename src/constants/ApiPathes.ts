@@ -34,7 +34,7 @@ export const API_ADD_SCORE_USER_ME_SKILLS_PATH : string = API_USER_ME_SKILLS_PAT
 export const API_UPDATE_GAME_PATH : string = API_GAMES_PATH + '/'
 export const API_CREATE_GAME_PATH : string = API_GAMES_PATH + '/'
 export const API_DELETE_GAME_PATH : string = API_GAMES_PATH + '/'
-export const API_UPLOAD_PREVIEW_PATH : string = API_GAMES_PATH + '/upload-preview'
+export const API_UPLOAD_PREVIEW_PATH : string = API_GAMES_PATH + '/upload-preview/'
 
 //ADMIN/SKILLS
 export const API_CREATE_SKILL_PATH : string = API_SKILLS_PATH + '/'

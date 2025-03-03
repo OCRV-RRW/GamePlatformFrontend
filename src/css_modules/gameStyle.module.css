@@ -1,0 +1,81 @@
+.gameCardBackdrop {
+    transition-timing-function: linear;
+    transition-duration: 300ms;
+    transition-property: background-color;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.616);
+}
+
+div.gameCatalogGrid {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+div.gamesCatalog {
+    border: 5px solid rgb(53, 69, 82);
+    border-radius: 25px;
+}
+
+.gameCard:hover {
+    transform: translateY(-10px);
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition-duration: 100ms;
+}
+
+.gameCard:hover .gameCardBackdrop {
+    transition-timing-function: linear;
+    transition-duration: 300ms;
+    transition-property: background-color;
+    background-color: rgba(0, 0, 0, 0.11);
+}
+
+.gameCard:active {
+    scale: 1.05 1.05;
+    transition-property: scale;
+    transition-timing-function: ease-out;
+    transition-duration: 100ms;
+}
+
+.gameCard {
+    will-change: transform;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%
+}
+
+.gameCardLink {
+    display: flex; 
+    justify-content: center; 
+    width: 80%;                 
+    height: 100%;
+    padding: 10px;
+    box-sizing: content-box; 
+    max-width: 400px; 
+    max-height: 400px;
+}
+
+.gameCardTitle {
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%
+}
+
+.gameCardContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+    height: 100%
+}
